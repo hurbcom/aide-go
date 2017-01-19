@@ -1,7 +1,21 @@
-# aide-go ʕ◔ϖ◔ʔ
+# aide-go
 GO (lang) helpers lib
 
 ![gophers image](https://blog.pyyoshi.com/content/images/2016/09/gopherswrench.jpg)
+
+## Setup
+
+`make setup`
+
+## Test
+
+`make test`
+
+## Coverage
+
+`make coverage`
+
+---------------------------------------------
 
 ## Welcome to GitHub Pages
 
