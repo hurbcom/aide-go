@@ -1,0 +1,9 @@
+{
+	"ImportPath": "github.com/hotelurbano/aide-go",
+	"GoVersion": "go1.7.4",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+	]
+}
