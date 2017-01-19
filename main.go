@@ -13,8 +13,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	log "github.com/Sirupsen/logrus"
 )
 
 const (
@@ -115,7 +113,7 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	}
 
 	if regexp.MustCompile(`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`).MatchString(dateString) {
-		log.Warnf("ParseDateStringToTime: receiving date string zero filled. let %s as %s", dateString, result)
+		fmt.Printf("ParseDateStringToTime: receiving date string zero filled. let %s as %s", dateString, result)
 	} else if regexp.MustCompile(`^\d{4}\-\d{2}\-\d{2}$`).MatchString(dateString) {
 		result, err = time.Parse(DATE_PATTERN_YYYYMMDD, dateString)
 	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`).MatchString(dateString) {
@@ -226,11 +224,11 @@ func GetStringBodyHttpRequest(r *http.Request) *string {
 	groups := re.FindStringSubmatch(string_body)
 
 	if len(groups) > 0 {
-		log.Debugf("Printing request Body: %+v", groups[0])
+		fmt.Printf("Printing request Body: %+v", groups[0])
 		return &groups[0]
 	}
 
-	log.Debugf("No body to print on request Body")
+	fmt.Printf("No body to print on request Body")
 	return nil
 }
 
@@ -261,11 +259,11 @@ func GetStringBodyHttpResponse(r *http.Response) *string {
 	groups := re.FindStringSubmatch(string_body)
 
 	if len(groups) > 0 {
-		log.Debugf("Printing response Body: %+v", groups[0])
+		fmt.Printf("Printing response Body: %+v", groups[0])
 		return &groups[0]
 	}
 
-	log.Debugf("No body to print on response Body")
+	fmt.Printf("No body to print on response Body")
 	return nil
 }
 
