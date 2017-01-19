@@ -1,6 +1,8 @@
 # aide-go ʕ◔ϖ◔ʔ
 GO (lang) helpers lib
 
+![gophers image](https://blog.pyyoshi.com/content/images/2016/09/gopherswrench.jpg)
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/HotelUrbano/aide-go/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
