@@ -1,19 +1,17 @@
 {
-	"ImportPath": "github.com/hotelurbano/aide-go",
-	"GoVersion": "go1.7.4",
-	"Packages": [
-		"./..."
-	],
-	"Deps": [
-		{
-			"ImportPath": "github.com/stretchr/testify",
-			"Comment": "v1.1.4",
-			"Rev": "69483b4bd14f5845b5a1e55bca19e954e827f1d0"
-		},
-		{
-			"ImportPath": "gopkg.in/h2non/gock.v1",
-			"Comment": "v1.0.3",
-			"Rev": "0ad9c55bec42c49b394bca98d4bcff7f4a82843c"
-		}
-	]
+    "ImportPath": "github.com/hotelurbano/aide-go",
+    "GoVersion": "go1.7",
+    "GodepVersion": "v77",
+    "Deps": [
+        {
+            "ImportPath": "github.com/stretchr/testify",
+            "Comment": "v1.1.4",
+            "Rev": "69483b4bd14f5845b5a1e55bca19e954e827f1d0"
+        },
+        {
+            "ImportPath": "gopkg.in/h2non/gock.v1",
+            "Comment": "v1.0.3",
+            "Rev": "0ad9c55bec42c49b394bca98d4bcff7f4a82843c"
+        }
+    ]
 }
