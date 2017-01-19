@@ -1,0 +1,10 @@
+{
+    "WorkingDir": "{GOPATH}/src/github.com/hotelurbano/aide-go",
+    "SourceDir": [
+        "{GOPATH}/src/github.com/hotelurbano/aide-go"
+    ],
+    "SourceExt": [".c", ".cpp", ".go", ".h", ".yml", ".json"],
+    "BuildCmd": "make godep",
+    "RunCmd": "make test",
+    "Decreasing": 1
+}
