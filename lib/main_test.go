@@ -300,44 +300,44 @@ func TestShouldParseBoolToString(t *testing.T) {
 	assert.Equal(t, "0", result2)
 }
 
-func TestShouldCheckStringJsonData(t *testing.T) {
+func TestShouldCheckStringJSONData(t *testing.T) {
 	var s string
-	result1 := CheckStringJsonData(s)
+	result1 := CheckStringJSONData(s)
 	assert.Nil(t, result1)
 
-	result2 := CheckStringJsonData("")
+	result2 := CheckStringJSONData("")
 	assert.Nil(t, result2)
 
-	result3 := CheckStringJsonData("test")
+	result3 := CheckStringJSONData("test")
 	assert.NotNil(t, result3)
 	assert.Equal(t, "test", *result3)
 }
 
-func TestShouldCheckInt64JsonData(t *testing.T) {
+func TestShouldCheckInt64JSONData(t *testing.T) {
 	var i1 int64
-	result1 := CheckInt64JsonData(i1)
+	result1 := CheckInt64JSONData(i1)
 	assert.Nil(t, result1)
 
-	result2 := CheckInt64JsonData(0)
+	result2 := CheckInt64JSONData(0)
 	assert.Nil(t, result2)
 
-	result3 := CheckInt64JsonData(987654)
+	result3 := CheckInt64JSONData(987654)
 	assert.NotNil(t, result3)
 	assert.Equal(t, int64(987654), *result3)
 }
 
-func TestShouldCheckFloat64JsonData(t *testing.T) {
+func TestShouldCheckFloat64JSONData(t *testing.T) {
 	var f1 float64
-	result1 := CheckFloat64JsonData(f1)
+	result1 := CheckFloat64JSONData(f1)
 	assert.Nil(t, result1)
 
-	result2 := CheckFloat64JsonData(0)
+	result2 := CheckFloat64JSONData(0)
 	assert.Nil(t, result2)
 
-	result3 := CheckFloat64JsonData(0.00)
+	result3 := CheckFloat64JSONData(0.00)
 	assert.Nil(t, result3)
 
-	result4 := CheckFloat64JsonData(9876.54)
+	result4 := CheckFloat64JSONData(9876.54)
 	assert.NotNil(t, result4)
 	assert.Equal(t, float64(9876.54), *result4)
 }

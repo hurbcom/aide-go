@@ -168,24 +168,24 @@ func ParseBoolToString(b bool) string {
 	return "0"
 }
 
-// CheckStringJsonData REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func CheckStringJsonData(s string) *string {
+// CheckStringJSONData REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func CheckStringJSONData(s string) *string {
 	if len(s) > 0 {
 		return &s
 	}
 	return nil
 }
 
-// CheckInt64JsonData REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func CheckInt64JsonData(i int64) *int64 {
+// CheckInt64JSONData REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func CheckInt64JSONData(i int64) *int64 {
 	if i > 0 {
 		return &i
 	}
 	return nil
 }
 
-// CheckFloat64JsonData REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func CheckFloat64JsonData(f float64) *float64 {
+// CheckFloat64JSONData REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func CheckFloat64JSONData(f float64) *float64 {
 	if f > 0 {
 		return &f
 	}
