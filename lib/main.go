@@ -17,36 +17,34 @@ import (
 
 const (
 	HTTP_STATUS_UNPROCESSABLE_ENTITY = 422
-)
 
-const (
-	// 2006 = ano com quatro digitos
-	//   01 = mes com dois digitos
-	//   02 = dia com dois digitos
+	// 2006 = Year with four digits
+	//   01 = Month with two digits
+	//   02 = Day with two digits
 	DATE_PATTERN_YYYYMMDD = "2006-01-02"
 
-	// 2006 = ano com quatro digitos
-	//   01 = mes com dois digitos
-	//   02 = dia com dois digitos
-	//   15 = hora com dois digitos (24h)
-	//   04 = minuto com dois digitos
-	//   05 = segundo com dois digitos
+	// 2006 = Year with four digits
+	//   01 = Month with two digits
+	//   02 = Day with two digits
+	//   15 = Hour with two digits (24h)
+	//   04 = Minute with two digits
+	//   05 = Seconds with two digits
 	DATE_PATTERN_YYYYMMDD_HHMMSS = "2006-01-02 15:04:05"
 
-	// 2006 = ano com quatro digitos
-	//   01 = mes com dois digitos
-	//   02 = dia com dois digitos
-	//   15 = hora com dois digitos (24h)
-	//   04 = minuto com dois digitos
-	//   05 = segundo com dois digitos
+	// 2006 = Year with four digits
+	//   01 = Month with two digits
+	//   02 = Day with two digits
+	//   15 = Hour with two digits (24h)
+	//   04 = Minute with two digits
+	//   05 = Seconds with two digits
 	DATE_PATTERN_YYYYMMDDTHHMMSS = "2006-01-02T15:04:05"
 
-	// 2006 = ano com quatro digitos
-	//   01 = mes com dois digitos
-	//   02 = dia com dois digitos
-	//   15 = hora com dois digitos (24h)
-	//   04 = minuto com dois digitos
-	//   05 = segundo com dois digitos
+	// 2006 = Year with four digits
+	//   01 = Month with two digits
+	//   02 = Day with two digits
+	//   15 = Hour with two digits (24h)
+	//   04 = Minute with two digits
+	//   05 = Seconds with two digits
 	//   Z  = UTC
 	DATE_PATTERN_YYYYMMDDTHHMMSSZ = "2006-01-02T15:04:05Z"
 )
@@ -123,7 +121,7 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`).MatchString(dateString) {
 		result, err = time.Parse(DATE_PATTERN_YYYYMMDDTHHMMSSZ, dateString)
 	} else {
-		err = errors.New(fmt.Sprintf("invalid date format - %+v", dateString))
+		err = errors.New(fmt.Sprintf("ParseDateStringToTime: invalid date format - %+v", dateString))
 	}
 
 	return &result, err
@@ -224,11 +222,11 @@ func GetStringBodyHttpRequest(r *http.Request) *string {
 	groups := re.FindStringSubmatch(string_body)
 
 	if len(groups) > 0 {
-		fmt.Printf("Printing request Body: %+v", groups[0])
+		fmt.Printf("GetStringBodyHttpRequest: printing request Body: %+v", groups[0])
 		return &groups[0]
 	}
 
-	fmt.Printf("No body to print on request Body")
+	fmt.Printf("GetStringBodyHttpRequest: no body to print on request Body")
 	return nil
 }
 
@@ -259,11 +257,11 @@ func GetStringBodyHttpResponse(r *http.Response) *string {
 	groups := re.FindStringSubmatch(string_body)
 
 	if len(groups) > 0 {
-		fmt.Printf("Printing response Body: %+v", groups[0])
+		fmt.Printf("GetStringBodyHttpResponse: printing response Body: %+v", groups[0])
 		return &groups[0]
 	}
 
-	fmt.Printf("No body to print on response Body")
+	fmt.Printf("GetStringBodyHttpResponse: no body to print on response Body")
 	return nil
 }
 
