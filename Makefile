@@ -14,7 +14,7 @@ fmt:
 	gofmt -s -w .
 
 lint:
-	go get -u github.com/golang/lint/golint
+	go get github.com/golang/lint/golint
 	golint ./...
 
 setup: godep
@@ -31,5 +31,5 @@ test-report-xml: godep gocov
 test-report-html: godep gocov
 	gocov test ./... | gocov-html > coverage.html
 
-ci: setup gocov test-report-xml fmt
+ci: setup gocov test-report-xml fmt lint
 	godep go test ./...
