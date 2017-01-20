@@ -30,3 +30,5 @@ test-report-xml: godep gocov
 
 test-report-html: godep gocov
 	@gocov test ./... | gocov-html > coverage.html
+
+ci: setup gocov test-report-xml test
