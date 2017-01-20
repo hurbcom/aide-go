@@ -308,6 +308,7 @@ func ParseIntOrReturnZero(s string) int {
 	return int(integer)
 }
 
+// Stringer REQUIRE THEM TO DOCUMENT THIS TYPE
 type Stringer interface {
 	String() string
 }
