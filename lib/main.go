@@ -212,18 +212,17 @@ func GetOnlyNumbers(s *string) *string {
 func GetOnlyNumbersOrSpecial(s *string, sp string) *string {
 	if s == nil {
 		return s
-	} else {
-		specials := ""
-		if len(sp) > 0 {
-			for _, item := range strings.Split(sp, "") {
-				specials = specials + `\` + item
-			}
-		}
-		pattern := fmt.Sprintf(`[^%s0-9]`, specials)
-		r := regexp.MustCompile(pattern)
-		result := r.ReplaceAllString(*s, "")
-		return &result
 	}
+	specials := ""
+	if len(sp) > 0 {
+		for _, item := range strings.Split(sp, "") {
+			specials = specials + `\` + item
+		}
+	}
+	pattern := fmt.Sprintf(`[^%s0-9]`, specials)
+	r := regexp.MustCompile(pattern)
+	result := r.ReplaceAllString(*s, "")
+	return &result
 }
 
 // GetStringBodyHttpRequest REQUIRE THEM TO DOCUMENT THIS FUNCTION
