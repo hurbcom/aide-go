@@ -129,7 +129,7 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`).MatchString(dateString) {
 		result, err = time.Parse(datePatternYYYYMMDDTHHMMSSZ, dateString)
 	} else {
-		err = errors.New(fmt.Sprintf("ParseDateStringToTime: invalid date format - %+v", dateString))
+		err = fmt.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
 	}
 
 	return &result, err
