@@ -14,7 +14,7 @@ fmt:
 	gofmt -s -w .
 
 lint:
-	go get github.com/golang/lint/golint
+	go get -u github.com/golang/lint/golint
 	golint ./...
 
 setup: godep
