@@ -234,10 +234,10 @@ func GetStringBodyHTTPRequest(r *http.Request) *string {
 	headers, _ := httputil.DumpRequest(r, false)
 	headersAndBody, _ := httputil.DumpRequest(r, true)
 	body := headersAndBody[len(headers):]
-	string_body := string(body)
+	stringBody := string(body)
 
 	re := regexp.MustCompile(`(?s)(.*)`)
-	groups := re.FindStringSubmatch(string_body)
+	groups := re.FindStringSubmatch(stringBody)
 
 	if len(groups) > 0 {
 		fmt.Printf("GetStringBodyHTTPRequest: printing request Body: %+v", groups[0])
@@ -271,10 +271,10 @@ func GetStringBodyHTTPResponse(r *http.Response) *string {
 	headers, _ := httputil.DumpResponse(r, false)
 	headersAndBody, _ := httputil.DumpResponse(r, true)
 	body := headersAndBody[len(headers):]
-	string_body := string(body)
+	stringBody := string(body)
 
 	re := regexp.MustCompile(`(?s)(.*)`)
-	groups := re.FindStringSubmatch(string_body)
+	groups := re.FindStringSubmatch(stringBody)
 
 	if len(groups) > 0 {
 		fmt.Printf("GetStringBodyHTTPResponse: printing response Body: %+v", groups[0])
