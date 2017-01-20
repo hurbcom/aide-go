@@ -14,6 +14,7 @@ fmt:
 	gofmt -s -w .
 
 lint:
+	go get golang.org/x/tools
 	go get github.com/golang/lint/golint
 	golint ./...
 
