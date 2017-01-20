@@ -225,8 +225,8 @@ func GetOnlyNumbersOrSpecial(s *string, sp string) *string {
 	return &result
 }
 
-// GetStringBodyHttpRequest REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func GetStringBodyHttpRequest(r *http.Request) *string {
+// GetStringBodyHTTPRequest REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func GetStringBodyHTTPRequest(r *http.Request) *string {
 	if r == nil {
 		return nil
 	}
@@ -240,17 +240,17 @@ func GetStringBodyHttpRequest(r *http.Request) *string {
 	groups := re.FindStringSubmatch(string_body)
 
 	if len(groups) > 0 {
-		fmt.Printf("GetStringBodyHttpRequest: printing request Body: %+v", groups[0])
+		fmt.Printf("GetStringBodyHTTPRequest: printing request Body: %+v", groups[0])
 		return &groups[0]
 	}
 
-	fmt.Printf("GetStringBodyHttpRequest: no body to print on request Body")
+	fmt.Printf("GetStringBodyHTTPRequest: no body to print on request Body")
 	return nil
 }
 
-// GetStringBodyHttpRequestJSON REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func GetStringBodyHttpRequestJSON(r *http.Request) *string {
-	result := GetStringBodyHttpRequest(r)
+// GetStringBodyHTTPRequestJSON REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func GetStringBodyHTTPRequestJSON(r *http.Request) *string {
+	result := GetStringBodyHTTPRequest(r)
 	if result != nil {
 		re := regexp.MustCompile(`({.*})`)
 		groups := re.FindStringSubmatch(*result)
@@ -262,8 +262,8 @@ func GetStringBodyHttpRequestJSON(r *http.Request) *string {
 	return nil
 }
 
-// GetStringBodyHttpResponse REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func GetStringBodyHttpResponse(r *http.Response) *string {
+// GetStringBodyHTTPResponse REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func GetStringBodyHTTPResponse(r *http.Response) *string {
 	if r == nil {
 		return nil
 	}
@@ -277,17 +277,17 @@ func GetStringBodyHttpResponse(r *http.Response) *string {
 	groups := re.FindStringSubmatch(string_body)
 
 	if len(groups) > 0 {
-		fmt.Printf("GetStringBodyHttpResponse: printing response Body: %+v", groups[0])
+		fmt.Printf("GetStringBodyHTTPResponse: printing response Body: %+v", groups[0])
 		return &groups[0]
 	}
 
-	fmt.Printf("GetStringBodyHttpResponse: no body to print on response Body")
+	fmt.Printf("GetStringBodyHTTPResponse: no body to print on response Body")
 	return nil
 }
 
-// GetStringBodyHttpResponseJSON REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func GetStringBodyHttpResponseJSON(r *http.Response) *string {
-	result := GetStringBodyHttpResponse(r)
+// GetStringBodyHTTPResponseJSON REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func GetStringBodyHTTPResponseJSON(r *http.Response) *string {
+	result := GetStringBodyHTTPResponse(r)
 	if result != nil {
 		re := regexp.MustCompile(`({.*})`)
 		groups := re.FindStringSubmatch(*result)

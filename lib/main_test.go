@@ -12,26 +12,26 @@ import (
 	"gopkg.in/h2non/gock.v1"
 )
 
-func TestGetStringBodyHttpRequestJSON(t *testing.T) {
+func TestGetStringBodyHTTPRequestJSON(t *testing.T) {
 	body, _ := json.Marshal(map[string]string{"foo": "bar"})
 	req, _ := http.NewRequest("POST", "http://server.com", bytes.NewBuffer(body))
-	actual := GetStringBodyHttpRequest(req)
+	actual := GetStringBodyHTTPRequest(req)
 
 	assert.NotNil(t, actual)
 	assert.Equal(t, "{\"foo\":\"bar\"}", *actual)
 }
 
-func TestGetStringBodyHttpRequestPlainText(t *testing.T) {
+func TestGetStringBodyHTTPRequestPlainText(t *testing.T) {
 	stringBody := "PLAIN TEXT"
 	byteArrayStringBody := []byte(stringBody)
 	req, _ := http.NewRequest("POST", "http://server.com", bytes.NewBuffer(byteArrayStringBody))
-	actual := GetStringBodyHttpRequest(req)
+	actual := GetStringBodyHTTPRequest(req)
 
 	assert.NotNil(t, actual)
 	assert.Equal(t, stringBody, *actual)
 }
 
-func TestGetStringBodyHttpRequestJSONEncoded(t *testing.T) {
+func TestGetStringBodyHTTPRequestJSONEncoded(t *testing.T) {
 	stringBody := `1223ab
 {'response':{'code':200}}
 0
@@ -39,13 +39,13 @@ func TestGetStringBodyHttpRequestJSONEncoded(t *testing.T) {
 `
 	byteArrayStringBody := []byte(stringBody)
 	req, _ := http.NewRequest("POST", "http://server.com", bytes.NewBuffer(byteArrayStringBody))
-	actual := GetStringBodyHttpRequestJSON(req)
+	actual := GetStringBodyHTTPRequestJSON(req)
 
 	assert.NotNil(t, actual)
 	assert.Equal(t, "{'response':{'code':200}}", *actual)
 }
 
-func TestGetStringBodyHttpResponseJSON(t *testing.T) {
+func TestGetStringBodyHTTPResponseJSON(t *testing.T) {
 	defer gock.Off() // Flush pending mocks after test execution
 	defer gock.Clean()
 
@@ -57,13 +57,13 @@ func TestGetStringBodyHttpResponseJSON(t *testing.T) {
 	req, _ := http.NewRequest("GET", "http://server.com/bar", nil)
 	client := &http.Client{}
 	res, _ := client.Do(req)
-	actual := GetStringBodyHttpResponse(res)
+	actual := GetStringBodyHTTPResponse(res)
 
 	assert.NotNil(t, actual)
 	assert.Equal(t, "{\"foo\":\"bar\"}\n", *actual)
 }
 
-func TestGetStringBodyHttpResponsePlainText(t *testing.T) {
+func TestGetStringBodyHTTPResponsePlainText(t *testing.T) {
 	defer gock.Off() // Flush pending mocks after test execution
 	defer gock.Clean()
 
@@ -83,13 +83,13 @@ func TestGetStringBodyHttpResponsePlainText(t *testing.T) {
 	if err != nil {
 		fmt.Printf("\nErr: %+v\n\n", err)
 	}
-	actual := GetStringBodyHttpResponse(res)
+	actual := GetStringBodyHTTPResponse(res)
 
 	assert.NotNil(t, actual)
 	assert.Equal(t, stringBody, *actual)
 }
 
-func TestGetStringBodyHttpResponseJSONEncoded(t *testing.T) {
+func TestGetStringBodyHTTPResponseJSONEncoded(t *testing.T) {
 	defer gock.Off() // Flush pending mocks after test execution
 	defer gock.Clean()
 
@@ -113,7 +113,7 @@ func TestGetStringBodyHttpResponseJSONEncoded(t *testing.T) {
 	if err != nil {
 		fmt.Printf("\nErr: %+v\n\n", err)
 	}
-	actual := GetStringBodyHttpResponseJSON(res)
+	actual := GetStringBodyHTTPResponseJSON(res)
 
 	assert.NotNil(t, actual)
 	assert.Equal(t, "{'response':{'code':200}}", *actual)
