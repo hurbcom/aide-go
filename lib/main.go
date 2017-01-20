@@ -299,6 +299,20 @@ func IsArray(arg interface{}) bool {
 	return reflect.TypeOf(arg).Kind() == reflect.Slice
 }
 
+func IsString(arg interface{}) bool {
+	if arg == nil {
+		return false
+	}
+	return reflect.TypeOf(arg).Kind() == reflect.String
+}
+
+func IsPointer(arg interface{}) bool {
+	if arg == nil {
+		return false
+	}
+	return reflect.TypeOf(arg).Kind() == reflect.Ptr
+}
+
 func Join(sep string, args ...interface{}) string {
 	var buf bytes.Buffer
 	var str Stringer
@@ -306,10 +320,23 @@ func Join(sep string, args ...interface{}) string {
 	var elements []interface{}
 
 	for _, arg := range args {
+		if arg == nil {
+			continue
+		}
+
 		if IsArray(arg) {
 			valueArg := reflect.ValueOf(arg)
 			for j := 0; j < valueArg.Len(); j++ {
 				elements = append(elements, valueArg.Index(j).Interface())
+			}
+		} else if IsString(arg) {
+			if len(arg.(string)) > 0 {
+				elements = append(elements, arg)
+			}
+		} else if IsPointer(arg) {
+			valueArg := reflect.ValueOf(arg)
+			if valueArg.Elem().IsValid() {
+				elements = append(elements, valueArg.Elem())
 			}
 		} else {
 			elements = append(elements, arg)

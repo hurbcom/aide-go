@@ -421,6 +421,91 @@ func TestIsArray(t *testing.T) {
 	assert.Equal(t, false, actual)
 }
 
+func TestIsString(t *testing.T) {
+	actual := IsString("foo")
+	assert.Equal(t, true, actual)
+
+	actual = IsString("")
+	assert.Equal(t, true, actual)
+
+	actual = IsString("123")
+	assert.Equal(t, true, actual)
+
+	actual = IsString("123.456")
+	assert.Equal(t, true, actual)
+
+	actual = IsString("true")
+	assert.Equal(t, true, actual)
+
+	actual = IsString([]int{1, 2})
+	assert.Equal(t, false, actual)
+
+	actual = IsString([]string{"a", "b"})
+	assert.Equal(t, false, actual)
+
+	actual = IsString(nil)
+	assert.Equal(t, false, actual)
+
+	actual = IsString(123)
+	assert.Equal(t, false, actual)
+
+	actual = IsString(123.456)
+	assert.Equal(t, false, actual)
+
+	actual = IsString(false)
+	assert.Equal(t, false, actual)
+}
+
+func TestIsPointer(t *testing.T) {
+	var pStr *string
+	actual := IsPointer(pStr)
+	assert.Equal(t, true, actual)
+
+	var pInt *int
+	actual = IsPointer(pInt)
+	assert.Equal(t, true, actual)
+
+	var pInt64 *int64
+	actual = IsPointer(pInt64)
+	assert.Equal(t, true, actual)
+
+	var pFloat64 *float64
+	actual = IsPointer(pFloat64)
+	assert.Equal(t, true, actual)
+
+	var pInter *interface{}
+	actual = IsPointer(pInter)
+	assert.Equal(t, true, actual)
+
+	var pSlice *[]string
+	actual = IsPointer(pSlice)
+	assert.Equal(t, true, actual)
+
+	var strVar string
+	actual = IsPointer(strVar)
+	assert.Equal(t, false, actual)
+
+	var intVar int
+	actual = IsPointer(intVar)
+	assert.Equal(t, false, actual)
+
+	var int64Var int64
+	actual = IsPointer(int64Var)
+	assert.Equal(t, false, actual)
+
+	var float64Var float64
+	actual = IsPointer(float64Var)
+	assert.Equal(t, false, actual)
+
+	var interVar interface{}
+	actual = IsPointer(interVar)
+	assert.Equal(t, false, actual)
+
+	var sliceValue []string
+	actual = IsPointer(sliceValue)
+	assert.Equal(t, false, actual)
+}
+
 func TestJoin(t *testing.T) {
 	actual := Join(", ", 654321987, "bar", 654.654)
 	assert.Equal(t, `654321987, bar, 654.654`, actual)
@@ -439,6 +524,12 @@ func TestJoin(t *testing.T) {
 
 	actual = Join(", ", []int{65485, 19734})
 	assert.Equal(t, `65485, 19734`, actual)
+
+	var pStr *string
+	str := "foo"
+
+	actual = Join(", ", 654321987, nil, 654.654, "", pStr, &str)
+	assert.Equal(t, `654321987, 654.654, foo`, actual)
 }
 
 func TestBeginningOfToday(t *testing.T) {
