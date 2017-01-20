@@ -1,7 +1,13 @@
 # aide-go
-GO (lang) helpers lib
+A go (lang) helper lib by [Hotel Urbano](http://www.hotelurbano.com) 
 
 ![gophers image](https://blog.pyyoshi.com/content/images/2016/09/gopherswrench.jpg)
+
+## Setup
+
+```
+make setup
+```
 
 ## Using 
 
@@ -29,12 +35,6 @@ import (
 
 ```go
 fmt.Printf("Testing build at ", lib.BeginningOfToday())
-```
-
-## Setup
-
-```
-make setup
 ```
 
 ## Test
