@@ -16,20 +16,12 @@ import (
 )
 
 const (
-	HTTP_STATUS_UNPROCESSABLE_ENTITY = 422
+	httpStatusUnprocessableEntity = 422
 
 	// 2006 = Year with four digits
 	//   01 = Month with two digits
 	//   02 = Day with two digits
-	DATE_PATTERN_YYYYMMDD = "2006-01-02"
-
-	// 2006 = Year with four digits
-	//   01 = Month with two digits
-	//   02 = Day with two digits
-	//   15 = Hour with two digits (24h)
-	//   04 = Minute with two digits
-	//   05 = Seconds with two digits
-	DATE_PATTERN_YYYYMMDD_HHMMSS = "2006-01-02 15:04:05"
+	datePatternYYYYMMDD = "2006-01-02"
 
 	// 2006 = Year with four digits
 	//   01 = Month with two digits
@@ -37,7 +29,15 @@ const (
 	//   15 = Hour with two digits (24h)
 	//   04 = Minute with two digits
 	//   05 = Seconds with two digits
-	DATE_PATTERN_YYYYMMDDTHHMMSS = "2006-01-02T15:04:05"
+	datePatternYYYYMMDDHHMMSS = "2006-01-02 15:04:05"
+
+	// 2006 = Year with four digits
+	//   01 = Month with two digits
+	//   02 = Day with two digits
+	//   15 = Hour with two digits (24h)
+	//   04 = Minute with two digits
+	//   05 = Seconds with two digits
+	datePatternYYYYMMDDTHHMMSS = "2006-01-02T15:04:05"
 
 	// 2006 = Year with four digits
 	//   01 = Month with two digits
@@ -46,7 +46,7 @@ const (
 	//   04 = Minute with two digits
 	//   05 = Seconds with two digits
 	//   Z  = UTC
-	DATE_PATTERN_YYYYMMDDTHHMMSSZ = "2006-01-02T15:04:05Z"
+	datePatternYYYYMMDDTHHMMSSZ = "2006-01-02T15:04:05Z"
 )
 
 func ToStringSlice(intslice []int) (stringSlice []string) {
@@ -91,7 +91,7 @@ func ParseStringToInt64(s string) (int64, error) {
 }
 
 func ParseDateYearMonthDay(dateString string) (time.Time, error) {
-	return time.Parse(DATE_PATTERN_YYYYMMDD, dateString)
+	return time.Parse(datePatternYYYYMMDD, dateString)
 }
 
 func DiffDays(date1 time.Time, date2 time.Time) (int64, error) {
@@ -113,13 +113,13 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	if regexp.MustCompile(`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`).MatchString(dateString) {
 		fmt.Printf("ParseDateStringToTime: receiving date string zero filled. let %s as %s", dateString, result)
 	} else if regexp.MustCompile(`^\d{4}\-\d{2}\-\d{2}$`).MatchString(dateString) {
-		result, err = time.Parse(DATE_PATTERN_YYYYMMDD, dateString)
+		result, err = time.Parse(datePatternYYYYMMDD, dateString)
 	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`).MatchString(dateString) {
-		result, err = time.Parse(DATE_PATTERN_YYYYMMDD_HHMMSS, dateString)
+		result, err = time.Parse(datePatternYYYYMMDDHHMMSS, dateString)
 	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`).MatchString(dateString) {
-		result, err = time.Parse(DATE_PATTERN_YYYYMMDDTHHMMSS, dateString)
+		result, err = time.Parse(datePatternYYYYMMDDTHHMMSS, dateString)
 	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`).MatchString(dateString) {
-		result, err = time.Parse(DATE_PATTERN_YYYYMMDDTHHMMSSZ, dateString)
+		result, err = time.Parse(datePatternYYYYMMDDTHHMMSSZ, dateString)
 	} else {
 		err = errors.New(fmt.Sprintf("ParseDateStringToTime: invalid date format - %+v", dateString))
 	}
