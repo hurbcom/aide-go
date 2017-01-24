@@ -22,7 +22,7 @@ setup: godep
 test: fmt lint
 	godep go test ./...
 
-ci: godep gocov fmt lint
+ci: godep gocov fmt
 	gocov test ./... | gocov-xml > coverage.xml
 
 coverage: ci
