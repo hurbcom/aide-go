@@ -388,3 +388,28 @@ func BeginningOfToday() time.Time {
 	now := time.Now()
 	return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
 }
+
+// DSN2MAP REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func DSN2MAP(dsn string) map[string]string {
+	re := regexp.MustCompile("^(?:(?P<user>.*?)(?::(?P<passwd>.*))?@)?(?:(?P<net>[^\\(]*)(?:\\((?P<addr>[^\\)]*)\\))?)?\\/(?P<dbname>.*?)(?:\\?(?P<params>[^\\?]*))?$")
+	match := re.FindStringSubmatch(dsn)
+
+	result := make(map[string]string)
+	for i, name := range re.SubexpNames() {
+		if len(name) > 0 {
+			result[name] = match[i]
+		}
+	}
+	return result
+}
+
+// DSN2Publishable REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func DSN2Publishable(dsn string) string {
+	dsnMap := DSN2MAP(dsn)
+	return fmt.Sprintf("%s@%s(%s)/%s?%s",
+		dsnMap["user"],
+		dsnMap["net"],
+		dsnMap["addr"],
+		dsnMap["dbname"],
+		dsnMap["params"])
+}
