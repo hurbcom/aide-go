@@ -577,3 +577,11 @@ func TestDSN2Publishable(t *testing.T) {
 
 	assert.Equal(t, expected, DSN2Publishable(dsn))
 }
+
+func TestGetByteArrayAndBufferFromRequestBody(t *testing.T) { t.Skip("Implement this test") }
+func TestGetOnlyNumbers(t *testing.T)                       { t.Skip("Implement this test") }
+func TestGetOnlyNumbersOrSpecial(t *testing.T)              { t.Skip("Implement this test") }
+func TestParseStringToBool(t *testing.T)                    { t.Skip("Implement this test") }
+func TestParseStringToInt(t *testing.T)                     { t.Skip("Implement this test") }
+func TestParseStringToInt64(t *testing.T)                   { t.Skip("Implement this test") }
+func TestToStringSlice64(t *testing.T)                      { t.Skip("Implement this test") }
