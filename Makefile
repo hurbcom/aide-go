@@ -22,14 +22,7 @@ setup: godep
 test: fmt lint
 	godep go test ./...
 
-test-coverage: godep
-	godep go test ./... -cover
-
-test-report-xml: godep gocov
+ci: godep gocov fmt lint
 	gocov test ./... | gocov-xml > coverage.xml
 
-test-report-html: godep gocov
-	gocov test ./... | gocov-html > coverage.html
-
-ci: setup gocov test-report-xml fmt
-	godep go test ./...
+coverage: ci
