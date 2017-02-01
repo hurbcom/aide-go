@@ -137,6 +137,14 @@ func TestInteger64SliceToStringSlice(t *testing.T) {
 	assert.Equal(t, "39", strs[2])
 }
 
+func TestToIntSlice(t *testing.T) {
+	actual := ToIntSlice([]string{"6549", "8523", "a"})
+
+	assert.Len(t, actual, 2)
+	assert.Equal(t, int(6549), actual[0])
+	assert.Equal(t, int(8523), actual[1])
+}
+
 func TestToInt64Slice(t *testing.T) {
 	actual := ToInt64Slice([]string{"654987", "852369", "a"})
 

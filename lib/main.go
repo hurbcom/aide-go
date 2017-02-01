@@ -65,6 +65,18 @@ func ToStringSlice64(int64Slice []int64) (stringSlice []string) {
 	return stringSlice
 }
 
+// ToIntSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func ToIntSlice(stringSlice []string) (intSlice []int) {
+	for _, i := range stringSlice {
+		intI, err := ParseStringToInt(i)
+		if err != nil {
+			continue
+		}
+		intSlice = append(intSlice, intI)
+	}
+	return intSlice
+}
+
 // ToInt64Slice REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func ToInt64Slice(stringSlice []string) (int64Slice []int64) {
 	for _, i := range stringSlice {
