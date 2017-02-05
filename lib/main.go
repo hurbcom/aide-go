@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"math"
 	"net/http"
 	"net/http/httputil"
 	"reflect"
@@ -424,4 +425,10 @@ func DSN2Publishable(dsn string) string {
 		dsnMap["addr"],
 		dsnMap["dbname"],
 		dsnMap["params"])
+}
+
+// Round REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func Round(value float64, precision int) float64 {
+	exponential := math.Pow10(precision)
+	return math.Ceil(value*exponential) / exponential
 }

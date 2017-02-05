@@ -593,3 +593,14 @@ func TestParseStringToBool(t *testing.T)                    { t.Skip("Implement 
 func TestParseStringToInt(t *testing.T)                     { t.Skip("Implement this test") }
 func TestParseStringToInt64(t *testing.T)                   { t.Skip("Implement this test") }
 func TestToStringSlice64(t *testing.T)                      { t.Skip("Implement this test") }
+
+func TestRound(t *testing.T) {
+	assert.Equal(t, 1.2, Round(float64(1.2), 2))
+	assert.Equal(t, 1.23, Round(float64(1.23), 2))
+	assert.Equal(t, 1.24, Round(float64(1.233), 2))
+	assert.Equal(t, 1.24, Round(float64(1.237), 2))
+	assert.Equal(t, 1234.56, Round(float64(1234.56), 2))
+	assert.Equal(t, 1234.567, Round(float64(1234.567), 3))
+	assert.Equal(t, 1234.568, Round(float64(1234.5674), 3))
+	assert.Equal(t, 1234.568, Round(float64(1234.5678), 3))
+}
