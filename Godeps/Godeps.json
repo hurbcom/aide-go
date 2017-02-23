@@ -2,5 +2,19 @@
 	"ImportPath": "github.com/hotelurbano/aide-go",
 	"GoVersion": "go1.7",
 	"GodepVersion": "v77",
-	"Deps": []
+    "Packages": [
+        "./..."
+    ],
+    "Deps": [
+        {
+            "ImportPath": "github.com/stretchr/testify/assert",
+            "Comment": "v1.1.4-25-g2402e8e",
+            "Rev": "2402e8e7a02fc811447d11f881aa9746cdc57983"
+        },
+        {
+            "ImportPath": "gopkg.in/h2non/gock.v1",
+            "Comment": "v1.0.3",
+            "Rev": "0ad9c55bec42c49b394bca98d4bcff7f4a82843c"
+        }
+    ]
 }

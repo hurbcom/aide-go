@@ -11,6 +11,7 @@ gocov:
 	go get github.com/matm/gocov-html
 
 fmt:
+	go tool fix .
 	gofmt -s -w .
 
 lint:
@@ -24,5 +25,8 @@ test: fmt lint
 
 ci: godep gocov fmt
 	gocov test ./... | gocov-xml > coverage.xml
+
+docker-test:
+	@docker run --rm -v `pwd`:/go/src/github.com/hotelurbano/aide-go -w /go/src/github.com/hotelurbano/aide-go golang:1.7.5 make ci
 
 coverage: ci
