@@ -253,11 +253,11 @@ func GetStringBodyHTTPRequest(r *http.Request) *string {
 	groups := re.FindStringSubmatch(stringBody)
 
 	if len(groups) > 0 {
-		fmt.Printf("GetStringBodyHTTPRequest: printing request Body: %+v\n", groups[0])
+		// fmt.Printf("GetStringBodyHTTPRequest: printing request Body: %+v\n", groups[0])
 		return &groups[0]
 	}
 
-	fmt.Printf("GetStringBodyHTTPRequest: no body to print on request Body\n")
+	// fmt.Printf("GetStringBodyHTTPRequest: no body to print on request Body\n")
 	return nil
 }
 
@@ -290,11 +290,11 @@ func GetStringBodyHTTPResponse(r *http.Response) *string {
 	groups := re.FindStringSubmatch(stringBody)
 
 	if len(groups) > 0 {
-		fmt.Printf("GetStringBodyHTTPResponse: printing response Body: %+v\n", groups[0])
+		// fmt.Printf("GetStringBodyHTTPResponse: printing response Body: %+v\n", groups[0])
 		return &groups[0]
 	}
 
-	fmt.Printf("GetStringBodyHTTPResponse: no body to print on response Body\n")
+	// fmt.Printf("GetStringBodyHTTPResponse: no body to print on response Body\n")
 	return nil
 }
 
