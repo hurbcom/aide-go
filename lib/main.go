@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/ioutil"
 	"math"
+	"math/rand"
 	"net/http"
 	"net/http/httputil"
 	"reflect"
@@ -431,4 +432,10 @@ func DSN2Publishable(dsn string) string {
 func Round(value float64, precision int) float64 {
 	exponential := math.Pow10(precision)
 	return math.Ceil(value*exponential) / exponential
+}
+
+// RandomInt REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func RandomInt(bottom, top int) int {
+	rand.Seed(time.Now().UTC().UnixNano())
+	return rand.Intn(top-bottom) + bottom
 }

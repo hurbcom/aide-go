@@ -604,3 +604,22 @@ func TestRound(t *testing.T) {
 	assert.Equal(t, 1234.568, Round(float64(1234.5674), 3))
 	assert.Equal(t, 1234.568, Round(float64(1234.5678), 3))
 }
+
+func TestRandomInt(t *testing.T) {
+	a := RandomInt(1, 9999)
+	b := RandomInt(1, 9999)
+	c := RandomInt(1, 9999)
+	d := RandomInt(1, 9999)
+	e := RandomInt(1, 9999)
+
+	assert.NotEqual(t, a, b)
+	assert.NotEqual(t, a, c)
+	assert.NotEqual(t, a, d)
+	assert.NotEqual(t, a, e)
+	assert.NotEqual(t, b, c)
+	assert.NotEqual(t, b, d)
+	assert.NotEqual(t, b, e)
+	assert.NotEqual(t, c, d)
+	assert.NotEqual(t, c, e)
+	assert.NotEqual(t, d, e)
+}
