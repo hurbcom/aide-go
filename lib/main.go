@@ -18,29 +18,34 @@ import (
 )
 
 const (
-	httpStatusUnprocessableEntity = 422
+	// HTTPStatusUnprocessableEntity REQUIRE THEM TO DOCUMENT THIS CONST
+	HTTPStatusUnprocessableEntity = 422
 
+	// DatePatternYYYYMMDD REQUIRE THEM TO DOCUMENT THIS CONST
 	// 2006 = Year with four digits
 	//   01 = Month with two digits
 	//   02 = Day with two digits
-	datePatternYYYYMMDD = "2006-01-02"
+	DatePatternYYYYMMDD = "2006-01-02"
 
-	// 2006 = Year with four digits
-	//   01 = Month with two digits
-	//   02 = Day with two digits
-	//   15 = Hour with two digits (24h)
-	//   04 = Minute with two digits
-	//   05 = Seconds with two digits
-	datePatternYYYYMMDDHHMMSS = "2006-01-02 15:04:05"
-
+	// DatePatternYYYYMMDDHHMMSS REQUIRE THEM TO DOCUMENT THIS CONST
 	// 2006 = Year with four digits
 	//   01 = Month with two digits
 	//   02 = Day with two digits
 	//   15 = Hour with two digits (24h)
 	//   04 = Minute with two digits
 	//   05 = Seconds with two digits
-	datePatternYYYYMMDDTHHMMSS = "2006-01-02T15:04:05"
+	DatePatternYYYYMMDDHHMMSS = "2006-01-02 15:04:05"
 
+	// DatePatternYYYYMMDDTHHMMSS REQUIRE THEM TO DOCUMENT THIS CONST
+	// 2006 = Year with four digits
+	//   01 = Month with two digits
+	//   02 = Day with two digits
+	//   15 = Hour with two digits (24h)
+	//   04 = Minute with two digits
+	//   05 = Seconds with two digits
+	DatePatternYYYYMMDDTHHMMSS = "2006-01-02T15:04:05"
+
+	// DatePatternYYYYMMDDTHHMMSSZ REQUIRE THEM TO DOCUMENT THIS CONST
 	// 2006 = Year with four digits
 	//   01 = Month with two digits
 	//   02 = Day with two digits
@@ -48,7 +53,7 @@ const (
 	//   04 = Minute with two digits
 	//   05 = Seconds with two digits
 	//   Z  = UTC
-	datePatternYYYYMMDDTHHMMSSZ = "2006-01-02T15:04:05Z"
+	DatePatternYYYYMMDDTHHMMSSZ = "2006-01-02T15:04:05Z"
 )
 
 // ToStringSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
@@ -111,7 +116,7 @@ func ParseStringToInt64(s string) (int64, error) {
 
 // ParseDateYearMonthDay REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func ParseDateYearMonthDay(dateString string) (time.Time, error) {
-	return time.Parse(datePatternYYYYMMDD, dateString)
+	return time.Parse(DatePatternYYYYMMDD, dateString)
 }
 
 // DiffDays REQUIRE THEM TO DOCUMENT THIS FUNCTION
@@ -135,13 +140,13 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	if regexp.MustCompile(`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`).MatchString(dateString) {
 		fmt.Printf("ParseDateStringToTime: receiving date string zero filled. let %s as %s", dateString, result)
 	} else if regexp.MustCompile(`^\d{4}\-\d{2}\-\d{2}$`).MatchString(dateString) {
-		result, err = time.Parse(datePatternYYYYMMDD, dateString)
+		result, err = time.Parse(DatePatternYYYYMMDD, dateString)
 	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`).MatchString(dateString) {
-		result, err = time.Parse(datePatternYYYYMMDDHHMMSS, dateString)
+		result, err = time.Parse(DatePatternYYYYMMDDHHMMSS, dateString)
 	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`).MatchString(dateString) {
-		result, err = time.Parse(datePatternYYYYMMDDTHHMMSS, dateString)
+		result, err = time.Parse(DatePatternYYYYMMDDTHHMMSS, dateString)
 	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`).MatchString(dateString) {
-		result, err = time.Parse(datePatternYYYYMMDDTHHMMSSZ, dateString)
+		result, err = time.Parse(DatePatternYYYYMMDDTHHMMSSZ, dateString)
 	} else {
 		err = fmt.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
 	}
