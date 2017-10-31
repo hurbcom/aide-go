@@ -623,3 +623,16 @@ func TestRandomInt(t *testing.T) {
 	assert.NotEqual(t, c, e)
 	assert.NotEqual(t, d, e)
 }
+
+func TestTruncate(t *testing.T) {
+	x := "123456789abcdef"
+	assert.Equal(t, x, Truncate(x, 16))
+	assert.Equal(t, x[:15], Truncate(x, 15))
+	assert.Equal(t, "12", Truncate(x, 2))
+
+	expected := "{123456789abcdef}"
+	json1 := `{
+        123456789abcdef
+    }`
+	assert.Equal(t, expected, Truncate(json1, len(json1)))
+}
