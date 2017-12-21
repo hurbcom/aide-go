@@ -12,12 +12,11 @@ gocov:
 
 lint:
 	@go get -u github.com/golang/lint/golint
-	@golint ./...
+	@golint ./... > golint.txt
 
 setup: godep
 
 format:
-	@go tool fix .
 	@goimports -w .
 	@gofmt -s -w .
 

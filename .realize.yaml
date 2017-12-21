@@ -15,8 +15,6 @@ schema:
   commands:
     fix:
       status: true
-    vet:
-      status: true
     run:
       status: true
   watcher:
