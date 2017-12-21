@@ -2,9 +2,6 @@ package lib
 
 import (
 	"io/ioutil"
-	// "log"
-	// "os"
-	// "path/filepath"
 
 	"github.com/lestrrat/go-libxml2"
 	"github.com/lestrrat/go-libxml2/xsd"
