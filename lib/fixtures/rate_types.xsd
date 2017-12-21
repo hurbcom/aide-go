@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="common_types.xsd" />
+  <xs:simpleType name="chargeCurrencyType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="web" />
+      <xs:enumeration value="hotel" />
+      <xs:enumeration value="deposit" />
+      <xs:enumeration value="installment" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="allowablePointsOfSaleType">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="PointOfSale">
+        <xs:complexType>
+          <xs:attribute name="id" type="xs:string" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:group name="basicRateInfoGroup">
+    <xs:sequence>
+      <xs:element name="Baserate" type="baseRateType" minOccurs="0" />
+      <xs:element name="Tax" type="priceCurrencyType" minOccurs="0" />
+      <xs:element name="OtherFees" type="priceCurrencyType" minOccurs="0" />
+      <xs:element name="ExpirationTime" type="xs:dateTime" minOccurs="0" />
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="packageInfoGroup">
+    <xs:sequence>
+      <xs:element name="Refundable" type="refundableType" minOccurs="0" />
+      <xs:element name="BreakfastIncluded" type="xs:boolean" minOccurs="0" />
+      <xs:element name="ParkingIncluded" type="xs:boolean" minOccurs="0" />
+      <xs:element name="InternetIncluded" type="xs:boolean" minOccurs="0" />
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="customFieldsGroup">
+    <xs:sequence>
+      <xs:element name="Custom1" type="xs:string" minOccurs="0" />
+      <xs:element name="Custom2" type="xs:string" minOccurs="0" />
+      <xs:element name="Custom3" type="xs:string" minOccurs="0" />
+      <xs:element name="Custom4" type="xs:string" minOccurs="0" />
+      <xs:element name="Custom5" type="xs:string" minOccurs="0" />
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="hotelRateGroup">
+    <xs:sequence>
+      <xs:group ref="basicRateInfoGroup" />
+      <xs:element name="ChargeCurrency" type="chargeCurrencyType" minOccurs="0" />
+      <xs:group ref="customFieldsGroup" />
+      <xs:element name="AllowablePointsOfSale" type="allowablePointsOfSaleType" minOccurs="0" />
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="roomRateGroup">
+    <xs:sequence>
+      <xs:element name="ChargeCurrency" type="chargeCurrencyType" minOccurs="0" />
+      <xs:group ref="packageInfoGroup" />
+      <xs:group ref="basicRateInfoGroup" />
+      <xs:group ref="customFieldsGroup" />
+      <xs:element name="AllowablePointsOfSale" type="allowablePointsOfSaleType" minOccurs="0" />
+    </xs:sequence>
+  </xs:group>
+  <xs:complexType name="multipleRatesType">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="Rate">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:group ref="roomRateGroup" />
+          </xs:sequence>
+          <xs:attribute name="rate_rule_id" type="xs:string" use="required" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
