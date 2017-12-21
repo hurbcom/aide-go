@@ -1,0 +1,43 @@
+settings:
+  legacy:
+    force: false
+    interval: 100ms
+server:
+  status: false
+  open: false
+  port: 5001
+  host: localhost
+schema:
+- name: aide-go
+  path: .
+  environment:
+    debug: "true"
+  commands:
+    fix:
+      status: true
+    vet:
+      status: true
+    run:
+      status: true
+  watcher:
+    paths:
+    - /
+    extensions:
+    - go
+    - yml
+    ignored_paths:
+    - .git
+    - .github
+    - .realize
+    - Godeps
+    - vendor
+    scripts:
+    - type: before
+      command: sleep 1
+      output: true
+    - type: before
+      command: make format
+      output: true
+    - type: after
+      command: make test
+      output: true

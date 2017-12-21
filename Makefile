@@ -10,17 +10,18 @@ gocov:
 	go get github.com/AlekSi/gocov-xml
 	go get github.com/matm/gocov-html
 
-fmt:
-	go tool fix .
-	gofmt -s -w .
-
 lint:
-	go get -u github.com/golang/lint/golint
-	golint ./...
+	@go get -u github.com/golang/lint/golint
+	@golint ./...
 
 setup: godep
 
-test: fmt lint
+format:
+	@go tool fix .
+	@goimports -w .
+	@gofmt -s -w .
+
+test: format lint
 	godep go test ./...
 
 ci: godep gocov fmt
