@@ -7,5 +7,5 @@ import (
 )
 
 func main() {
-	fmt.Printf("Testing build at ", lib.BeginningOfToday())
+	fmt.Printf("Testing build at %s", lib.BeginningOfToday())
 }

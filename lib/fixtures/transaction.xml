@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Transaction timestamp="2001-10-26T21:32:52" id="transaction_ID">
+    <!-- Defines data about a hotel, room, or package -->
+    <PropertyDataSet>
+        <Property>180054</Property>
+        <RoomData>
+            <RoomID>060773</RoomID>
+            <Name>
+                <Text text="Single Bed Room" language="en"/>
+                <Text text="Chambre single" language="fr"/>
+            </Name>
+            <Description>
+                <Text text="Non-smoking" language="en"/>
+                <Text text="Pas de fumiers" language="fr"/>
+            </Description>
+            <PhotoURL>
+                <Caption>
+                    <Text text="Living area" language="en"/>
+                    <Text text="Le chambre" language="fr"/>
+                </Caption>
+                <URL>http://www.foo.com/static/bar/image1234.jpg</URL>
+            </PhotoURL>
+        </RoomData>
+        <RoomData>
+            <RoomID>5440OF</RoomID>
+            <Name>
+                <Text text="Single King Bed Room" language="en"/>
+                <Text text="Simple Lit de Roi" language="fr"/>
+            </Name>
+            <Description>
+                <Text text="One king bed with pillowtop mattresses, 300-thread-count linens, and down comforters (bedspreads). City view. 300 square feet. Desk with rolling chair. Multi-line phone with voice mail. Cable/satellite TV with complimentary HBO and pay movies." language="en"/>
+                <Text text="Un très grand lit avec matelas à plateau-coussin, ..." language="fr"/>
+            </Description>
+            <PhotoURL>
+                <Caption>
+                    <Text text="Bathroom View" language="en"/>
+                    <Text text="La salle de baines" language="fr"/>
+                </Caption>
+                <URL>http://www.foo.com/static/bar/image1234.jpg</URL>
+            </PhotoURL>
+            <Capacity>4</Capacity>
+        </RoomData>
+        <PackageData>
+            <PackageID>P54321</PackageID>
+            <Name>
+                <Text text="Breakfast Included" language="en"/>
+                <Text text="Avec le petit déjeuner" language="fr"/>
+            </Name>
+            <Description>
+                <Text text="Includes a delightful array of jams and jellies." language="en"/>
+                <Text text="Comprend une délicieuse gamme de confitures et gelées." language="fr"/>
+            </Description>
+            <BreakfastIncluded>true</BreakfastIncluded>
+        </PackageData>
+        <PackageData>
+            <PackageID>P54321</PackageID>
+            <Name>
+                <Text text="Breakfast Included" language="en"/>
+                <Text text="Avec le petit déjeuner" language="fr"/>
+            </Name>
+            <Description>
+                <Text text="Two certificates for continental breakfast will be provided." language="en"/>
+                <Text text="Deux certificats pour le petit déjeuner continental seront fournis." language="fr"/>
+            </Description>
+            <BreakfastIncluded>1</BreakfastIncluded>
+        </PackageData>
+    </PropertyDataSet>
+    <PropertyDataSet>
+        <Property>12345</Property>
+        <RoomData>
+            <RoomID>single</RoomID>
+            <Name>
+                <Text text="Single room" language="en"/>
+                <Text text="Chambre simple" language="fr"/>
+            </Name>
+            <Description>
+                <Text text="A single room" language="en"/>
+                <Text text="Le chambre simple" language="fr"/>
+            </Description>
+            <PhotoURL>
+                <Caption>
+                    <Text text="Living area" language="en"/>
+                    <Text text="Le chambre" language="fr"/>
+                </Caption>
+                <URL>http://www.foo.com/static/bar/image1234.jpg</URL>
+            </PhotoURL>
+            <PhotoURL>
+                <URL>http://www.foo.com/static/bar/image1235.jpg</URL>
+            </PhotoURL>
+            <Capacity>2</Capacity>
+        </RoomData>
+        <RoomData>
+            <RoomID>double</RoomID>
+            <Name>
+                <Text text="Double room" language="en"/>
+                <Text text="Chambre double" language="fr"/>
+            </Name>
+            <Occupancy>1</Occupancy>
+        </RoomData>
+        <PackageData>
+            <PackageID>refundbreakfast</PackageID>
+            <Name>
+                <Text text="Refundable Room with Breakfast" language="en"/>
+                <Text text="Chambre remboursable avec le petit déjeuner" language="fr"/>
+            </Name>
+            <Description>
+                <Text text="Continental Breakfast" language="en"/>
+                <Text text="Petit déjeuner continental" language="fr"/>
+            </Description>
+            <ChargeCurrency>hotel</ChargeCurrency>
+            <Refundable available="1" refundable_until_days="3"/>
+            <BreakfastIncluded>1</BreakfastIncluded>
+        </PackageData>
+        <PackageData>
+            <PackageID>prepaid</PackageID>
+            <Name>
+                <Text text="Nonrefundable" language="en"/>
+                <Text text="Non remboursable" language="fr"/>
+            </Name>
+            <Description>
+                <Text text="Blah blah blad" language="en"/>
+                <Text text="Le blah blah blad" language="fr"/>
+            </Description>
+            <Occupancy>2</Occupancy>
+            <ChargeCurrency>web</ChargeCurrency>
+            <Refundable available="0"/>
+        </PackageData>
+    </PropertyDataSet>
+    <PropertyDataSet>
+        <Property>12345</Property>
+        <RoomData>
+            <RoomID>single</RoomID>
+            <Name>
+                <Text text="Single room" language="en"/>
+                <Text text="Chambre simple" language="fr"/>
+            </Name>
+            <Description>
+                <Text text="A single room" language="en"/>
+                <Text text="Le chambre simple" language="fr"/>
+            </Description>
+            <PhotoURL>
+                <Caption>
+                    <Text text="Living area" language="en"/>
+                    <Text text="Le chambre" language="fr"/>
+                </Caption>
+                <URL>http://www.foo.com/static/bar/image1234.jpg</URL>
+            </PhotoURL>
+            <PhotoURL>
+                <URL>http://www.foo.com/static/bar/image1235.jpg</URL>
+            </PhotoURL>
+            <Capacity>2</Capacity>
+        </RoomData>
+        <RoomData>
+            <RoomID>double</RoomID>
+            <Name>
+                <Text text="Double room" language="en"/>
+                <Text text="Chambre double" language="fr"/>
+            </Name>
+            <Occupancy>1</Occupancy>
+        </RoomData>
+        <PackageData>
+            <PackageID>refundbreakfast</PackageID>
+            <Name>
+                <Text text="Refundable Room with Breakfast" language="en"/>
+                <Text text="Chambre remboursable avec le petit déjeuner" language="fr"/>
+            </Name>
+            <Description>
+                <Text text="Continental Breakfast" language="en"/>
+                <Text text="Petit déjeuner continental" language="fr"/>
+            </Description>
+            <ChargeCurrency>hotel</ChargeCurrency>
+            <Refundable available="1" refundable_until_days="3"/>
+            <BreakfastIncluded>1</BreakfastIncluded>
+        </PackageData>
+        <PackageData>
+            <PackageID>prepaid</PackageID>
+            <Name>
+                <Text text="Nonrefundable" language="en"/>
+                <Text text="Non remboursable" language="fr"/>
+            </Name>
+            <Description>
+                <Text text="Blah blah blad" language="en"/>
+                <Text text="Le blah blah blad" language="fr"/>
+            </Description>
+            <Occupancy>2</Occupancy>
+            <ChargeCurrency>web</ChargeCurrency>
+            <Refundable available="0"/>
+        </PackageData>
+    </PropertyDataSet>
+    <Result>
+        <Property>060773</Property>
+        <!-- <RoomID>RoomType101</RoomID> -->
+        <Checkin>2015-06-10</Checkin>
+        <Nights>2</Nights>
+        <Baserate currency="USD">278.33</Baserate>
+        <Tax currency="USD">25.12</Tax>
+        <OtherFees currency="USD">2.00</OtherFees>
+        <AllowablePointsOfSale>
+            <PointOfSale id="pos-mobile"/>
+            <PointOfSale id="pos-us-desktop"/>
+        </AllowablePointsOfSale>
+        <!-- Base Rate Room Bundle -->
+        <RoomBundle>
+            <RoomID>single</RoomID>
+            <!-- Price for 2 ("occupancy") -->
+            <Baserate currency="USD">199.99</Baserate>
+            <Tax currency="USD">25.12</Tax>
+            <OtherFees currency="USD">10.00</OtherFees>
+        </RoomBundle>
+        <!-- Premium Room Bundle -->
+        <RoomBundle>
+            <RoomID>single</RoomID>
+            <PackageID>refundbreakfast</PackageID>
+            <!-- Price for 2 ("occupancy") -->
+            <Baserate currency="USD">298.88</Baserate>
+            <Tax currency="USD">42.12</Tax>
+            <OtherFees currency="USD">10.00</OtherFees>
+        </RoomBundle>
+    </Result>
+    <Result>
+        <Property>052213</Property>
+        <!-- <RoomID>RoomType101</RoomID> -->
+        <Checkin>2015-06-17</Checkin>
+        <Nights>2</Nights>
+        <Baserate currency="USD">299.98</Baserate>
+        <Tax currency="USD">26.42</Tax>
+        <OtherFees currency="USD">2.00</OtherFees>
+        <AllowablePointsOfSale>
+            <PointOfSale id="pos-mobile"/>
+            <PointOfSale id="pos-us-desktop"/>
+        </AllowablePointsOfSale>
+    </Result>
+</Transaction>

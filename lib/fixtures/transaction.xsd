@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="fixtures/rate_types.xsd" />
+  <xs:complexType name="roomPriceDataType">
+    <xs:sequence>
+      <xs:element name="RoomData" type="roomPriceDataType" minOccurs="0" />
+      <xs:element name="PackageData" type="roomPriceDataType" minOccurs="0" />
+      <xs:element name="Tagline1" type="localizedText" minOccurs="0" />
+      <xs:element name="Tagline2" type="localizedText" minOccurs="0" />
+      <xs:element name="RoomID" type="xs:string" minOccurs="0" />
+      <xs:element name="RatePlanID" type="xs:string" minOccurs="0" />
+      <xs:element name="PackageID" type="xs:string" minOccurs="0" />
+      <xs:element name="Name" type="localizedText" minOccurs="0" />
+      <xs:element name="Description" type="localizedText" minOccurs="0" />
+      <xs:element name="PhotoURL" type="photoUrlType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="Capacity" type="occupancyType" minOccurs="0" />
+      <xs:element name="Occupancy" type="occupancyType" minOccurs="0" />
+      <xs:group ref="roomRateGroup" />
+      <xs:element name="Rates" type="multipleRatesType" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Transaction">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PartnerData" type="roomPriceDataType" minOccurs="0" />
+        <xs:element name="PropertyDataSet" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Property" type="xs:string" />
+              <xs:element name="PropertyData" type="roomPriceDataType" minOccurs="0" />
+              <xs:element name="RoomData" type="roomPriceDataType" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element name="PackageData" type="roomPriceDataType" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Result" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Property" type="xs:string" />
+              <xs:element name="Checkin" type="xs:date" />
+              <xs:element name="Nights" type="xs:positiveInteger" />
+              <xs:element name="RoomID" type="xs:string" minOccurs="0" />
+              <xs:group ref="hotelRateGroup" />
+              <xs:element name="Rates" type="multipleRatesType" minOccurs="0" />
+              <xs:element name="RoomBundle" type="roomPriceDataType" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="timestamp" type="xs:dateTime" use="required" />
+      <xs:attribute name="id" type="xs:string" />
+      <xs:attribute name="partner" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
