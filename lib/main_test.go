@@ -159,21 +159,21 @@ func TestParseInt(t *testing.T) {
 	expected := int(6549)
 
 	assert.Empty(t, err)
-	assert.IsType(t, expected, i)
-	assert.Equal(t, expected, i)
+	assert.IsType(t, &expected, i)
+	assert.EqualValues(t, &expected, i)
 }
 
 func TestParseIntWithEmptyString(t *testing.T) {
 	i, err := ParseStringToInt("")
 
-	assert.Equal(t, 0, i)
-	assert.Empty(t, err)
+	assert.Nil(t, i)
+	assert.Error(t, err)
 }
 
 func TestParseIntInvalidString(t *testing.T) {
 	_, err := ParseStringToInt("invalid")
 
-	assert.NotEmpty(t, err)
+	assert.Error(t, err)
 }
 
 func TestParseInt64(t *testing.T) {
@@ -182,21 +182,21 @@ func TestParseInt64(t *testing.T) {
 	expected := int64(456123789123)
 
 	assert.Empty(t, err)
-	assert.IsType(t, expected, i)
-	assert.Equal(t, expected, i)
+	assert.IsType(t, &expected, i)
+	assert.EqualValues(t, &expected, i)
 }
 
 func TestParseInt64WithEmptyString(t *testing.T) {
 	i, err := ParseStringToInt64("")
 
-	assert.Equal(t, int64(0), i)
-	assert.Empty(t, err)
+	assert.Nil(t, i)
+	assert.Error(t, err)
 }
 
 func TestParseInt64InvalidString(t *testing.T) {
 	_, err := ParseStringToInt64("invalid")
 
-	assert.NotEmpty(t, err)
+	assert.Error(t, err)
 }
 
 func TestShouldParseTimeWithYearMonthDayPattern(t *testing.T) {
@@ -224,12 +224,14 @@ func TestDiffDays(t *testing.T) {
 	duration, err := DiffDays(time.Date(2016, 2, 5, 0, 0, 0, 0, time.UTC), time.Date(2016, 2, 11, 0, 0, 0, 0, time.UTC))
 	assert.NotNil(t, duration)
 	assert.Nil(t, err)
-	assert.Equal(t, int64(6), duration)
+	expected := int64(6)
+	assert.EqualValues(t, &expected, duration)
 
 	duration, err = DiffDays(time.Date(2016, 2, 20, 0, 0, 0, 0, time.UTC), time.Date(2016, 3, 10, 0, 0, 0, 0, time.UTC))
 	assert.NotNil(t, duration)
 	assert.Nil(t, err)
-	assert.Equal(t, int64(19), duration)
+	expected = int64(19)
+	assert.EqualValues(t, &expected, duration)
 
 	date1 := time.Time{}
 	date2 := time.Time{}

@@ -79,7 +79,7 @@ func ToIntSlice(stringSlice []string) (intSlice []int) {
 		if err != nil {
 			continue
 		}
-		intSlice = append(intSlice, intI)
+		intSlice = append(intSlice, *intI)
 	}
 	return intSlice
 }
@@ -91,41 +91,55 @@ func ToInt64Slice(stringSlice []string) (int64Slice []int64) {
 		if err != nil {
 			continue
 		}
-		int64Slice = append(int64Slice, intI)
+		int64Slice = append(int64Slice, *intI)
 	}
 	return int64Slice
 }
 
 // ParseStringToInt REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func ParseStringToInt(s string) (int, error) {
-	if s == "" {
-		return 0, nil
+func ParseStringToInt(s string) (*int, error) {
+	if len(s) == 0 {
+		return nil, errors.New("empty string")
 	}
-
-	return strconv.Atoi(s)
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		return nil, err
+	}
+	return &i, nil
 }
 
 // ParseStringToInt64 REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func ParseStringToInt64(s string) (int64, error) {
-	if s == "" {
-		return 0, nil
+func ParseStringToInt64(s string) (*int64, error) {
+	if len(s) == 0 {
+		return nil, errors.New("empty string")
 	}
-
-	return strconv.ParseInt(s, 10, 0)
+	i, err := strconv.ParseInt(s, 10, 0)
+	if err != nil {
+		return nil, err
+	}
+	return &i, nil
 }
 
 // ParseDateYearMonthDay REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func ParseDateYearMonthDay(dateString string) (time.Time, error) {
-	return time.Parse(DatePatternYYYYMMDD, dateString)
+func ParseDateYearMonthDay(dateString string) (*time.Time, error) {
+	if len(dateString) == 0 {
+		return nil, errors.New("empty string")
+	}
+	d, err := time.Parse(DatePatternYYYYMMDD, dateString)
+	if err != nil {
+		return nil, err
+	}
+	return &d, nil
 }
 
 // DiffDays REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func DiffDays(date1 time.Time, date2 time.Time) (int64, error) {
+func DiffDays(date1 time.Time, date2 time.Time) (*int64, error) {
 	if !date1.IsZero() && !date2.IsZero() {
 		duration := date2.Sub(date1)
-		return int64(duration.Hours() / 24), nil
+		diff := int64(duration.Hours() / 24)
+		return &diff, nil
 	}
-	return 0, errors.New("invalid-dates")
+	return nil, errors.New("invalid dates")
 }
 
 // ParseDateStringToTime REQUIRE THEM TO DOCUMENT THIS FUNCTION
@@ -134,7 +148,7 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	var err error
 
 	if len(dateString) == 0 {
-		return nil, nil
+		return nil, errors.New("empty string")
 	}
 
 	if regexp.MustCompile(`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`).MatchString(dateString) {
@@ -151,16 +165,20 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 		err = fmt.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
 	}
 
-	return &result, err
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
 }
 
 // RemoveNanoseconds REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func RemoveNanoseconds(date time.Time) (time.Time, error) {
+func RemoveNanoseconds(date time.Time) (*time.Time, error) {
 	dateWithoutNSecs, err := ParseDateStringToTime(date.Format(time.RFC3339))
 	if err != nil {
-		return date, err
+		return nil, err
 	}
-	return *dateWithoutNSecs, nil
+	return dateWithoutNSecs, nil
 }
 
 // ParseIntToBool REQUIRE THEM TO DOCUMENT THIS FUNCTION
@@ -216,7 +234,7 @@ func GetByteArrayAndBufferFromRequestBody(body io.ReadCloser) ([]byte, *bytes.Bu
 	defer body.Close()
 	byteArray, err := ioutil.ReadAll(body)
 	if err != nil {
-		return []byte{}, nil, err
+		return nil, nil, err
 	}
 	buffer := bytes.NewBuffer(byteArray)
 	return byteArray, buffer, nil
