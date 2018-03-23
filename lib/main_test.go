@@ -259,6 +259,12 @@ func TestShouldParseDateStringMalformedTimeToTime(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, expected, *result4)
 
+	expected, _ = time.Parse(time.RFC3339, "2016-01-01T00:00:00+00:00")
+
+	result5, err := ParseDateStringToTime("2016-01-01T00:00:00+00:00")
+	assert.Nil(t, err)
+	assert.Equal(t, expected, *result5)
+
 	_, err = ParseDateStringToTime("2016-01-01T00:00:00ABC")
 	assert.NotNil(t, err)
 }
