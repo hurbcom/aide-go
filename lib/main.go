@@ -45,15 +45,7 @@ const (
 	//   05 = Seconds with two digits
 	DatePatternYYYYMMDDTHHMMSS = "2006-01-02T15:04:05"
 
-	// DatePatternYYYYMMDDTHHMMSSZ REQUIRE THEM TO DOCUMENT THIS CONST
-	// 2006 = Year with four digits
-	//   01 = Month with two digits
-	//   02 = Day with two digits
-	//   15 = Hour with two digits (24h)
-	//   04 = Minute with two digits
-	//   05 = Seconds with two digits
-	//   Z  = UTC
-	DatePatternYYYYMMDDTHHMMSSZ = "2006-01-02T15:04:05Z"
+	DatePatternYYYYMMDDTHHMMSSZ = time.RFC3339
 )
 
 // ToStringSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
@@ -136,8 +128,8 @@ func ParseDateYearMonthDay(dateString string) (*time.Time, error) {
 func DiffDays(date1 time.Time, date2 time.Time) (*int64, error) {
 	if !date1.IsZero() && !date2.IsZero() {
 		duration := date2.Sub(date1)
-		diff := int64(duration.Hours() / 24)
-		return &diff, nil
+		days := math.Ceil(duration.Hours() / 24)
+		return &int64(days), nil
 	}
 	return nil, errors.New("invalid dates")
 }
@@ -160,7 +152,9 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`).MatchString(dateString) {
 		result, err = time.Parse(DatePatternYYYYMMDDTHHMMSS, dateString)
 	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`).MatchString(dateString) {
-		result, err = time.Parse(DatePatternYYYYMMDDTHHMMSSZ, dateString)
+		result, err = time.Parse(time.RFC3339, dateString)
+	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+\-]{1}\d{2}:\d{2}$`).MatchString(dateString) {
+		result, err = time.Parse(time.RFC3339, dateString)
 	} else {
 		err = fmt.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
 	}
