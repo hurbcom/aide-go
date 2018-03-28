@@ -128,8 +128,8 @@ func ParseDateYearMonthDay(dateString string) (*time.Time, error) {
 func DiffDays(date1 time.Time, date2 time.Time) (*int64, error) {
 	if !date1.IsZero() && !date2.IsZero() {
 		duration := date2.Sub(date1)
-		days := math.Ceil(duration.Hours() / 24)
-		return &int64(days), nil
+		days := int64(math.Ceil(duration.Hours() / 24))
+		return &days, nil
 	}
 	return nil, errors.New("invalid dates")
 }
