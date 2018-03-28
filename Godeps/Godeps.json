@@ -1,20 +1,67 @@
 {
 	"ImportPath": "github.com/hotelurbano/aide-go",
-	"GoVersion": "go1.7",
-	"GodepVersion": "v77",
-    "Packages": [
-        "./..."
-    ],
-    "Deps": [
-        {
-            "ImportPath": "github.com/stretchr/testify/assert",
-            "Comment": "v1.1.4-25-g2402e8e",
-            "Rev": "2402e8e7a02fc811447d11f881aa9746cdc57983"
-        },
-        {
-            "ImportPath": "gopkg.in/h2non/gock.v1",
-            "Comment": "v1.0.3",
-            "Rev": "0ad9c55bec42c49b394bca98d4bcff7f4a82843c"
-        }
-    ]
+	"GoVersion": "go1.9",
+	"GodepVersion": "v79",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/davecgh/go-spew/spew",
+			"Comment": "v1.1.0-9-gecdeabc",
+			"Rev": "ecdeabc65495df2dec95d7c4a4c3e021903035e5"
+		},
+		{
+			"ImportPath": "github.com/lestrrat/go-libxml2",
+			"Rev": "c598c64c1f7c110cd903567461d31b4f03e1bc2f"
+		},
+		{
+			"ImportPath": "github.com/lestrrat/go-libxml2/clib",
+			"Rev": "c598c64c1f7c110cd903567461d31b4f03e1bc2f"
+		},
+		{
+			"ImportPath": "github.com/lestrrat/go-libxml2/dom",
+			"Rev": "c598c64c1f7c110cd903567461d31b4f03e1bc2f"
+		},
+		{
+			"ImportPath": "github.com/lestrrat/go-libxml2/internal/debug",
+			"Rev": "c598c64c1f7c110cd903567461d31b4f03e1bc2f"
+		},
+		{
+			"ImportPath": "github.com/lestrrat/go-libxml2/parser",
+			"Rev": "c598c64c1f7c110cd903567461d31b4f03e1bc2f"
+		},
+		{
+			"ImportPath": "github.com/lestrrat/go-libxml2/types",
+			"Rev": "c598c64c1f7c110cd903567461d31b4f03e1bc2f"
+		},
+		{
+			"ImportPath": "github.com/lestrrat/go-libxml2/xpath",
+			"Rev": "c598c64c1f7c110cd903567461d31b4f03e1bc2f"
+		},
+		{
+			"ImportPath": "github.com/lestrrat/go-libxml2/xsd",
+			"Rev": "c598c64c1f7c110cd903567461d31b4f03e1bc2f"
+		},
+		{
+			"ImportPath": "github.com/pkg/errors",
+			"Comment": "v0.8.0-7-gf15c970",
+			"Rev": "f15c970de5b76fac0b59abb32d62c17cc7bed265"
+		},
+		{
+			"ImportPath": "github.com/pmezard/go-difflib/difflib",
+			"Comment": "v1.0.0",
+			"Rev": "792786c7400a136282c1664665ae0a8db921c6c2"
+		},
+		{
+			"ImportPath": "github.com/stretchr/testify/assert",
+			"Comment": "v1.1.4-25-g2402e8e",
+			"Rev": "2402e8e7a02fc811447d11f881aa9746cdc57983"
+		},
+		{
+			"ImportPath": "gopkg.in/h2non/gock.v1",
+			"Comment": "v1.0.3",
+			"Rev": "0ad9c55bec42c49b394bca98d4bcff7f4a82843c"
+		}
+	]
 }

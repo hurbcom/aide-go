@@ -3,6 +3,7 @@ godep:
 	go get github.com/tools/godep
 	go get golang.org/x/sys/unix
 	go get github.com/liudng/dogo
+	go get golang.org/x/tools/cmd/goimports
 	godep restore -v ./...
 
 gocov:
@@ -10,23 +11,27 @@ gocov:
 	go get github.com/AlekSi/gocov-xml
 	go get github.com/matm/gocov-html
 
-fmt:
-	go tool fix .
-	gofmt -s -w .
+install-os:
+	apt-get update
+	apt-get -y install `cat requirements.apt`
 
 lint:
 	go get -u github.com/golang/lint/golint
-	golint ./...
+	golint ./... > golint.txt
 
 setup: godep
 
-test: fmt lint
+format:
+	goimports -w .
+	gofmt -s -w .
+
+test: format
 	godep go test ./...
 
-ci: godep gocov fmt
+ci: install-os godep gocov format
 	gocov test ./... | gocov-xml > coverage.xml
 
 docker-test:
-	@docker run --rm -v `pwd`:/go/src/github.com/hotelurbano/aide-go -w /go/src/github.com/hotelurbano/aide-go golang:1.7.5 make ci
+	@docker run --rm -v `pwd`:/go/src/github.com/hotelurbano/aide-go -w /go/src/github.com/hotelurbano/aide-go golang:1 make ci
 
 coverage: ci

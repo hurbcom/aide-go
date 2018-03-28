@@ -444,3 +444,15 @@ func RandomInt(bottom, top int) int {
 	rand.Seed(time.Now().UTC().UnixNano())
 	return rand.Intn(top-bottom) + bottom
 }
+
+// Truncate REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func Truncate(s string, i int) (r string) {
+	r = s
+	if len(s) > i {
+		r = s[:i]
+	}
+	r = strings.TrimSpace(r)
+	r = strings.Replace(r, "\n", "", -1)
+	r = strings.Replace(r, "    ", "", -1)
+	return
+}
