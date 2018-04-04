@@ -2,7 +2,6 @@
 godep:
 	go get github.com/tools/godep
 	go get golang.org/x/sys/unix
-	go get github.com/liudng/dogo
 	go get golang.org/x/tools/cmd/goimports
 	godep restore -v ./...
 
