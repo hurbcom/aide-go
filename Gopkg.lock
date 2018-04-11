@@ -168,7 +168,7 @@
     "go/ast/astutil",
     "imports"
   ]
-  revision = "ccd319aab13add0b98acdb0db5d46c20c2d1fedd"
+  revision = "8b3cccae50961d427273d41c8a6ad18bfa623e08"
 
 [[projects]]
   name = "gopkg.in/h2non/gock.v1"

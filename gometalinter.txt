@@ -1,0 +1,6 @@
+lib/main.go:248::warning: Errors unhandled.,LOW,HIGH (gas)
+lib/main.go:249::warning: Errors unhandled.,LOW,HIGH (gas)
+lib/main.go:285::warning: Errors unhandled.,LOW,HIGH (gas)
+lib/main.go:286::warning: Errors unhandled.,LOW,HIGH (gas)
+lib/main.go:393::warning: Errors unhandled.,LOW,HIGH (gas)
+lib/main.go:355::warning: cyclomatic complexity 12 of function Join() is high (> 10) (gocyclo)

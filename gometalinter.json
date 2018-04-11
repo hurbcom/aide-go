@@ -1,0 +1,11 @@
+{
+    "Concurrency": 2,
+    "Deadline": "180s",
+    "Disable": [
+        "dupl",
+        "lll"
+    ],
+    "Exclude": [
+        "vendor"
+    ]
+}
