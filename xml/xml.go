@@ -1,10 +1,10 @@
-package lib
+package xml
 
 import (
 	"io/ioutil"
 
-	"github.com/lestrrat/go-libxml2"
-	"github.com/lestrrat/go-libxml2/xsd"
+	"github.com/lestrrat-go/libxml2"
+	"github.com/lestrrat-go/libxml2/xsd"
 )
 
 // ValidateXMLWithXSD REQUIRE THEM TO DOCUMENT THIS FUNCTION

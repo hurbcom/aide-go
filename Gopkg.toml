@@ -24,10 +24,12 @@
 #   go-tests = true
 #   unused-packages = true
 
+required = ["golang.org/x/tools/cmd/goimports",
+            "github.com/tockins/realize"]
 
 [[constraint]]
-  revision = "bb78334e2019c7f4206bb35b831d3fa139453413"
-  name = "github.com/lestrrat/go-libxml2"
+  branch = "master"
+  name = "github.com/lestrrat-go/libxml2"
 
 [[constraint]]
   name = "github.com/stretchr/testify"
