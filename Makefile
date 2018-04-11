@@ -40,10 +40,12 @@ bin: dep
 	GOOS=linux GOARCH=amd64 go build
 
 ci: install-os dep gocov
+	@go version
 	gocov test ./... | gocov-xml > coverage.xml
 
 docker-test:
-	@docker run --rm -v ${PWD}/gitconfig:/root/.gitconfig -v ${PWD}/requirements.apt:/tmp/requirements.apt -v ${PWD}:/go/src/github.com/hotelurbano/aide-go -w /go/src/github.com/hotelurbano/aide-go --name docker-test golang:1 make ci
+	@echo "Running test in docker"
+	@docker run --rm -v ${PWD}/gitconfig:/root/.gitconfig -v ${PWD}/requirements.apt:/tmp/requirements.apt -v ${PWD}:/go/src/github.com/hotelurbano/aide-go -w /go/src/github.com/hotelurbano/aide-go --name docker-test golang:1.10.1 make ci
 
 format:
 	goimports -w .
