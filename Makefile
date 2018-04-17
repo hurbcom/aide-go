@@ -1,37 +1,72 @@
+.DEFAULT_GOAL := help
+.PHONY: help
 
-godep:
-	go get github.com/tools/godep
-	go get golang.org/x/sys/unix
-	go get github.com/liudng/dogo
-	go get golang.org/x/tools/cmd/goimports
-	godep restore -v ./...
+BASENAME=$(shell pwd | xargs basename)
+
+welcome:
+	@printf "\n"
+	@printf "\033[33m Aide go \n"
+	@printf "\n"
+	@printf "\033[0m"
+
+dep:
+	curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+	dep ensure -v
 
 gocov:
 	go get github.com/axw/gocov/gocov
 	go get github.com/AlekSi/gocov-xml
-	go get github.com/matm/gocov-html
+
+setup: dep ## Used to develop
+
+test:
+	go test ./...
+
+test-dev:
+	# -@go test ./legacy -run ^TestGetSupplier$$
+	# -@go test ./... | grep -v level
+	-@go test ./...
+
+run:
+	go run main.go --verbose
 
 install-os:
 	apt-get update
 	apt-get -y install `cat requirements.apt`
 
-lint:
-	go get -u github.com/golang/lint/golint
-	golint ./... > golint.txt
+bin: dep
+	GOOS=linux GOARCH=amd64 go build
 
-setup: godep
+sanitize:
+	-@rm -rf vendor* _vendor* coverage.xml
 
-format:
-	goimports -w .
-	gofmt -s -w .
-
-test: format
-	godep go test ./...
-
-ci: install-os godep gocov format
+ci: sanitize install-os dep gocov
+	@go version
 	gocov test ./... | gocov-xml > coverage.xml
 
 docker-test:
-	@docker run --rm -v `pwd`:/go/src/github.com/hotelurbano/aide-go -w /go/src/github.com/hotelurbano/aide-go golang:1 make ci
+	@echo "Running test in docker"
+	@docker run --rm -v ${PWD}/gitconfig:/root/.gitconfig \
+		-v ${PWD}:/go/src/github.com/hotelurbano/${BASENAME} \
+		-w /go/src/github.com/hotelurbano/${BASENAME} --name "${BASENAME}-docker-test" golang:1.10.1 \
+		make ci
 
-coverage: ci
+format:
+	go get golang.org/x/tools/cmd/goimports
+	goimports -w .
+	gofmt -s -w .
+
+vet: ## Reports suspicious constructs
+	go tool vet ${PWD}
+
+linter: ## Multi code verifier
+	go get github.com/alecthomas/gometalinter
+	gometalinter --install
+	gometalinter --config=gometalinter.json ./... | grep -v comment | grep -v MixedCaps | grep -v "should be" | grep -v ALL_CAPS > gometalinter.txt
+
+lint: ## Built-in code verifier
+	go get github.com/golang/lint/golint
+	golint ./... | grep -v comment | grep -v MixedCaps | grep -v "should be" | grep -v ALL_CAPS > golint.txt
+
+help: welcome
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | grep ^help -v | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
