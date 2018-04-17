@@ -23,9 +23,12 @@ _testmain.go
 *.test
 *.prof
 
-coverage.html
-coverage.xml
-
-main
+_vendor*
 aide-go
+config.yml
+coverage.xml
+golint.txt
+gometalinter.txt
+main
+vendor.orig/
 vendor/

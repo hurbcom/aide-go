@@ -24,8 +24,6 @@
 #   go-tests = true
 #   unused-packages = true
 
-required = ["golang.org/x/tools/cmd/goimports",
-            "github.com/tockins/realize"]
 
 [[constraint]]
   branch = "master"
