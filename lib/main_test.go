@@ -642,3 +642,22 @@ func TestTruncate(t *testing.T) {
     }`
 	assert.Equal(t, expected, Truncate(json1, len(json1)))
 }
+
+func TestFill(t *testing.T) {
+	a := struct {
+		ID      int
+		Name    string
+		IsAdmin bool
+	}{}
+
+	b := struct {
+		Name string
+	}{}
+
+	b.Name = "Bobby"
+
+	Fill(&a, b)
+
+	assert.Equal(t, "Bobby", a.Name)
+}
+

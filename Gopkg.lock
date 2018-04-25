@@ -9,6 +9,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/fatih/structs"
+  packages = ["."]
+  revision = "ebf56d35bba727c68ac77f56f2fcf90b181851aa"
+
+[[projects]]
+  branch = "master"
   name = "github.com/lestrrat-go/libxml2"
   packages = [
     ".",
@@ -49,6 +55,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c6eaac9470e2c20b74f40a2143baa903d2b18f3073f750f29d2e49a8b0cf90b9"
+  inputs-digest = "a60b0ca1ce8d2b10d50825a17253f4ca5403752cd873e6d3f037e8f3f30165f8"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -15,6 +15,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/fatih/structs"
 )
 
 const (
@@ -450,4 +452,16 @@ func Truncate(s string, i int) (r string) {
 	r = strings.Replace(r, "\n", "", -1)
 	r = strings.Replace(r, "    ", "", -1)
 	return
+}
+
+// Fill merges data from struct instance to another
+// By @titpetric suggested in https://scene-si.org/2016/06/01/golang-tips-and-tricks
+func Fill(dest interface{}, src interface{}) {
+	mSrc := structs.Map(src)
+	mDest := structs.Map(dest)
+	for key, val := range mSrc {
+		if _, ok := mDest[key]; ok {
+			structs.New(dest).Field(key).Set(val)
+		}
+	}
 }
