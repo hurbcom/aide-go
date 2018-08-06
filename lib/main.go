@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/fatih/structs"
+	"github.com/spf13/cast"
 )
 
 const (
@@ -356,8 +357,6 @@ func IsPointer(arg interface{}) bool {
 // Join REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func Join(sep string, args ...interface{}) string {
 	var buf bytes.Buffer
-	var str Stringer
-	var ok bool
 	var elements []interface{}
 
 	for _, arg := range args {
@@ -385,14 +384,12 @@ func Join(sep string, args ...interface{}) string {
 	}
 
 	for i, arg := range elements {
-		if i > 0 {
-			buf.WriteString(sep)
-		}
+		if str := cast.ToString(arg); len(str) > 0 {
+			buf.WriteString(str)
 
-		if str, ok = arg.(Stringer); ok {
-			buf.WriteString(str.String())
-		} else {
-			fmt.Fprint(&buf, arg)
+			if i < len(elements)-1 {
+				buf.WriteString(sep)
+			}
 		}
 	}
 
