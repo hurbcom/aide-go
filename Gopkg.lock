@@ -2,19 +2,24 @@
 
 
 [[projects]]
+  digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
+  pruneopts = "UT"
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
   version = "v1.1.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:14f498fc55a89776c562fa3510aeb7687356944a560c561c0e617af5f9c5f2c7"
   name = "github.com/fatih/structs"
   packages = ["."]
+  pruneopts = "UT"
   revision = "ebf56d35bba727c68ac77f56f2fcf90b181851aa"
 
 [[projects]]
   branch = "master"
+  digest = "1:97249fccf390eebbea70a907bf66f05b5fbb90868b7a3f1bb91b1f2dc66a17f5"
   name = "github.com/lestrrat-go/libxml2"
   packages = [
     ".",
@@ -24,37 +29,52 @@
     "parser",
     "types",
     "xpath",
-    "xsd"
+    "xsd",
   ]
+  pruneopts = "UT"
   revision = "7de98d6da3b8f461273a5278f5238bd46fd79aa3"
 
 [[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
   name = "github.com/pkg/errors"
   packages = ["."]
+  pruneopts = "UT"
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
 [[projects]]
+  digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
+  pruneopts = "UT"
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:18752d0b95816a1b777505a97f71c7467a8445b8ffb55631a7bf779f6ba4fa83"
   name = "github.com/stretchr/testify"
   packages = ["assert"]
-  revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
-  version = "v1.2.1"
+  pruneopts = "UT"
+  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
+  version = "v1.2.2"
 
 [[projects]]
+  digest = "1:bae937801c8147c4c64bd2e1b7d73292c89a55c904cb9fcded11e09f8c30a474"
   name = "gopkg.in/h2non/gock.v1"
   packages = ["."]
-  revision = "550b7ca3aa563b9974e2391274ea55a940d05ca9"
-  version = "v1.0.8"
+  pruneopts = "UT"
+  revision = "4692cba4394f79372bfe85996501ad43db9d82e0"
+  version = "v1.0.9"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a60b0ca1ce8d2b10d50825a17253f4ca5403752cd873e6d3f037e8f3f30165f8"
+  input-imports = [
+    "github.com/fatih/structs",
+    "github.com/lestrrat-go/libxml2",
+    "github.com/lestrrat-go/libxml2/xsd",
+    "github.com/stretchr/testify/assert",
+    "gopkg.in/h2non/gock.v1",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
