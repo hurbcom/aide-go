@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/h2non/gock.v1"
+	gock "gopkg.in/h2non/gock.v1"
 )
 
 func TestGetStringBodyHTTPRequestJSON(t *testing.T) {
@@ -539,6 +539,9 @@ func TestJoin(t *testing.T) {
 	actual = Join(", ", []int{65485, 19734})
 	assert.Equal(t, `65485, 19734`, actual)
 
+	actual = Join("_", []string{"foo", "bar", ""}, nil, 123)
+	assert.Equal(t, `foo_bar_123`, actual)
+
 	var pStr *string
 	str := "foo"
 
@@ -660,4 +663,3 @@ func TestFill(t *testing.T) {
 
 	assert.Equal(t, "Bobby", a.Name)
 }
-
