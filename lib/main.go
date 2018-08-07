@@ -277,12 +277,14 @@ func GetStringBodyHTTPRequest(r *http.Request) *string {
 func GetStringBodyHTTPRequestJSON(r *http.Request) *string {
 	result := GetStringBodyHTTPRequest(r)
 	if result != nil {
-		re := regexp.MustCompile(`({.*})`)
-		groups := re.FindStringSubmatch(*result)
-		if len(groups) > 0 {
-			return &groups[0]
+		rBytes := []byte(*result)
+		start := bytes.IndexByte(rBytes, byte('{'))
+		for i := len(rBytes) - 1; i > 0; i-- {
+			if string(rBytes[i]) == "}" {
+				s := strings.TrimSpace(*result)[start : i+1]
+				return &s
+			}
 		}
-		return result
 	}
 	return nil
 }
