@@ -51,6 +51,24 @@ const (
 	DatePatternYYYYMMDDTHHMMSSZ = time.RFC3339
 )
 
+var (
+	regexpDatePatternZeroFilled      *regexp.Regexp
+	regexpDatePatternYYYYMMDD        *regexp.Regexp
+	regexpDatePatternYYYYMMDDHHMMSS  *regexp.Regexp
+	regexpDatePatternYYYYMMDDTHHMMSS *regexp.Regexp
+	regexpRFC3339                    *regexp.Regexp
+	regexpRFC3339WithTime            *regexp.Regexp
+)
+
+func init() {
+	regexpDatePatternZeroFilled, _ = regexp.Compile(`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`)
+	regexpDatePatternYYYYMMDD, _ = regexp.Compile(`^\d{4}\-\d{2}\-\d{2}$`)
+	regexpDatePatternYYYYMMDDHHMMSS, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`)
+	regexpDatePatternYYYYMMDDTHHMMSS, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
+	regexpRFC3339, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`)
+	regexpRFC3339WithTime, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+\-]{1}\d{2}:\d{2}$`)
+}
+
 // ToStringSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func ToStringSlice(intslice []int) (stringSlice []string) {
 	for _, i := range intslice {
@@ -133,17 +151,17 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 		return nil, nil
 	}
 
-	if regexp.MustCompile(`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`).MatchString(dateString) {
+	if regexpDatePatternZeroFilled.MatchString(dateString) {
 		fmt.Printf("ParseDateStringToTime: receiving date string zero filled. let %s as %s", dateString, result)
-	} else if regexp.MustCompile(`^\d{4}\-\d{2}\-\d{2}$`).MatchString(dateString) {
+	} else if regexpDatePatternYYYYMMDD.MatchString(dateString) {
 		result, err = time.Parse(DatePatternYYYYMMDD, dateString)
-	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`).MatchString(dateString) {
+	} else if regexpDatePatternYYYYMMDDHHMMSS.MatchString(dateString) {
 		result, err = time.Parse(DatePatternYYYYMMDDHHMMSS, dateString)
-	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`).MatchString(dateString) {
+	} else if regexpDatePatternYYYYMMDDTHHMMSS.MatchString(dateString) {
 		result, err = time.Parse(DatePatternYYYYMMDDTHHMMSS, dateString)
-	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`).MatchString(dateString) {
+	} else if regexpRFC3339.MatchString(dateString) {
 		result, err = time.Parse(time.RFC3339, dateString)
-	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+\-]{1}\d{2}:\d{2}$`).MatchString(dateString) {
+	} else if regexpRFC3339WithTime.MatchString(dateString) {
 		result, err = time.Parse(time.RFC3339, dateString)
 	} else {
 		err = fmt.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
