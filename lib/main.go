@@ -269,18 +269,8 @@ func GetStringBodyHTTPRequest(r *http.Request) *string {
 	headers, _ := httputil.DumpRequest(r, false)
 	headersAndBody, _ := httputil.DumpRequest(r, true)
 	body := headersAndBody[len(headers):]
-	stringBody := string(body)
-
-	re := regexp.MustCompile(`(?s)(.*)`)
-	groups := re.FindStringSubmatch(stringBody)
-
-	if len(groups) > 0 {
-		// fmt.Printf("GetStringBodyHTTPRequest: printing request Body: %+v\n", groups[0])
-		return &groups[0]
-	}
-
-	// fmt.Printf("GetStringBodyHTTPRequest: no body to print on request Body\n")
-	return nil
+	s := strings.TrimSpace(string(body))
+	return &s
 }
 
 // GetStringBodyHTTPRequestJSON REQUIRE THEM TO DOCUMENT THIS FUNCTION

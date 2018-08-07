@@ -20,6 +20,7 @@ gocov:
 setup: dep ## Used to develop
 
 test:
+	@go clean --testcache
 	go test ./...
 
 test-dev:
