@@ -265,7 +265,6 @@ func GetStringBodyHTTPRequest(r *http.Request) *string {
 	if r == nil {
 		return nil
 	}
-
 	headers, _ := httputil.DumpRequest(r, false)
 	headersAndBody, _ := httputil.DumpRequest(r, true)
 	body := headersAndBody[len(headers):]
@@ -275,16 +274,17 @@ func GetStringBodyHTTPRequest(r *http.Request) *string {
 
 // GetStringBodyHTTPRequestJSON REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func GetStringBodyHTTPRequestJSON(r *http.Request) *string {
-	result := GetStringBodyHTTPRequest(r)
-	if result != nil {
-		rBytes := []byte(*result)
-		start := bytes.IndexByte(rBytes, byte('{'))
-		for i := len(rBytes) - 1; i > 0; i-- {
-			if string(rBytes[i]) == "}" {
-				s := strings.TrimSpace(*result)[start : i+1]
-				return &s
-			}
-		}
+	if r == nil {
+		return nil
+	}
+	headers, _ := httputil.DumpRequest(r, false)
+	headersAndBody, _ := httputil.DumpRequest(r, true)
+	body := bytes.TrimSpace(headersAndBody[len(headers):])
+	if len(body) > 0 {
+		start := bytes.IndexAny(body, "{")
+		end := bytes.LastIndexAny(body, "}")
+		r := string(body[start : end+1])
+		return &r
 	}
 	return nil
 }
