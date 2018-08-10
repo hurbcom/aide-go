@@ -60,7 +60,7 @@ func TestGetStringBodyHTTPResponseJSON(t *testing.T) {
 	actual := GetStringBodyHTTPResponse(res)
 
 	assert.NotNil(t, actual)
-	assert.Equal(t, "{\"foo\":\"bar\"}\n", *actual)
+	assert.Equal(t, "{\"foo\":\"bar\"}", *actual)
 }
 
 func TestGetStringBodyHTTPResponsePlainText(t *testing.T) {
