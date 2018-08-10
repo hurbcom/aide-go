@@ -268,7 +268,7 @@ func GetStringBodyHTTPRequest(r *http.Request) *string {
 	headers, _ := httputil.DumpRequest(r, false)
 	headersAndBody, _ := httputil.DumpRequest(r, true)
 	body := headersAndBody[len(headers):]
-	s := strings.TrimSpace(string(body))
+	s := string(bytes.TrimSpace(body))
 	return &s
 }
 
