@@ -294,34 +294,26 @@ func GetStringBodyHTTPResponse(r *http.Response) *string {
 	if r == nil {
 		return nil
 	}
-
 	headers, _ := httputil.DumpResponse(r, false)
 	headersAndBody, _ := httputil.DumpResponse(r, true)
 	body := headersAndBody[len(headers):]
-	stringBody := string(body)
-
-	re := regexp.MustCompile(`(?s)(.*)`)
-	groups := re.FindStringSubmatch(stringBody)
-
-	if len(groups) > 0 {
-		// fmt.Printf("GetStringBodyHTTPResponse: printing response Body: %+v\n", groups[0])
-		return &groups[0]
-	}
-
-	// fmt.Printf("GetStringBodyHTTPResponse: no body to print on response Body\n")
-	return nil
+	s := string(bytes.TrimSpace(body))
+	return &s
 }
 
 // GetStringBodyHTTPResponseJSON REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func GetStringBodyHTTPResponseJSON(r *http.Response) *string {
-	result := GetStringBodyHTTPResponse(r)
-	if result != nil {
-		re := regexp.MustCompile(`({.*})`)
-		groups := re.FindStringSubmatch(*result)
-		if len(groups) > 0 {
-			return &groups[0]
-		}
-		return result
+	if r == nil {
+		return nil
+	}
+	headers, _ := httputil.DumpResponse(r, false)
+	headersAndBody, _ := httputil.DumpResponse(r, true)
+	body := bytes.TrimSpace(headersAndBody[len(headers):])
+	if len(body) > 0 {
+		start := bytes.IndexAny(body, "{")
+		end := bytes.LastIndexAny(body, "}")
+		r := string(body[start : end+1])
+		return &r
 	}
 	return nil
 }
