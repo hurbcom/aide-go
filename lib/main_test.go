@@ -153,6 +153,40 @@ func TestToInt64Slice(t *testing.T) {
 	assert.Equal(t, int64(852369), actual[1])
 }
 
+func TestStringToStringSlice(t *testing.T) {
+	actual := StringToStringSlice("[foo,123,bar,,456,a1b2,,,]")
+
+	assert.Len(t, actual, 5)
+	assert.Equal(t, "foo", actual[0])
+	assert.Equal(t, "123", actual[1])
+	assert.Equal(t, "bar", actual[2])
+	assert.Equal(t, "456", actual[3])
+	assert.Equal(t, "a1b2", actual[4])
+
+	actual = StringToStringSlice("[[foo,123,[bar],,456,,a1b2]")
+
+	assert.Len(t, actual, 5)
+	assert.Equal(t, "foo", actual[0])
+	assert.Equal(t, "123", actual[1])
+	assert.Equal(t, "bar", actual[2])
+	assert.Equal(t, "456", actual[3])
+	assert.Equal(t, "a1b2", actual[4])
+}
+
+func TestStringToIntSlice(t *testing.T) {
+	actual := StringToIntSlice("[foo,123,bar,,456,a1b2,,,]")
+
+	assert.Len(t, actual, 2)
+	assert.Equal(t, 123, actual[0])
+	assert.Equal(t, 456, actual[1])
+
+	actual = StringToIntSlice("[[foo,123,[bar],,456,,a1b2]")
+
+	assert.Len(t, actual, 2)
+	assert.Equal(t, 123, actual[0])
+	assert.Equal(t, 456, actual[1])
+}
+
 func TestParseInt(t *testing.T) {
 	i, err := ParseStringToInt("6549")
 

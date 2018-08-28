@@ -58,6 +58,7 @@ var (
 	regexpDatePatternYYYYMMDDTHHMMSS *regexp.Regexp
 	regexpRFC3339                    *regexp.Regexp
 	regexpRFC3339WithTime            *regexp.Regexp
+	regexpCommaAlphaNum              *regexp.Regexp
 )
 
 func init() {
@@ -67,6 +68,7 @@ func init() {
 	regexpDatePatternYYYYMMDDTHHMMSS, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
 	regexpRFC3339, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`)
 	regexpRFC3339WithTime, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+\-]{1}\d{2}:\d{2}$`)
+	regexpCommaAlphaNum, _ = regexp.Compile(`[^A-Za-z0-9,]`)
 }
 
 // ToStringSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
@@ -107,6 +109,46 @@ func ToInt64Slice(stringSlice []string) (int64Slice []int64) {
 		int64Slice = append(int64Slice, intI)
 	}
 	return int64Slice
+}
+
+// StringToStringSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func StringToStringSlice(s string) []string {
+	stringSlice := []string{}
+	if len(s) == 0 {
+		return []string{}
+	}
+
+	s1 := regexpCommaAlphaNum.ReplaceAllString(s, "")
+	if len(s1) == 0 {
+		return []string{}
+	}
+
+	s2 := strings.Split(s1, ",")
+	if len(s2) == 0 {
+		return []string{}
+	}
+
+	for _, s3 := range s2 {
+		if len(s3) > 0 {
+			stringSlice = append(stringSlice, s3)
+		}
+	}
+
+	return stringSlice
+}
+
+// StringToIntSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func StringToIntSlice(s string) []int {
+	if len(s) == 0 {
+		return []int{}
+	}
+
+	sl := StringToStringSlice(s)
+	if len(sl) == 0 {
+		return []int{}
+	}
+
+	return ToIntSlice(sl)
 }
 
 // ParseStringToInt REQUIRE THEM TO DOCUMENT THIS FUNCTION
