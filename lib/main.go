@@ -181,7 +181,7 @@ func DiffDays(date1 time.Time, date2 time.Time) (int64, error) {
 		days := math.Ceil(duration.Hours() / 24)
 		return int64(days), nil
 	}
-	return 0, errors.New("invalid-dates")
+	return 0, errors.New(fmt.Sprintf("invalid-dates: %v or %v is invalid", date1, date2))
 }
 
 // ParseDateStringToTime REQUIRE THEM TO DOCUMENT THIS FUNCTION
