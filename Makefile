@@ -5,8 +5,6 @@ APP_DIR=/go/src/github.com/hurbcom/${APP_NAME}
 APP_NAME?=$(shell pwd | xargs basename)
 DEP:=$(shell command -v dep 2> /dev/null)
 DOCKER_IMAGE_NAME:=hu/${APP_NAME}:latest
-GITHASH=$(shell git rev-parse --verify HEAD)
-GITTAG=$(shell git describe --abbrev=0 --tags)
 INTERACTIVE:=$(shell [ -t 0 ] && echo i || echo d)
 PROJECT_FILES=$(shell find . -type f -name '*.go' -not -path "./vendor/*")
 PWD=$(shell pwd)
@@ -26,40 +24,26 @@ ifndef DEP
 endif
 	@dep ensure -v
 
-setup-docker: welcome build-docker-image ## Install dependencies to run on Docker
-ifeq ($(shell [ -f ./config.yml ] || echo -n no),no)
-	@cp config.yml.sample config.yml
-endif
+setup-docker: welcome sanitize build-docker-image ## Install dependencies to run on Docker
 
 build-docker-image:
-	docker build . -t ${DOCKER_IMAGE_NAME} ${TARGET}
+	docker build . -t ${DOCKER_IMAGE_NAME}
 
 test:
 	@go clean --testcache
 	@go test ./... -race # | grep -vE "level|Testing"
 
-test-dev:
-	@go clean --testcache
-	go test ./... -run ^${TEST}$$ -failfast | grep -vE "level|Testing"
-
-test-in-docker:
-	@docker run --rm ${DOCKER_IMAGE_NAME} go test ./... | grep -vE "level|Testing"
-
-run:
-	@go run main.go --verbose
-
 sanitize:
 	-@rm -rf vendor* _vendor* coverage.xml
 
-ci: sanitize ## Runs test coverage to CI
-	@$(MAKE) TARGET="--target ready" build-docker-image
+ci: build-docker-image ## Runs test coverage to CI
 	@echo "Running test in docker"
 	docker run --rm \
 		-v ${PWD}:${APP_DIR} \
 		-w ${APP_DIR} \
 		--name ${APP_NAME}-ci \
 		${DOCKER_IMAGE_NAME} \
-		sh -c "dep ensure -v && rm -f coverage.xml && go get github.com/axw/gocov/gocov && go get github.com/AlekSi/gocov-xml && gocov test ./... | gocov-xml > coverage.xml"
+		sh -c "dep ensure -v -vendor-only && rm -f coverage.xml && go get github.com/axw/gocov/gocov && go get github.com/AlekSi/gocov-xml && gocov test ./... | gocov-xml > coverage.xml"
 
 format:
 	@go get golang.org/x/tools/cmd/goimports
@@ -68,11 +52,6 @@ format:
 
 vet: ## Reports suspicious constructs
 	go tool vet ${PWD}
-
-gometalinter: ## Multi code verifier
-	@go get github.com/alecthomas/gometalinter
-	@gometalinter --install
-	@gometalinter --config=gometalinter.json ./... | grep -v '^vendor.*' > gometalinter.txt
 
 lint: ## Built-in code verifier
 	@go get github.com/mgechev/revive

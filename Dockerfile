@@ -1,5 +1,7 @@
 FROM golang:1.11-alpine AS base
 
+    ENV CGO_ENABLED 0
+
     COPY requirements.apt ./
     RUN apk update && \
         apk upgrade && \
@@ -13,11 +15,3 @@ FROM golang:1.11-alpine AS base
     COPY Gopkg.lock Gopkg.toml ./
 
     RUN dep ensure -v -vendor-only
-
-
-FROM base AS ready
-
-    ENV CGO_ENABLED 0
-
-    COPY . ./
-
