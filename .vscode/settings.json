@@ -1,9 +1,0 @@
-{
-    "go.buildOnSave": "off",
-    "go.lintOnSave": "off",
-    "go.vetOnSave": "off",
-    "go.formatOnSave": false,
-    "go.testOnSave": false,
-    "go.coverOnSave": false,
-    "go.gocodeAutoBuild": false
-}
