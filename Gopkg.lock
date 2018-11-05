@@ -19,7 +19,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:d9ed16945ca66322c84a173e63b77af4583133f6ca228d3137df548285160df6"
+  digest = "1:97249fccf390eebbea70a907bf66f05b5fbb90868b7a3f1bb91b1f2dc66a17f5"
   name = "github.com/lestrrat-go/libxml2"
   packages = [
     ".",
@@ -32,7 +32,7 @@
     "xsd",
   ]
   pruneopts = "UT"
-  revision = "f24a389bbd76bf20b2139896da78cba180802939"
+  revision = "7de98d6da3b8f461273a5278f5238bd46fd79aa3"
 
 [[projects]]
   digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
