@@ -2,24 +2,24 @@
 
 
 [[projects]]
-  digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
+  digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   pruneopts = "UT"
-  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
+  revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
+  version = "v1.1.1"
+
+[[projects]]
+  digest = "1:af43bdaaf86655a2343f113e9b293bbc16b12099eaeb223982bbe4d4c22ba14d"
+  name = "github.com/fatih/structs"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "4966fc68f5b7593aafa6cbbba2d65ec6e1416047"
   version = "v1.1.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:14f498fc55a89776c562fa3510aeb7687356944a560c561c0e617af5f9c5f2c7"
-  name = "github.com/fatih/structs"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "ebf56d35bba727c68ac77f56f2fcf90b181851aa"
-
-[[projects]]
-  branch = "master"
-  digest = "1:97249fccf390eebbea70a907bf66f05b5fbb90868b7a3f1bb91b1f2dc66a17f5"
+  digest = "1:d9ed16945ca66322c84a173e63b77af4583133f6ca228d3137df548285160df6"
   name = "github.com/lestrrat-go/libxml2"
   packages = [
     ".",
@@ -32,7 +32,7 @@
     "xsd",
   ]
   pruneopts = "UT"
-  revision = "7de98d6da3b8f461273a5278f5238bd46fd79aa3"
+  revision = "f24a389bbd76bf20b2139896da78cba180802939"
 
 [[projects]]
   digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
@@ -51,12 +51,12 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:516e71bed754268937f57d4ecb190e01958452336fa73dbac880894164e91c1f"
+  digest = "1:08d65904057412fc0270fc4812a1c90c594186819243160dc779a402d4b6d0bc"
   name = "github.com/spf13/cast"
   packages = ["."]
   pruneopts = "UT"
-  revision = "8965335b8c7107321228e3e3702cab9832751bac"
-  version = "v1.2.0"
+  revision = "8c9545af88b134710ab1cd196795e7f2388358d7"
+  version = "v1.3.0"
 
 [[projects]]
   digest = "1:18752d0b95816a1b777505a97f71c7467a8445b8ffb55631a7bf779f6ba4fa83"
@@ -67,12 +67,12 @@
   version = "v1.2.2"
 
 [[projects]]
-  digest = "1:bae937801c8147c4c64bd2e1b7d73292c89a55c904cb9fcded11e09f8c30a474"
+  digest = "1:36f30acc0fd0a7b34f4a13034c437d1383597070d963dab57cc458251ac1360d"
   name = "gopkg.in/h2non/gock.v1"
   packages = ["."]
   pruneopts = "UT"
-  revision = "4692cba4394f79372bfe85996501ad43db9d82e0"
-  version = "v1.0.9"
+  revision = "150f03e9bc914db1ba8c2a91c8985d4f21dd6005"
+  version = "v1.0.11"
 
 [solve-meta]
   analyzer-name = "dep"
