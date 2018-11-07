@@ -1,73 +1,61 @@
 .DEFAULT_GOAL := help
 .PHONY: help
 
-BASENAME=$(shell pwd | xargs basename)
+APP_DIR=/go/src/github.com/hurbcom/${APP_NAME}
+APP_NAME?=$(shell pwd | xargs basename)
+DEP:=$(shell command -v dep 2> /dev/null)
+DOCKER_IMAGE_NAME:=hu/${APP_NAME}:latest
+INTERACTIVE:=$(shell [ -t 0 ] && echo i || echo d)
+PROJECT_FILES=$(shell find . -type f -name '*.go' -not -path "./vendor/*")
+PWD=$(shell pwd)
 
 welcome:
-	@printf "\n"
-	@printf "\033[33m Aide go \n"
-	@printf "\n"
-	@printf "\033[0m"
+	@printf "\033[33m       _     _                         \n"
+	@printf "\033[33m  __ _(_) __| | ___        __ _  ___   \n"
+	@printf "\033[33m / _\` | |/ _\` |/ _ \_____ / _\` |/ _ \  \n"
+	@printf "\033[33m| (_| | | (_| |  __/_____| (_| | (_) | \n"
+	@printf "\033[33m \__,_|_|\__,_|\___|      \__, |\___/  \n"
+	@printf "\033[33m                          |___/        \n"
+	@printf "\033[0m\n"
 
-dep:
-	curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-	dep ensure -v
+setup: sanitize ## Used to develop
+ifndef DEP
+	curl https://raw.githubusercontent.com/golang/dep/master/install.sh | DEP_RELEASE_TAG=v0.5.0 sh
+endif
+	@dep ensure -v
 
-gocov:
-	go get github.com/axw/gocov/gocov
-	go get github.com/AlekSi/gocov-xml
+setup-docker: welcome sanitize build-docker-image ## Install dependencies to run on Docker
 
-setup: dep ## Used to develop
+build-docker-image:
+	docker build . -t ${DOCKER_IMAGE_NAME}
 
 test:
 	@go clean --testcache
-	go test ./...
-
-test-dev:
-	# -@go test ./legacy -run ^TestGetSupplier$$
-	# -@go test ./... | grep -v level
-	-@go test ./...
-
-run:
-	go run main.go --verbose
-
-install-os:
-	apt-get update
-	apt-get -y install `cat requirements.apt`
-
-bin: dep
-	GOOS=linux GOARCH=amd64 go build
+	@go test ./... -race # | grep -vE "level|Testing"
 
 sanitize:
 	-@rm -rf vendor* _vendor* coverage.xml
 
-ci: sanitize install-os dep gocov
-	@go version
-	gocov test ./... | gocov-xml > coverage.xml
-
-docker-test:
+ci: build-docker-image ## Runs test coverage to CI
 	@echo "Running test in docker"
-	@docker run --rm -v ${PWD}/gitconfig:/root/.gitconfig \
-		-v ${PWD}:/go/src/github.com/hotelurbano/${BASENAME} \
-		-w /go/src/github.com/hotelurbano/${BASENAME} --name "${BASENAME}-docker-test" golang:1.10.1 \
-		make ci
+	docker run --rm \
+		-v ${PWD}:${APP_DIR} \
+		-w ${APP_DIR} \
+		--name ${APP_NAME}-ci \
+		${DOCKER_IMAGE_NAME} \
+		sh -c "dep ensure -v -vendor-only && rm -f coverage.xml && go get github.com/axw/gocov/gocov && go get github.com/AlekSi/gocov-xml && gocov test ./... | gocov-xml > coverage.xml"
 
 format:
-	go get golang.org/x/tools/cmd/goimports
-	goimports -w .
-	gofmt -s -w .
+	@go get golang.org/x/tools/cmd/goimports
+	goimports -l -w -d ${PROJECT_FILES}
+	gofmt -l -s -w ${PROJECT_FILES}
 
 vet: ## Reports suspicious constructs
 	go tool vet ${PWD}
 
-linter: ## Multi code verifier
-	go get github.com/alecthomas/gometalinter
-	gometalinter --install
-	gometalinter --config=gometalinter.json ./... | grep -v comment | grep -v MixedCaps | grep -v "should be" | grep -v ALL_CAPS > gometalinter.txt
-
 lint: ## Built-in code verifier
-	go get github.com/golang/lint/golint
-	golint ./... | grep -v comment | grep -v MixedCaps | grep -v "should be" | grep -v ALL_CAPS > golint.txt
+	@go get github.com/mgechev/revive
+	@revive -exclude vendor/... -formatter stylish ./...
 
 help: welcome
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | grep ^help -v | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | grep ^help -v | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-22s\033[0m %s\n", $$1, $$2}'
