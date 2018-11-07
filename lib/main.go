@@ -15,6 +15,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/fatih/structs"
+	"github.com/spf13/cast"
 )
 
 const (
@@ -47,6 +50,26 @@ const (
 
 	DatePatternYYYYMMDDTHHMMSSZ = time.RFC3339
 )
+
+var (
+	regexpDatePatternZeroFilled      *regexp.Regexp
+	regexpDatePatternYYYYMMDD        *regexp.Regexp
+	regexpDatePatternYYYYMMDDHHMMSS  *regexp.Regexp
+	regexpDatePatternYYYYMMDDTHHMMSS *regexp.Regexp
+	regexpRFC3339                    *regexp.Regexp
+	regexpRFC3339WithTime            *regexp.Regexp
+	regexpCommaAlphaNum              *regexp.Regexp
+)
+
+func init() {
+	regexpDatePatternZeroFilled, _ = regexp.Compile(`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`)
+	regexpDatePatternYYYYMMDD, _ = regexp.Compile(`^\d{4}\-\d{2}\-\d{2}$`)
+	regexpDatePatternYYYYMMDDHHMMSS, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`)
+	regexpDatePatternYYYYMMDDTHHMMSS, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
+	regexpRFC3339, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`)
+	regexpRFC3339WithTime, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+\-]{1}\d{2}:\d{2}$`)
+	regexpCommaAlphaNum, _ = regexp.Compile(`[^A-Za-z0-9,]`)
+}
 
 // ToStringSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func ToStringSlice(intslice []int) (stringSlice []string) {
@@ -86,6 +109,46 @@ func ToInt64Slice(stringSlice []string) (int64Slice []int64) {
 		int64Slice = append(int64Slice, *intI)
 	}
 	return int64Slice
+}
+
+// StringToStringSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func StringToStringSlice(s string) []string {
+	stringSlice := []string{}
+	if len(s) == 0 {
+		return []string{}
+	}
+
+	s1 := regexpCommaAlphaNum.ReplaceAllString(s, "")
+	if len(s1) == 0 {
+		return []string{}
+	}
+
+	s2 := strings.Split(s1, ",")
+	if len(s2) == 0 {
+		return []string{}
+	}
+
+	for _, s3 := range s2 {
+		if len(s3) > 0 {
+			stringSlice = append(stringSlice, s3)
+		}
+	}
+
+	return stringSlice
+}
+
+// StringToIntSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func StringToIntSlice(s string) []int {
+	if len(s) == 0 {
+		return []int{}
+	}
+
+	sl := StringToStringSlice(s)
+	if len(sl) == 0 {
+		return []int{}
+	}
+
+	return ToIntSlice(sl)
 }
 
 // ParseStringToInt REQUIRE THEM TO DOCUMENT THIS FUNCTION
@@ -131,7 +194,7 @@ func DiffDays(date1 time.Time, date2 time.Time) (*int64, error) {
 		days := int64(math.Ceil(duration.Hours() / 24))
 		return &days, nil
 	}
-	return nil, errors.New("invalid dates")
+	return 0, errors.New(fmt.Sprintf("invalid-dates: %v or %v is invalid", date1, date2))
 }
 
 // ParseDateStringToTime REQUIRE THEM TO DOCUMENT THIS FUNCTION
@@ -143,17 +206,17 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 		return nil, errors.New("empty string")
 	}
 
-	if regexp.MustCompile(`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`).MatchString(dateString) {
+	if regexpDatePatternZeroFilled.MatchString(dateString) {
 		fmt.Printf("ParseDateStringToTime: receiving date string zero filled. let %s as %s", dateString, result)
-	} else if regexp.MustCompile(`^\d{4}\-\d{2}\-\d{2}$`).MatchString(dateString) {
+	} else if regexpDatePatternYYYYMMDD.MatchString(dateString) {
 		result, err = time.Parse(DatePatternYYYYMMDD, dateString)
-	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`).MatchString(dateString) {
+	} else if regexpDatePatternYYYYMMDDHHMMSS.MatchString(dateString) {
 		result, err = time.Parse(DatePatternYYYYMMDDHHMMSS, dateString)
-	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`).MatchString(dateString) {
+	} else if regexpDatePatternYYYYMMDDTHHMMSS.MatchString(dateString) {
 		result, err = time.Parse(DatePatternYYYYMMDDTHHMMSS, dateString)
-	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`).MatchString(dateString) {
+	} else if regexpRFC3339.MatchString(dateString) {
 		result, err = time.Parse(time.RFC3339, dateString)
-	} else if regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+\-]{1}\d{2}:\d{2}$`).MatchString(dateString) {
+	} else if regexpRFC3339WithTime.MatchString(dateString) {
 		result, err = time.Parse(time.RFC3339, dateString)
 	} else {
 		err = fmt.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
@@ -261,34 +324,26 @@ func GetStringBodyHTTPRequest(r *http.Request) *string {
 	if r == nil {
 		return nil
 	}
-
 	headers, _ := httputil.DumpRequest(r, false)
 	headersAndBody, _ := httputil.DumpRequest(r, true)
 	body := headersAndBody[len(headers):]
-	stringBody := string(body)
-
-	re := regexp.MustCompile(`(?s)(.*)`)
-	groups := re.FindStringSubmatch(stringBody)
-
-	if len(groups) > 0 {
-		// fmt.Printf("GetStringBodyHTTPRequest: printing request Body: %+v\n", groups[0])
-		return &groups[0]
-	}
-
-	// fmt.Printf("GetStringBodyHTTPRequest: no body to print on request Body\n")
-	return nil
+	s := string(bytes.TrimSpace(body))
+	return &s
 }
 
 // GetStringBodyHTTPRequestJSON REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func GetStringBodyHTTPRequestJSON(r *http.Request) *string {
-	result := GetStringBodyHTTPRequest(r)
-	if result != nil {
-		re := regexp.MustCompile(`({.*})`)
-		groups := re.FindStringSubmatch(*result)
-		if len(groups) > 0 {
-			return &groups[0]
-		}
-		return result
+	if r == nil {
+		return nil
+	}
+	headers, _ := httputil.DumpRequest(r, false)
+	headersAndBody, _ := httputil.DumpRequest(r, true)
+	body := bytes.TrimSpace(headersAndBody[len(headers):])
+	if len(body) > 0 {
+		start := bytes.IndexAny(body, "{")
+		end := bytes.LastIndexAny(body, "}")
+		r := string(body[start : end+1])
+		return &r
 	}
 	return nil
 }
@@ -298,34 +353,26 @@ func GetStringBodyHTTPResponse(r *http.Response) *string {
 	if r == nil {
 		return nil
 	}
-
 	headers, _ := httputil.DumpResponse(r, false)
 	headersAndBody, _ := httputil.DumpResponse(r, true)
 	body := headersAndBody[len(headers):]
-	stringBody := string(body)
-
-	re := regexp.MustCompile(`(?s)(.*)`)
-	groups := re.FindStringSubmatch(stringBody)
-
-	if len(groups) > 0 {
-		// fmt.Printf("GetStringBodyHTTPResponse: printing response Body: %+v\n", groups[0])
-		return &groups[0]
-	}
-
-	// fmt.Printf("GetStringBodyHTTPResponse: no body to print on response Body\n")
-	return nil
+	s := string(bytes.TrimSpace(body))
+	return &s
 }
 
 // GetStringBodyHTTPResponseJSON REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func GetStringBodyHTTPResponseJSON(r *http.Response) *string {
-	result := GetStringBodyHTTPResponse(r)
-	if result != nil {
-		re := regexp.MustCompile(`({.*})`)
-		groups := re.FindStringSubmatch(*result)
-		if len(groups) > 0 {
-			return &groups[0]
-		}
-		return result
+	if r == nil {
+		return nil
+	}
+	headers, _ := httputil.DumpResponse(r, false)
+	headersAndBody, _ := httputil.DumpResponse(r, true)
+	body := bytes.TrimSpace(headersAndBody[len(headers):])
+	if len(body) > 0 {
+		start := bytes.IndexAny(body, "{")
+		end := bytes.LastIndexAny(body, "}")
+		r := string(body[start : end+1])
+		return &r
 	}
 	return nil
 }
@@ -371,8 +418,6 @@ func IsPointer(arg interface{}) bool {
 // Join REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func Join(sep string, args ...interface{}) string {
 	var buf bytes.Buffer
-	var str Stringer
-	var ok bool
 	var elements []interface{}
 
 	for _, arg := range args {
@@ -400,14 +445,12 @@ func Join(sep string, args ...interface{}) string {
 	}
 
 	for i, arg := range elements {
-		if i > 0 {
-			buf.WriteString(sep)
-		}
+		if str := cast.ToString(arg); len(str) > 0 {
+			buf.WriteString(str)
 
-		if str, ok = arg.(Stringer); ok {
-			buf.WriteString(str.String())
-		} else {
-			fmt.Fprint(&buf, arg)
+			if i < len(elements)-1 {
+				buf.WriteString(sep)
+			}
 		}
 	}
 
@@ -467,4 +510,16 @@ func Truncate(s string, i int) (r string) {
 	r = strings.Replace(r, "\n", "", -1)
 	r = strings.Replace(r, "    ", "", -1)
 	return
+}
+
+// Fill merges data from struct instance to another
+// By @titpetric suggested in https://scene-si.org/2016/06/01/golang-tips-and-tricks
+func Fill(dest interface{}, src interface{}) {
+	mSrc := structs.Map(src)
+	mDest := structs.Map(dest)
+	for key, val := range mSrc {
+		if _, ok := mDest[key]; ok {
+			structs.New(dest).Field(key).Set(val)
+		}
+	}
 }

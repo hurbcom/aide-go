@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/h2non/gock.v1"
+	gock "gopkg.in/h2non/gock.v1"
 )
 
 func TestGetStringBodyHTTPRequestJSON(t *testing.T) {
@@ -60,7 +60,7 @@ func TestGetStringBodyHTTPResponseJSON(t *testing.T) {
 	actual := GetStringBodyHTTPResponse(res)
 
 	assert.NotNil(t, actual)
-	assert.Equal(t, "{\"foo\":\"bar\"}\n", *actual)
+	assert.Equal(t, "{\"foo\":\"bar\"}", *actual)
 }
 
 func TestGetStringBodyHTTPResponsePlainText(t *testing.T) {
@@ -151,6 +151,40 @@ func TestToInt64Slice(t *testing.T) {
 	assert.Len(t, actual, 2)
 	assert.Equal(t, int64(654987), actual[0])
 	assert.Equal(t, int64(852369), actual[1])
+}
+
+func TestStringToStringSlice(t *testing.T) {
+	actual := StringToStringSlice("[foo,123,bar,,456,a1b2,,,]")
+
+	assert.Len(t, actual, 5)
+	assert.Equal(t, "foo", actual[0])
+	assert.Equal(t, "123", actual[1])
+	assert.Equal(t, "bar", actual[2])
+	assert.Equal(t, "456", actual[3])
+	assert.Equal(t, "a1b2", actual[4])
+
+	actual = StringToStringSlice("[[foo,123,[bar],,456,,a1b2]")
+
+	assert.Len(t, actual, 5)
+	assert.Equal(t, "foo", actual[0])
+	assert.Equal(t, "123", actual[1])
+	assert.Equal(t, "bar", actual[2])
+	assert.Equal(t, "456", actual[3])
+	assert.Equal(t, "a1b2", actual[4])
+}
+
+func TestStringToIntSlice(t *testing.T) {
+	actual := StringToIntSlice("[foo,123,bar,,456,a1b2,,,]")
+
+	assert.Len(t, actual, 2)
+	assert.Equal(t, 123, actual[0])
+	assert.Equal(t, 456, actual[1])
+
+	actual = StringToIntSlice("[[foo,123,[bar],,456,,a1b2]")
+
+	assert.Len(t, actual, 2)
+	assert.Equal(t, 123, actual[0])
+	assert.Equal(t, 456, actual[1])
 }
 
 func TestParseInt(t *testing.T) {
@@ -541,6 +575,9 @@ func TestJoin(t *testing.T) {
 	actual = Join(", ", []int{65485, 19734})
 	assert.Equal(t, `65485, 19734`, actual)
 
+	actual = Join("_", []string{"foo", "bar", ""}, nil, 123)
+	assert.Equal(t, `foo_bar_123`, actual)
+
 	var pStr *string
 	str := "foo"
 
@@ -643,4 +680,22 @@ func TestTruncate(t *testing.T) {
         123456789abcdef
     }`
 	assert.Equal(t, expected, Truncate(json1, len(json1)))
+}
+
+func TestFill(t *testing.T) {
+	a := struct {
+		ID      int
+		Name    string
+		IsAdmin bool
+	}{}
+
+	b := struct {
+		Name string
+	}{}
+
+	b.Name = "Bobby"
+
+	Fill(&a, b)
+
+	assert.Equal(t, "Bobby", a.Name)
 }
