@@ -453,7 +453,7 @@ func DSN2MAP(dsn string) map[string]string {
 
 	result := make(map[string]string)
 	for i, name := range re.SubexpNames() {
-		if len(name) > 0 {
+		if len(name) > 0 && i < len(match) {
 			result[name] = match[i]
 		}
 	}
