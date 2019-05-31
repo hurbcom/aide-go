@@ -593,6 +593,17 @@ func TestBeginningOfToday(t *testing.T) {
 	assert.Equal(t, today.Second(), 0)
 }
 
+func TestBeginningOfTodayIn(t *testing.T) {
+	loc, _ := time.LoadLocation("Pacific/Fakaofo")
+	today := BeginningOfTodayIn(loc)
+	assert.Equal(t, today.Year(), time.Now().Year())
+	assert.Equal(t, today.Month(), time.Now().Month())
+	assert.Equal(t, today.Day(), time.Now().Day()+1)
+	assert.Equal(t, today.Hour(), 0)
+	assert.Equal(t, today.Minute(), 0)
+	assert.Equal(t, today.Second(), 0)
+}
+
 func TestShouldRemoveNanoseconds(t *testing.T) {
 	expected := time.Date(2016, time.September, 20, 18, 49, 15, 0, time.UTC)
 

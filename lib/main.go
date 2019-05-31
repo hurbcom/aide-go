@@ -22,6 +22,7 @@ import (
 
 const (
 	// HTTPStatusUnprocessableEntity REQUIRE THEM TO DOCUMENT THIS CONST
+	// Deprecated: use http.StatusUnprocessableEntity instead
 	HTTPStatusUnprocessableEntity = 422
 
 	// DatePatternYYYYMMDD REQUIRE THEM TO DOCUMENT THIS CONST
@@ -442,8 +443,14 @@ func Join(sep string, args ...interface{}) string {
 
 // BeginningOfToday REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func BeginningOfToday() time.Time {
-	now := time.Now()
-	return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	now := time.Now().UTC()
+	return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+}
+
+// BeginningOfTodayIn REQUIRE THEM TO DOCUMENT THIS FUNCTION
+func BeginningOfTodayIn(loc *time.Location) time.Time {
+	now := time.Now().In(loc)
+	return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
 }
 
 // DSN2MAP REQUIRE THEM TO DOCUMENT THIS FUNCTION
