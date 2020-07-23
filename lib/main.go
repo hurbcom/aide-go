@@ -66,7 +66,7 @@ var (
 		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
 
 	regexpRFC3339 *regexp.Regexp = regexp.MustCompile(
-		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+-]{1}(\d{2}:\d{2})?$`)
+		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|([+-]\d{2}(:?\d{2})?))$`)
 
 	regexpCommaAlphaNum *regexp.Regexp = regexp.MustCompile(
 		`[^A-Za-z0-9,]`)
