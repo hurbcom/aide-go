@@ -53,24 +53,27 @@ const (
 )
 
 var (
-	regexpDatePatternZeroFilled      *regexp.Regexp
-	regexpDatePatternYYYYMMDD        *regexp.Regexp
-	regexpDatePatternYYYYMMDDHHMMSS  *regexp.Regexp
-	regexpDatePatternYYYYMMDDTHHMMSS *regexp.Regexp
-	regexpRFC3339                    *regexp.Regexp
-	regexpRFC3339WithTime            *regexp.Regexp
-	regexpCommaAlphaNum              *regexp.Regexp
-)
+	regexpDatePatternZeroFilled *regexp.Regexp = regexp.MustCompile(
+		`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`)
 
-func init() {
-	regexpDatePatternZeroFilled, _ = regexp.Compile(`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`)
-	regexpDatePatternYYYYMMDD, _ = regexp.Compile(`^\d{4}\-\d{2}\-\d{2}$`)
-	regexpDatePatternYYYYMMDDHHMMSS, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`)
-	regexpDatePatternYYYYMMDDTHHMMSS, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
-	regexpRFC3339, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`)
-	regexpRFC3339WithTime, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+\-]{1}\d{2}:\d{2}$`)
-	regexpCommaAlphaNum, _ = regexp.Compile(`[^A-Za-z0-9,]`)
-}
+	regexpDatePatternYYYYMMDD *regexp.Regexp = regexp.MustCompile(
+		`^\d{4}\-\d{2}\-\d{2}$`)
+
+	regexpDatePatternYYYYMMDDHHMMSS *regexp.Regexp = regexp.MustCompile(
+		`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`)
+
+	regexpDatePatternYYYYMMDDTHHMMSS *regexp.Regexp = regexp.MustCompile(
+		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
+
+	regexpRFC3339 *regexp.Regexp = regexp.MustCompile(
+		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+-]{1}(\d{2}:\d{2})?$`)
+
+	regexpRFC3339WithTime *regexp.Regexp = regexp.MustCompile(
+		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+-]{1}(\d{2}:\d{2})?$`)
+
+	regexpCommaAlphaNum *regexp.Regexp = regexp.MustCompile(
+		`[^A-Za-z0-9,]`)
+)
 
 // ToStringSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func ToStringSlice(intslice []int) (stringSlice []string) {
