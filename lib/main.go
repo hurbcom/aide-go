@@ -68,9 +68,6 @@ var (
 	regexpRFC3339 *regexp.Regexp = regexp.MustCompile(
 		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+-]{1}(\d{2}:\d{2})?$`)
 
-	regexpRFC3339WithTime *regexp.Regexp = regexp.MustCompile(
-		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z+-]{1}(\d{2}:\d{2})?$`)
-
 	regexpCommaAlphaNum *regexp.Regexp = regexp.MustCompile(
 		`[^A-Za-z0-9,]`)
 )
@@ -190,30 +187,34 @@ func DiffDays(date1 time.Time, date2 time.Time) (int64, error) {
 
 // ParseDateStringToTime REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func ParseDateStringToTime(dateString string) (*time.Time, error) {
-	var result time.Time
-	var err error
-
 	if len(dateString) == 0 {
-		return nil, nil
+		return nil, fmt.Errorf("ParseDateStringToTime: empty date format")
 	}
 
+	// FIXME: Don't make sense return zeroed time and no error in this case
 	if regexpDatePatternZeroFilled.MatchString(dateString) {
-		fmt.Printf("ParseDateStringToTime: receiving date string zero filled. let %s as %s", dateString, result)
-	} else if regexpDatePatternYYYYMMDD.MatchString(dateString) {
-		result, err = time.Parse(DatePatternYYYYMMDD, dateString)
-	} else if regexpDatePatternYYYYMMDDHHMMSS.MatchString(dateString) {
-		result, err = time.Parse(DatePatternYYYYMMDDHHMMSS, dateString)
-	} else if regexpDatePatternYYYYMMDDTHHMMSS.MatchString(dateString) {
-		result, err = time.Parse(DatePatternYYYYMMDDTHHMMSS, dateString)
-	} else if regexpRFC3339.MatchString(dateString) {
-		result, err = time.Parse(time.RFC3339, dateString)
-	} else if regexpRFC3339WithTime.MatchString(dateString) {
-		result, err = time.Parse(time.RFC3339, dateString)
-	} else {
-		err = fmt.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
+		fmt.Println("ParseDateStringToTime: receiving date string zero filled")
+		return &time.Time{}, nil
 	}
 
-	return &result, err
+	matchers := map[string]*regexp.Regexp{
+		DatePatternYYYYMMDD:        regexpDatePatternYYYYMMDD,
+		DatePatternYYYYMMDDHHMMSS:  regexpDatePatternYYYYMMDDHHMMSS,
+		DatePatternYYYYMMDDTHHMMSS: regexpDatePatternYYYYMMDDTHHMMSS,
+		string(time.RFC3339):       regexpRFC3339,
+	}
+
+	for k, v := range matchers {
+		if v.MatchString(dateString) {
+			result, err := time.Parse(k, dateString)
+			if err != nil {
+				return nil, fmt.Errorf("ParseDateStringToTime: using pattern %s result error: %v", k, err)
+			}
+			return &result, nil
+		}
+	}
+
+	return nil, fmt.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
 }
 
 // RemoveNanoseconds REQUIRE THEM TO DOCUMENT THIS FUNCTION
