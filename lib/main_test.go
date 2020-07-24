@@ -340,58 +340,101 @@ func TestDiffDays(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
-func TestShouldParseDateStringMalformedTimeToTime(t *testing.T) {
-	var expected time.Time
+func TestParseDateStringToTime(t *testing.T) {
+	p := func(t time.Time) *time.Time {
+		return &t
+	}
 
-	expected, _ = time.Parse(time.RFC3339, "2016-01-01T00:00:00Z")
-
-	result1, err := ParseDateStringToTime("2016-01-01")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result1)
-
-	result2, err := ParseDateStringToTime("2016-01-01T00:00:00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result2)
-
-	result3, err := ParseDateStringToTime("2016-01-01T00:00:00Z")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result3)
-
-	result4, err := ParseDateStringToTime("2016-01-01 00:00:00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result4)
-
-	expected, _ = time.Parse(time.RFC3339, "2016-01-01T00:00:00+00:00")
-
-	result5, err := ParseDateStringToTime("2016-01-01T00:00:00+00:00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result5)
-
-	_, err = ParseDateStringToTime("2016-01-01T00:00:00ABC")
-	assert.NotNil(t, err)
-}
-
-func TestShouldParseDateStringMalformedTimeToTimeZero(t *testing.T) {
-	expected := time.Time{}
-
-	result1, err := ParseDateStringToTime("0000-00-00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result1)
-
-	result2, err := ParseDateStringToTime("0000-00-00T00:00:00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result2)
-
-	result3, err := ParseDateStringToTime("0000-00-00T00:00:00Z")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result3)
-
-	result4, err := ParseDateStringToTime("0000-00-00 00:00:00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result4)
-
-	_, err = ParseDateStringToTime("0000-00-00T00:00:00ABC")
-	assert.NotNil(t, err)
+	type args struct {
+		dateString string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    *time.Time
+		wantErr bool
+	}{
+		{
+			name:    "case1",
+			args:    args{dateString: "2016-01-01"},
+			want:    p(time.Date(2016, 1, 1, 0, 0, 0, 0, time.UTC)),
+			wantErr: false,
+		},
+		{
+			name:    "case2",
+			args:    args{dateString: "2016-01-01T00:00:00"},
+			want:    p(time.Date(2016, 1, 1, 0, 0, 0, 0, time.UTC)),
+			wantErr: false,
+		},
+		{
+			name:    "case3",
+			args:    args{dateString: "2016-01-01T00:00:00Z"},
+			want:    p(time.Date(2016, 1, 1, 0, 0, 0, 0, time.UTC)),
+			wantErr: false,
+		},
+		{
+			name:    "case4",
+			args:    args{dateString: "2016-01-01 00:00:00"},
+			want:    p(time.Date(2016, 1, 1, 0, 0, 0, 0, time.UTC)),
+			wantErr: false,
+		},
+		{
+			name:    "case5",
+			args:    args{dateString: "2016-01-01T00:00:00+00:00"},
+			want:    p(time.Date(2016, 1, 1, 0, 0, 0, 0, time.UTC)),
+			wantErr: false,
+		},
+		{
+			name:    "case6",
+			args:    args{dateString: "2016-01-01T00:00:00ABC"},
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			name:    "case7",
+			args:    args{dateString: "0000-00-00"},
+			want:    &time.Time{},
+			wantErr: false,
+		},
+		{
+			name:    "case8",
+			args:    args{dateString: "0000-00-00T00:00:00"},
+			want:    &time.Time{},
+			wantErr: false,
+		},
+		{
+			name:    "case9",
+			args:    args{dateString: "0000-00-00T00:00:00Z"},
+			want:    &time.Time{},
+			wantErr: false,
+		},
+		{
+			name:    "case10",
+			args:    args{dateString: "0000-00-00 00:00:00"},
+			want:    &time.Time{},
+			wantErr: false,
+		},
+		{
+			name:    "case11",
+			args:    args{dateString: "0000-00-00T00:00:00ABC"},
+			want:    nil,
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := ParseDateStringToTime(tt.args.dateString)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ParseDateStringToTime() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if tt.want == nil && got != nil {
+				t.Errorf("ParseDateStringToTime() = %v, want nil", err)
+			}
+			if tt.want != nil && got != nil && !(*tt.want).Equal(*got) {
+				t.Errorf("ParseDateStringToTime() = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }
 
 func TestShouldParseIntToBool(t *testing.T) {

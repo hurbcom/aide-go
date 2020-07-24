@@ -65,7 +65,7 @@ var (
 		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
 
 	regexpRFC3339 *regexp.Regexp = regexp.MustCompile(
-		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|([+-]\d{2}:\d{2}))?$`)
+		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|([+-]\d{2}:\d{2}))$`)
 
 	regexpCommaAlphaNum *regexp.Regexp = regexp.MustCompile(
 		`[^A-Za-z0-9,]`)
@@ -193,7 +193,8 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	// FIXME: Don't make sense return zeroed time and no error in this case
 	if regexpDatePatternZeroFilled.MatchString(dateString) {
 		fmt.Println("ParseDateStringToTime: receiving date string zero filled")
-		return &time.Time{}, nil
+		t := time.Time{}.UTC()
+		return &t, nil
 	}
 
 	matchers := map[string]*regexp.Regexp{
