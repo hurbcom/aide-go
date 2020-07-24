@@ -12,6 +12,74 @@ import (
 	gock "gopkg.in/h2non/gock.v1"
 )
 
+func TestRegexpRFC3339(t *testing.T) {
+	type args struct {
+		input string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "case1",
+			args: args{
+				input: "2020-10-22T12:46:36Z",
+			},
+			want: true,
+		},
+		{
+			name: "case2",
+			args: args{
+				input: "2020-11-03T15:24:05-03:00",
+			},
+			want: true,
+		},
+		{
+			name: "case3",
+			args: args{
+				input: "2020-01-01T16:34:05-03",
+			},
+			want: false,
+		},
+		{
+			name: "case4",
+			args: args{
+				input: "2020-07-13T19:14:05-0300",
+			},
+			want: false,
+		},
+		{
+			name: "case5",
+			args: args{
+				input: "2020-11-03T15:24:05Z03:00",
+			},
+			want: false,
+		},
+		{
+			name: "case6",
+			args: args{
+				input: "2020-01-01T16:34:05Z03",
+			},
+			want: false,
+		},
+		{
+			name: "case7",
+			args: args{
+				input: "2020-07-13T19:14:05Z0300",
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if actual := regexpRFC3339.MatchString(tt.args.input); actual != tt.want {
+				t.Errorf("TestRegexpRFC3339() %v, want %v", actual, tt.want)
+			}
+		})
+	}
+}
+
 func TestGetStringBodyHTTPRequestJSON(t *testing.T) {
 	body, _ := json.Marshal(map[string]string{"foo": "bar"})
 	req, _ := http.NewRequest("POST", "http://server.com", bytes.NewBuffer(body))
