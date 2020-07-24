@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/fatih/structs"
+	"github.com/pkg/errors"
 	"github.com/spf13/cast"
 )
 
@@ -178,13 +179,13 @@ func DiffDays(date1 time.Time, date2 time.Time) (int64, error) {
 		days := math.Ceil(duration.Hours() / 24)
 		return int64(days), nil
 	}
-	return 0, fmt.Errorf("invalid-dates: %v or %v is invalid", date1, date2)
+	return 0, errors.Errorf("invalid-dates: %v or %v is invalid", date1, date2)
 }
 
 // ParseDateStringToTime REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	if len(dateString) == 0 {
-		return nil, fmt.Errorf("ParseDateStringToTime: empty date format")
+		return nil, errors.Errorf("ParseDateStringToTime: empty date format")
 	}
 
 	matchers := map[string]*regexp.Regexp{
@@ -198,13 +199,13 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 		if v.MatchString(dateString) {
 			result, err := time.Parse(k, dateString)
 			if err != nil {
-				return nil, fmt.Errorf("ParseDateStringToTime: using pattern %s result error: %v", k, err)
+				return nil, errors.Errorf("ParseDateStringToTime: using pattern %s result error: %v", k, err)
 			}
 			return &result, nil
 		}
 	}
 
-	return nil, fmt.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
+	return nil, errors.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
 }
 
 // RemoveNanoseconds REQUIRE THEM TO DOCUMENT THIS FUNCTION

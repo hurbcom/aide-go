@@ -41,6 +41,10 @@
   name = "gopkg.in/h2non/gock.v1"
   version = "1.0.11"
 
+[[constraint]]
+  name = "github.com/pkg/errors"
+  version = "0.9.1"
+
 [prune]
   go-tests = true
   unused-packages = true
