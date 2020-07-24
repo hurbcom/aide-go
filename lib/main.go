@@ -52,9 +52,6 @@ const (
 )
 
 var (
-	regexpDatePatternZeroFilled *regexp.Regexp = regexp.MustCompile(
-		`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`)
-
 	regexpDatePatternYYYYMMDD *regexp.Regexp = regexp.MustCompile(
 		`^\d{4}\-\d{2}\-\d{2}$`)
 
@@ -188,13 +185,6 @@ func DiffDays(date1 time.Time, date2 time.Time) (int64, error) {
 func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	if len(dateString) == 0 {
 		return nil, fmt.Errorf("ParseDateStringToTime: empty date format")
-	}
-
-	// FIXME: Don't make sense return zeroed time and no error in this case
-	if regexpDatePatternZeroFilled.MatchString(dateString) {
-		fmt.Println("ParseDateStringToTime: receiving date string zero filled")
-		t := time.Time{}.UTC()
-		return &t, nil
 	}
 
 	matchers := map[string]*regexp.Regexp{
