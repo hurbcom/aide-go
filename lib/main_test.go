@@ -12,6 +12,74 @@ import (
 	gock "gopkg.in/h2non/gock.v1"
 )
 
+func TestRegexpRFC3339(t *testing.T) {
+	type args struct {
+		input string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "case1",
+			args: args{
+				input: "2020-10-22T12:46:36Z",
+			},
+			want: true,
+		},
+		{
+			name: "case2",
+			args: args{
+				input: "2020-11-03T15:24:05-03:00",
+			},
+			want: true,
+		},
+		{
+			name: "case3",
+			args: args{
+				input: "2020-01-01T16:34:05-03",
+			},
+			want: false,
+		},
+		{
+			name: "case4",
+			args: args{
+				input: "2020-07-13T19:14:05-0300",
+			},
+			want: false,
+		},
+		{
+			name: "case5",
+			args: args{
+				input: "2020-11-03T15:24:05Z03:00",
+			},
+			want: false,
+		},
+		{
+			name: "case6",
+			args: args{
+				input: "2020-01-01T16:34:05Z03",
+			},
+			want: false,
+		},
+		{
+			name: "case7",
+			args: args{
+				input: "2020-07-13T19:14:05Z0300",
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if actual := regexpRFC3339.MatchString(tt.args.input); actual != tt.want {
+				t.Errorf("TestRegexpRFC3339() %v, want %v", actual, tt.want)
+			}
+		})
+	}
+}
+
 func TestGetStringBodyHTTPRequestJSON(t *testing.T) {
 	body, _ := json.Marshal(map[string]string{"foo": "bar"})
 	req, _ := http.NewRequest("POST", "http://server.com", bytes.NewBuffer(body))
@@ -272,58 +340,108 @@ func TestDiffDays(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
-func TestShouldParseDateStringMalformedTimeToTime(t *testing.T) {
-	var expected time.Time
+func TestParseDateStringToTime(t *testing.T) {
+	p := func(t time.Time) *time.Time {
+		return &t
+	}
 
-	expected, _ = time.Parse(time.RFC3339, "2016-01-01T00:00:00Z")
-
-	result1, err := ParseDateStringToTime("2016-01-01")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result1)
-
-	result2, err := ParseDateStringToTime("2016-01-01T00:00:00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result2)
-
-	result3, err := ParseDateStringToTime("2016-01-01T00:00:00Z")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result3)
-
-	result4, err := ParseDateStringToTime("2016-01-01 00:00:00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result4)
-
-	expected, _ = time.Parse(time.RFC3339, "2016-01-01T00:00:00+00:00")
-
-	result5, err := ParseDateStringToTime("2016-01-01T00:00:00+00:00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result5)
-
-	_, err = ParseDateStringToTime("2016-01-01T00:00:00ABC")
-	assert.NotNil(t, err)
-}
-
-func TestShouldParseDateStringMalformedTimeToTimeZero(t *testing.T) {
-	expected := time.Time{}
-
-	result1, err := ParseDateStringToTime("0000-00-00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result1)
-
-	result2, err := ParseDateStringToTime("0000-00-00T00:00:00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result2)
-
-	result3, err := ParseDateStringToTime("0000-00-00T00:00:00Z")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result3)
-
-	result4, err := ParseDateStringToTime("0000-00-00 00:00:00")
-	assert.Nil(t, err)
-	assert.Equal(t, expected, *result4)
-
-	_, err = ParseDateStringToTime("0000-00-00T00:00:00ABC")
-	assert.NotNil(t, err)
+	type args struct {
+		dateString string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    *time.Time
+		wantErr bool
+	}{
+		{
+			name:    "case1",
+			args:    args{dateString: "2016-01-01"},
+			want:    p(time.Date(2016, 1, 1, 0, 0, 0, 0, time.UTC)),
+			wantErr: false,
+		},
+		{
+			name:    "case2",
+			args:    args{dateString: "2016-01-01T00:00:00"},
+			want:    p(time.Date(2016, 1, 1, 0, 0, 0, 0, time.UTC)),
+			wantErr: false,
+		},
+		{
+			name:    "case3",
+			args:    args{dateString: "2016-01-01T00:00:00Z"},
+			want:    p(time.Date(2016, 1, 1, 0, 0, 0, 0, time.UTC)),
+			wantErr: false,
+		},
+		{
+			name:    "case4",
+			args:    args{dateString: "2016-01-01 00:00:00"},
+			want:    p(time.Date(2016, 1, 1, 0, 0, 0, 0, time.UTC)),
+			wantErr: false,
+		},
+		{
+			name:    "case5",
+			args:    args{dateString: "2016-01-01T00:00:00+00:00"},
+			want:    p(time.Date(2016, 1, 1, 0, 0, 0, 0, time.UTC)),
+			wantErr: false,
+		},
+		{
+			name:    "case6",
+			args:    args{dateString: "2016-01-01T00:00:00ABC"},
+			want:    nil,
+			wantErr: true,
+		},
+		// zeroed times
+		{
+			name:    "case7",
+			args:    args{dateString: "0000-00-00"},
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			name:    "case8",
+			args:    args{dateString: "0000-00-00T00:00:00"},
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			name:    "case9",
+			args:    args{dateString: "0000-00-00T00:00:00Z"},
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			name:    "case10",
+			args:    args{dateString: "0000-00-00 00:00:00"},
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			name:    "case11",
+			args:    args{dateString: "0000-00-00T00:00:00+00:00"},
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			name:    "case12",
+			args:    args{dateString: "0000-00-00T00:00:00ABC"},
+			want:    nil,
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := ParseDateStringToTime(tt.args.dateString)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ParseDateStringToTime() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if tt.want == nil && got != nil {
+				t.Errorf("ParseDateStringToTime() = %v, want nil", err)
+			}
+			if tt.want != nil && got != nil && !(*tt.want).Equal(*got) {
+				t.Errorf("ParseDateStringToTime() = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }
 
 func TestShouldParseIntToBool(t *testing.T) {

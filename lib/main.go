@@ -2,7 +2,6 @@ package lib
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -17,6 +16,7 @@ import (
 	"time"
 
 	"github.com/fatih/structs"
+	"github.com/pkg/errors"
 	"github.com/spf13/cast"
 )
 
@@ -53,24 +53,21 @@ const (
 )
 
 var (
-	regexpDatePatternZeroFilled      *regexp.Regexp
-	regexpDatePatternYYYYMMDD        *regexp.Regexp
-	regexpDatePatternYYYYMMDDHHMMSS  *regexp.Regexp
-	regexpDatePatternYYYYMMDDTHHMMSS *regexp.Regexp
-	regexpRFC3339                    *regexp.Regexp
-	regexpRFC3339WithTime            *regexp.Regexp
-	regexpCommaAlphaNum              *regexp.Regexp
-)
+	regexpDatePatternYYYYMMDD *regexp.Regexp = regexp.MustCompile(
+		`^\d{4}\-\d{2}\-\d{2}$`)
 
-func init() {
-	regexpDatePatternZeroFilled, _ = regexp.Compile(`^0{4}-0{2}-0{2}[T\s]?(0{2}:0{2}:0{2})?Z?$`)
-	regexpDatePatternYYYYMMDD, _ = regexp.Compile(`^\d{4}\-\d{2}\-\d{2}$`)
-	regexpDatePatternYYYYMMDDHHMMSS, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`)
-	regexpDatePatternYYYYMMDDTHHMMSS, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
-	regexpRFC3339, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`)
-	regexpRFC3339WithTime, _ = regexp.Compile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+\-]{1}\d{2}:\d{2}$`)
-	regexpCommaAlphaNum, _ = regexp.Compile(`[^A-Za-z0-9,]`)
-}
+	regexpDatePatternYYYYMMDDHHMMSS *regexp.Regexp = regexp.MustCompile(
+		`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`)
+
+	regexpDatePatternYYYYMMDDTHHMMSS *regexp.Regexp = regexp.MustCompile(
+		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
+
+	regexpRFC3339 *regexp.Regexp = regexp.MustCompile(
+		`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|([+-]\d{2}:\d{2}))$`)
+
+	regexpCommaAlphaNum *regexp.Regexp = regexp.MustCompile(
+		`[^A-Za-z0-9,]`)
+)
 
 // ToStringSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func ToStringSlice(intslice []int) (stringSlice []string) {
@@ -182,35 +179,33 @@ func DiffDays(date1 time.Time, date2 time.Time) (int64, error) {
 		days := math.Ceil(duration.Hours() / 24)
 		return int64(days), nil
 	}
-	return 0, errors.New(fmt.Sprintf("invalid-dates: %v or %v is invalid", date1, date2))
+	return 0, errors.Errorf("invalid-dates: %v or %v is invalid", date1, date2)
 }
 
 // ParseDateStringToTime REQUIRE THEM TO DOCUMENT THIS FUNCTION
 func ParseDateStringToTime(dateString string) (*time.Time, error) {
-	var result time.Time
-	var err error
-
 	if len(dateString) == 0 {
-		return nil, nil
+		return nil, errors.Errorf("ParseDateStringToTime: empty date format")
 	}
 
-	if regexpDatePatternZeroFilled.MatchString(dateString) {
-		fmt.Printf("ParseDateStringToTime: receiving date string zero filled. let %s as %s", dateString, result)
-	} else if regexpDatePatternYYYYMMDD.MatchString(dateString) {
-		result, err = time.Parse(DatePatternYYYYMMDD, dateString)
-	} else if regexpDatePatternYYYYMMDDHHMMSS.MatchString(dateString) {
-		result, err = time.Parse(DatePatternYYYYMMDDHHMMSS, dateString)
-	} else if regexpDatePatternYYYYMMDDTHHMMSS.MatchString(dateString) {
-		result, err = time.Parse(DatePatternYYYYMMDDTHHMMSS, dateString)
-	} else if regexpRFC3339.MatchString(dateString) {
-		result, err = time.Parse(time.RFC3339, dateString)
-	} else if regexpRFC3339WithTime.MatchString(dateString) {
-		result, err = time.Parse(time.RFC3339, dateString)
-	} else {
-		err = fmt.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
+	matchers := map[string]*regexp.Regexp{
+		DatePatternYYYYMMDD:        regexpDatePatternYYYYMMDD,
+		DatePatternYYYYMMDDHHMMSS:  regexpDatePatternYYYYMMDDHHMMSS,
+		DatePatternYYYYMMDDTHHMMSS: regexpDatePatternYYYYMMDDTHHMMSS,
+		string(time.RFC3339):       regexpRFC3339,
 	}
 
-	return &result, err
+	for k, v := range matchers {
+		if v.MatchString(dateString) {
+			result, err := time.Parse(k, dateString)
+			if err != nil {
+				return nil, errors.Errorf("ParseDateStringToTime: using pattern %s result error: %v", k, err)
+			}
+			return &result, nil
+		}
+	}
+
+	return nil, errors.Errorf("ParseDateStringToTime: invalid date format - %+v", dateString)
 }
 
 // RemoveNanoseconds REQUIRE THEM TO DOCUMENT THIS FUNCTION
