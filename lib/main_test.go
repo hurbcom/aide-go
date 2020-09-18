@@ -70,6 +70,13 @@ func TestRegexpRFC3339(t *testing.T) {
 			},
 			want: false,
 		},
+		{
+			name: "case8",
+			args: args{
+				input: "2020-11-21T10:50:00.000Z",
+			},
+			want: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
