@@ -508,3 +508,11 @@ func Fill(dest interface{}, src interface{}) {
 		}
 	}
 }
+
+// ParseStringToFloat64 parse the string to float64
+func ParseStringToFloat64(s string) (float64, error) {
+	if s == "" || s == "0" {
+		return float64(0), nil
+	}
+	return strconv.ParseFloat(s, 64)
+}
