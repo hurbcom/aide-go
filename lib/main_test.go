@@ -875,7 +875,7 @@ func TestParseStringTFloat64(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := ParseStringTFloat64(tt.args.s)
+			got, err := ParseStringToFloat64(tt.args.s)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("ParseStringTFloat64() error = %v, wantErr %v", err, tt.wantErr)
 				return
