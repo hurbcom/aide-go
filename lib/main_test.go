@@ -833,3 +833,56 @@ func TestFill(t *testing.T) {
 
 	assert.Equal(t, "Bobby", a.Name)
 }
+
+func TestParseStringTFloat64(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    float64
+		wantErr bool
+	}{
+		{
+			name: "Should parse ok",
+			args: args{
+				s: "123.123",
+			},
+			want: 123.123,
+		},
+		{
+			name: "Should parse with zero value",
+			args: args{
+				s: "",
+			},
+			want: 0,
+		},
+		{
+			name: "should parse with zero",
+			args: args{
+				s: "0",
+			},
+			want: 0,
+		},
+		{
+			name: "Should return an error",
+			args: args{
+				s: "abc",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := ParseStringTFloat64(tt.args.s)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ParseStringTFloat64() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got != tt.want {
+				t.Errorf("ParseStringTFloat64() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
