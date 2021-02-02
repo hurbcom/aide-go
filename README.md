@@ -1,7 +1,7 @@
 # aide-go
-A go (lang) helper lib by [Hotel Urbano](http://www.hotelurbano.com)
+A go (lang) helper lib by [Hurb](https://www.hurb.com)
 
-![gophers image](https://blog.pyyoshi.com/content/images/2016/09/gopherswrench.jpg)
+![gophers image](https://golang.org/doc/gopher/pencil/gopherswrench.jpg)
 
 ## Setup
 
