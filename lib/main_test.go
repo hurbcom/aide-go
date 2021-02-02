@@ -834,7 +834,7 @@ func TestFill(t *testing.T) {
 	assert.Equal(t, "Bobby", a.Name)
 }
 
-func TestParseStringTFloat64(t *testing.T) {
+func TestParseStringToFloat64(t *testing.T) {
 	type args struct {
 		s string
 	}
