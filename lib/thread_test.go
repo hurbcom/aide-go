@@ -31,7 +31,7 @@ func TestErrorGroup(t *testing.T) {
 			},
 		},
 		{
-			name: "Should fail when first fo routine fails",
+			name: "Should fail when first go routine fails",
 			args: args{
 				ctx: context.Background(),
 				args: []func() error{
