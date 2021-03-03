@@ -50,6 +50,14 @@
   version = "v1.2.2"
 
 [[projects]]
+  branch = "master"
+  digest = "1:b521f10a2d8fa85c04a8ef4e62f2d1e14d303599a55d64dabf9f5a02f84d35eb"
+  name = "golang.org/x/sync"
+  packages = ["errgroup"]
+  pruneopts = "UT"
+  revision = "036812b2e83c0ddf193dd5a34e034151da389d09"
+
+[[projects]]
   digest = "1:36f30acc0fd0a7b34f4a13034c437d1383597070d963dab57cc458251ac1360d"
   name = "gopkg.in/h2non/gock.v1"
   packages = ["."]
@@ -65,6 +73,7 @@
     "github.com/pkg/errors",
     "github.com/spf13/cast",
     "github.com/stretchr/testify/assert",
+    "golang.org/x/sync/errgroup",
     "gopkg.in/h2non/gock.v1",
   ]
   solver-name = "gps-cdcl"
