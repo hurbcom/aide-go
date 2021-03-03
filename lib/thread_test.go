@@ -17,7 +17,7 @@ func TestErrorGroup(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "should not return an error",
+			name: "Should run successfully when all go routines complete successfully",
 			args: args{
 				ctx: context.Background(),
 				args: []func() error{
@@ -31,12 +31,12 @@ func TestErrorGroup(t *testing.T) {
 			},
 		},
 		{
-			name: "should return an error",
+			name: "Should fail when first fo routine fails",
 			args: args{
 				ctx: context.Background(),
 				args: []func() error{
 					func() error {
-						return errors.New("ops, you recive an error")
+						return errors.New("Oops, you received an error")
 					},
 					func() error {
 						return nil

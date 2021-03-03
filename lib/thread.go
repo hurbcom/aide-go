@@ -6,7 +6,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-// ErrorGroup resolve all go routine, if some one fail will return the first error
+// ErrorGroup resolves all go routines. It fails at first error encountered
 func ErrorGroup(ctx context.Context, args ...func() error) error {
 	g, _ := errgroup.WithContext(ctx)
 
