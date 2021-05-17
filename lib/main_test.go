@@ -87,6 +87,35 @@ func TestRegexpRFC3339(t *testing.T) {
 	}
 }
 
+func TestGetStringBodyHTTPRequest(t *testing.T) {
+	body, _ := json.Marshal(nil)
+	req, _ := http.NewRequest("POST", "http://server.com", bytes.NewBuffer(body))
+	actual := GetStringBodyHTTPRequest(req)
+
+	assert.NotNil(t, actual)
+	assert.Equal(t, "null", *actual)
+
+	req, _ = http.NewRequest("POST", "http://server.com", nil)
+	actual = GetStringBodyHTTPRequest(req)
+
+	assert.NotNil(t, actual)
+	assert.Equal(t, "", *actual)
+
+	req, _ = http.NewRequest("POST", "http://server.com", nil)
+	req.Header = nil
+	actual = GetStringBodyHTTPRequest(req)
+
+	assert.NotNil(t, actual)
+	assert.Equal(t, "", *actual)
+
+	req, _ = http.NewRequest("POST", "http://server.com", bytes.NewBuffer([]byte("PLAIN TEXT")))
+	req.Header = nil
+	actual = GetStringBodyHTTPRequest(req)
+
+	assert.NotNil(t, actual)
+	assert.Equal(t, "PLAIN TEXT", *actual)
+}
+
 func TestGetStringBodyHTTPRequestJSON(t *testing.T) {
 	body, _ := json.Marshal(map[string]string{"foo": "bar"})
 	req, _ := http.NewRequest("POST", "http://server.com", bytes.NewBuffer(body))
