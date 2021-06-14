@@ -1,1 +1,0 @@
-* Return error to parsers
