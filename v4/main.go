@@ -31,7 +31,7 @@ func Fill(dest interface{}, src interface{}) {
 	mDest := structs.Map(dest)
 	for key, val := range mSrc {
 		if _, ok := mDest[key]; ok {
-			structs.New(dest).Field(key).Set(val)
+			_ = structs.New(dest).Field(key).Set(val)
 		}
 	}
 }

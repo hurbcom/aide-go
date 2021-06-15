@@ -96,17 +96,11 @@ func ParseStringToInt64(s string) (int64, error) {
 }
 
 func ParseIntToBool(i int) bool {
-	if i == 1 {
-		return true
-	}
-	return false
+	return i == 1
 }
 
 func ParseStringToBool(s string) bool {
-	if s == "1" {
-		return true
-	}
-	return false
+	return s == "1"
 }
 
 func ParseBoolToString(b bool) string {

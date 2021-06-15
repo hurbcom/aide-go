@@ -6,7 +6,10 @@ import (
 )
 
 func DSN2MAP(dsn string) map[string]string {
-	re := regexp.MustCompile("^(?:(?P<user>.*?)(?::(?P<passwd>.*))?@)?(?:(?P<net>[^\\(]*)(?:\\((?P<addr>[^\\)]*)\\))?)?\\/(?P<dbname>.*?)(?:\\?(?P<params>[^\\?]*))?$")
+	sRe := "^(?:(?P<user>.*?)(?::(?P<passwd>.*))?@)?" +
+		"(?:(?P<net>[^\\(]*)(?:\\((?P<addr>[^\\)]*)\\))?)?" +
+		"\\/(?P<dbname>.*?)(?:\\?(?P<params>[^\\?]*))?$"
+	re := regexp.MustCompile(sRe)
 	match := re.FindStringSubmatch(dsn)
 
 	result := make(map[string]string)
