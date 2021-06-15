@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io"
 	"io/ioutil"
+	"strings"
 )
 
 // GetByteArrayAndBufferFromRequestBody REQUIRE THEM TO DOCUMENT THIS FUNCTION
@@ -15,4 +16,8 @@ func GetByteArrayAndBufferFromRequestBody(body io.ReadCloser) ([]byte, *bytes.Bu
 	}
 	buffer := bytes.NewBuffer(byteArray)
 	return byteArray, buffer, nil
+}
+
+func ThisBytesContains(b []byte, s string) bool {
+	return strings.Contains(strings.ToLower(string(b)), s)
 }
