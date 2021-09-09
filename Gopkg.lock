@@ -18,6 +18,14 @@
   version = "v1.1.0"
 
 [[projects]]
+  digest = "1:574f4e0c57e045c9d109d23c60c586b2198eaead53daa97ed5f65c616e22a9b0"
+  name = "github.com/h2non/parth"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "b4df798d65426f8c8ab5ca5f9987aec5575d26c9"
+  version = "v2.0.1"
+
+[[projects]]
   digest = "1:9e1d37b58d17113ec3cb5608ac0382313c5b59470b94ed97d0976e69c7022314"
   name = "github.com/pkg/errors"
   packages = ["."]
@@ -34,20 +42,20 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:08d65904057412fc0270fc4812a1c90c594186819243160dc779a402d4b6d0bc"
+  digest = "1:df641e58f425436baeeb55d7a65a18f6a109591cd485a9b90d974a8fe4340eb4"
   name = "github.com/spf13/cast"
   packages = ["."]
   pruneopts = "UT"
-  revision = "8c9545af88b134710ab1cd196795e7f2388358d7"
-  version = "v1.3.0"
+  revision = "88075729b052bca4b8b6c31bf198db2fe6c9da93"
+  version = "v1.4.1"
 
 [[projects]]
-  digest = "1:18752d0b95816a1b777505a97f71c7467a8445b8ffb55631a7bf779f6ba4fa83"
+  digest = "1:edb231f4f062fe87e1cc93351e1ee06d4cebf553d1f85f9f3b9b4903df42df20"
   name = "github.com/stretchr/testify"
   packages = ["assert"]
   pruneopts = "UT"
-  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
-  version = "v1.2.2"
+  revision = "acba37e5db06f0093b465a7d47822bf13644b66c"
+  version = "v1.7.0"
 
 [[projects]]
   branch = "master"
@@ -58,12 +66,20 @@
   revision = "036812b2e83c0ddf193dd5a34e034151da389d09"
 
 [[projects]]
-  digest = "1:36f30acc0fd0a7b34f4a13034c437d1383597070d963dab57cc458251ac1360d"
+  digest = "1:b2377fce33b1f39a691df462b023b4ac2f900696c56acd5493e9b31006fa0398"
   name = "gopkg.in/h2non/gock.v1"
   packages = ["."]
   pruneopts = "UT"
-  revision = "150f03e9bc914db1ba8c2a91c8985d4f21dd6005"
-  version = "v1.0.11"
+  revision = "5b72870cdcba531fee7998aae31e18b1bcabf103"
+  version = "v1.1.2"
+
+[[projects]]
+  branch = "v3"
+  digest = "1:107a619d3c3bcca214b2b7db810a5dffcd74b5d0262813cb2986e063fae2722f"
+  name = "gopkg.in/yaml.v3"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "496545a6307b2a7d7a710fd516e5e16e8ab62dbc"
 
 [solve-meta]
   analyzer-name = "dep"

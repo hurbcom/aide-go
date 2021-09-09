@@ -20,25 +20,25 @@ welcome:
 
 setup: sanitize ## Used to develop
 ifndef DEP
-	curl https://raw.githubusercontent.com/golang/dep/master/install.sh | DEP_RELEASE_TAG=v0.5.0 sh
+	@curl https://raw.githubusercontent.com/golang/dep/master/install.sh | DEP_RELEASE_TAG=v0.5.0 sh
 endif
-	@dep ensure -v
+	@GO111MODULE=off dep ensure -v
 
 setup-docker: welcome sanitize build-docker-image ## Install dependencies to run on Docker
 
 build-docker-image:
-	docker build . -t ${DOCKER_IMAGE_NAME}
+	@docker build . -t ${DOCKER_IMAGE_NAME}
 
 test:
-	@go clean --testcache
-	@go test ./... -race # | grep -vE "level|Testing"
+	@GO111MODULE=off go clean --testcache
+	@GO111MODULE=off go test ./... -race # | grep -vE "level|Testing"
 
 sanitize:
 	-@rm -rf vendor* _vendor* coverage.xml
 
 ci: build-docker-image ## Runs test coverage to CI
 	@echo "Running test in docker"
-	docker run --rm \
+	@docker run --rm \
 		-v ${PWD}:${APP_DIR} \
 		-w ${APP_DIR} \
 		--name ${APP_NAME}-ci \
@@ -46,16 +46,16 @@ ci: build-docker-image ## Runs test coverage to CI
 		sh -c "dep ensure -v -vendor-only && rm -f coverage.xml && go get github.com/axw/gocov/gocov && go get github.com/AlekSi/gocov-xml && gocov test ./... | gocov-xml > coverage.xml"
 
 format:
-	@go get golang.org/x/tools/cmd/goimports
-	goimports -l -w -d ${PROJECT_FILES}
-	gofmt -l -s -w ${PROJECT_FILES}
+	@GO111MODULE=off go get golang.org/x/tools/cmd/goimports
+	@GO111MODULE=off goimports -l -w -d ${PROJECT_FILES}
+	@GO111MODULE=off gofmt -l -s -w ${PROJECT_FILES}
 
 vet: ## Reports suspicious constructs
-	go tool vet ${PWD}
+	@GO111MODULE=off go tool vet ${PWD}
 
 lint: ## Built-in code verifier
-	@go get github.com/mgechev/revive
-	@revive -exclude vendor/... -formatter stylish ./...
+	@GO111MODULE=off go get github.com/mgechev/revive
+	@GO111MODULE=off revive -exclude vendor/... -formatter stylish ./...
 
 help: welcome
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | grep ^help -v | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-22s\033[0m %s\n", $$1, $$2}'
