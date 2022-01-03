@@ -1,4 +1,4 @@
-module github.com/hurbcom/aide-go
+module github.com/hurbcom/aide-go/v4
 
 go 1.16
 
