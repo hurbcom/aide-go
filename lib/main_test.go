@@ -148,7 +148,7 @@ func TestGetStringBodyHTTPResponseJSONEncoded(t *testing.T) {
 }
 
 func TestIntegerSliceToStringSlice(t *testing.T) {
-	strs := ToStringSlice([]int{1, 2, 3})
+	strs := IntSliceToStringSlice([]int{1, 2, 3})
 
 	assert.Len(t, strs, 3)
 	assert.Equal(t, "1", strs[0])
@@ -157,7 +157,7 @@ func TestIntegerSliceToStringSlice(t *testing.T) {
 }
 
 func TestInteger64SliceToStringSlice(t *testing.T) {
-	strs := ToStringSlice64([]int64{16, 23, 39})
+	strs := IntSliceToStringSlice([]int64{16, 23, 39})
 
 	assert.Len(t, strs, 3)
 	assert.Equal(t, "16", strs[0])
@@ -166,7 +166,7 @@ func TestInteger64SliceToStringSlice(t *testing.T) {
 }
 
 func TestToIntSlice(t *testing.T) {
-	actual := ToIntSlice([]string{"6549", "8523", "a"})
+	actual := StringSliceToIntSlice[int]([]string{"6549", "8523", "a"})
 
 	assert.Len(t, actual, 2)
 	assert.Equal(t, int(6549), actual[0])
@@ -174,7 +174,7 @@ func TestToIntSlice(t *testing.T) {
 }
 
 func TestToInt64Slice(t *testing.T) {
-	actual := ToInt64Slice([]string{"654987", "852369", "a"})
+	actual := StringSliceToIntSlice[int64]([]string{"654987", "852369", "a"})
 
 	assert.Len(t, actual, 2)
 	assert.Equal(t, int64(654987), actual[0])
@@ -202,13 +202,13 @@ func TestStringToStringSlice(t *testing.T) {
 }
 
 func TestStringToIntSlice(t *testing.T) {
-	actual := StringToIntSlice("[foo,123,bar,,456,a1b2,,,]")
+	actual := StringToIntSlice[int]("[foo,123,bar,,456,a1b2,,,]")
 
 	assert.Len(t, actual, 2)
 	assert.Equal(t, 123, actual[0])
 	assert.Equal(t, 456, actual[1])
 
-	actual = StringToIntSlice("[[foo,123,[bar],,456,,a1b2]")
+	actual = StringToIntSlice[int]("[[foo,123,[bar],,456,,a1b2]")
 
 	assert.Len(t, actual, 2)
 	assert.Equal(t, 123, actual[0])
@@ -216,7 +216,7 @@ func TestStringToIntSlice(t *testing.T) {
 }
 
 func TestParseInt(t *testing.T) {
-	i, err := ParseStringToInt("6549")
+	i, err := ParseStringToInt[int]("6549")
 
 	expected := int(6549)
 
@@ -226,20 +226,20 @@ func TestParseInt(t *testing.T) {
 }
 
 func TestParseIntWithEmptyString(t *testing.T) {
-	i, err := ParseStringToInt("")
+	i, err := ParseStringToInt[int]("")
 
 	assert.Equal(t, 0, i)
 	assert.Empty(t, err)
 }
 
 func TestParseIntInvalidString(t *testing.T) {
-	_, err := ParseStringToInt("invalid")
+	_, err := ParseStringToInt[int]("invalid")
 
 	assert.NotEmpty(t, err)
 }
 
 func TestParseInt64(t *testing.T) {
-	i, err := ParseStringToInt64("456123789123")
+	i, err := ParseStringToInt[int64]("456123789123")
 
 	expected := int64(456123789123)
 
@@ -249,14 +249,14 @@ func TestParseInt64(t *testing.T) {
 }
 
 func TestParseInt64WithEmptyString(t *testing.T) {
-	i, err := ParseStringToInt64("")
+	i, err := ParseStringToInt[int64]("")
 
 	assert.Equal(t, int64(0), i)
 	assert.Empty(t, err)
 }
 
 func TestParseInt64InvalidString(t *testing.T) {
-	_, err := ParseStringToInt64("invalid")
+	_, err := ParseStringToInt[int64]("invalid")
 
 	assert.NotEmpty(t, err)
 }
@@ -364,21 +364,21 @@ func TestParseIntOrReturnZero(t *testing.T) {
 	stg := "1"
 	expected := 1
 
-	assert.Equal(t, expected, ParseIntOrReturnZero(stg))
+	assert.Equal(t, expected, ParseIntOrReturnZero[int](stg))
 }
 
 func TestParseIntOrReturnZeroFail(t *testing.T) {
 	stg := "a"
 	expected := 0
 
-	assert.Equal(t, expected, ParseIntOrReturnZero(stg))
+	assert.Equal(t, expected, ParseIntOrReturnZero[int](stg))
 }
 
 func TestParseIntOrReturnZeroWithNumberOnString(t *testing.T) {
 	stg := "a123"
 	expected := 0
 
-	assert.Equal(t, expected, ParseIntOrReturnZero(stg))
+	assert.Equal(t, expected, ParseIntOrReturnZero[int](stg))
 }
 
 func TestIsArray(t *testing.T) {
