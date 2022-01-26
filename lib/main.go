@@ -35,7 +35,7 @@ func StringSliceToIntSlice[T constraints.SignedInteger](stringSlice []string) (i
 		if err != nil {
 			continue
 		}
-		intSlice = append(intSlice, T(v))
+		intSlice = append(intSlice, v)
 	}
 	return intSlice
 }
