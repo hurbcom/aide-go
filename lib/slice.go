@@ -9,7 +9,7 @@ type Predicate[T any] func (iteratee T) bool
 func (slice Slice[T]) Filter(predicate Predicate[T]) Slice[T] {
 	filtered := Slice[T]{}
 	for _, v := range slice {
-		if predicate(v) {
+		if predicate == nil || predicate(v) {
 			filtered = append(filtered, v)
 		}
 	}
@@ -19,7 +19,7 @@ func (slice Slice[T]) Filter(predicate Predicate[T]) Slice[T] {
 // First returns the first item matching specified predicate
 func (slice Slice[T]) First(predicate Predicate[T]) *T {
 	for i, v := range slice {
-		if predicate(v) {
+		if predicate == nil || predicate(v) {
 			return &slice[i]
 		}
 	}
@@ -29,7 +29,7 @@ func (slice Slice[T]) First(predicate Predicate[T]) *T {
 // Last returns the last item matching specified predicate
 func (slice Slice[T]) Last(predicate Predicate[T]) *T {
 	for i := len(slice)-1; i >= 0; i-- {
-		if predicate(slice[i]) {
+		if predicate == nil || predicate(slice[i]) {
 			return &slice[i]
 		}
 	}
@@ -39,7 +39,7 @@ func (slice Slice[T]) Last(predicate Predicate[T]) *T {
 // Any returns if any item matches the specified predicate
 func (slice Slice[T]) Any(predicate Predicate[T]) bool {
 	for _, v := range slice {
-		if predicate(v) {
+		if predicate == nil || predicate(v) {
 			return true
 		}
 	}
