@@ -1,7 +1,5 @@
 package lib
 
-import "fmt"
-
 type Slice[T any] []T
 type Predicate[T any] func (iteratee T) bool
 
@@ -70,38 +68,4 @@ func (slice Slice[T]) Reverse() Slice[T] {
 		rSlice[i], rSlice[j] = rSlice[j], rSlice[i]
 	}
 	return rSlice
-}
-
-type User struct {
-	Name string
-	Tickets int
-}
-
-func main() {
-	slice := Slice[User]{
-		{Name: "a", Tickets: 3},
-		{Name: "b", Tickets: 1},
-		{Name: "c", Tickets: 2},
-	}
-	fmt.Printf("Users with >= 2 tickets: %v\n", slice.Filter(func (u User) bool{
-		return u.Tickets >= 2
-	}))
-	fmt.Printf("First with <= 2 tickets: %v\n", slice.First(func (u User) bool{
-		return u.Tickets <= 2
-	}))
-	fmt.Printf("Last with >= 3 tickets: %v\n", slice.Last(func (u User) bool{
-		return u.Tickets >= 3
-	}))
-	fmt.Printf("Last with >= 10 tickets: %v\n", slice.Last(func (u User) bool{
-		return u.Tickets >= 10
-	}))
-	fmt.Printf("Has any with name \"foo\": %v\n", slice.Any(func (u User) bool{
-		return u.Name == "foo"
-	}))
-	fmt.Printf("Every has > 0 tickets: %v\n", slice.Every(func (u User) bool{
-		return u.Tickets > 0
-	}))
-	fmt.Printf("Slice address: %p / Slice copy address: %p\n", slice, slice.Copy())
-	fmt.Printf("Slice in reverse: %v\n", slice.Reverse())
-	fmt.Printf("Original Slice: %v\n", slice)
 }
