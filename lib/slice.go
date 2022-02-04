@@ -1,4 +1,4 @@
-package main
+package lib
 
 import "fmt"
 
@@ -6,8 +6,8 @@ type Slice[T any] []T
 type Predicate[T any] func (iteratee T) bool
 
 // Filter returns slice items matching specified predicate
-func (slice Slice[T]) Filter(predicate Predicate[T]) []T {
-	filtered := []T{}
+func (slice Slice[T]) Filter(predicate Predicate[T]) Slice[T] {
+	filtered := Slice[T]{}
 	for _, v := range slice {
 		if predicate(v) {
 			filtered = append(filtered, v)
@@ -57,14 +57,14 @@ func (slice Slice[T]) Every(predicate Predicate[T]) bool {
 }
 
 // Copy returns a copy of the slice
-func (slice Slice[T]) Copy() []T {
+func (slice Slice[T]) Copy() Slice[T] {
 	rSlice := make(Slice[T], len(slice))
 	copy(rSlice, slice)
 	return rSlice
 }
 
 // Reverse returns the slice in a reversed order
-func (slice Slice[T]) Reverse() []T {
+func (slice Slice[T]) Reverse() Slice[T] {
 	rSlice := slice.Copy()
 	for i, j := 0, len(rSlice)-1; i < j; i, j = i+1, j-1 {
 		rSlice[i], rSlice[j] = rSlice[j], rSlice[i]
