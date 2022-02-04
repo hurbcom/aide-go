@@ -46,7 +46,7 @@ func (slice Slice[T]) Any(predicate Predicate[T]) bool {
 	return false
 }
 
-// Any returns if any item matches the specified predicate
+// Every returns if every item matches the specified predicate
 func (slice Slice[T]) Every(predicate Predicate[T]) bool {
 	for _, v := range slice {
 		if !predicate(v) {
@@ -56,12 +56,14 @@ func (slice Slice[T]) Every(predicate Predicate[T]) bool {
 	return true
 }
 
+// Copy returns a copy of the slice
 func (slice Slice[T]) Copy() []T {
 	rSlice := make(Slice[T], len(slice))
 	copy(rSlice, slice)
 	return rSlice
 }
 
+// Reverse returns the slice in a reversed order
 func (slice Slice[T]) Reverse() []T {
 	rSlice := slice.Copy()
 	for i, j := 0, len(rSlice)-1; i < j; i, j = i+1, j-1 {
