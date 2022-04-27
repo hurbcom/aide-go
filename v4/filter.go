@@ -6,12 +6,12 @@ import (
 	"strings"
 )
 
-// GetOnlyNumbers REQUIRE THEM TO DOCUMENT THIS FUNCTION
+// GetOnlyNumbers
 func GetOnlyNumbers(s *string) *string {
 	return GetOnlyNumbersOrSpecial(s, "")
 }
 
-// GetOnlyNumbersOrSpecial REQUIRE THEM TO DOCUMENT THIS FUNCTION
+// GetOnlyNumbersOrSpecial
 func GetOnlyNumbersOrSpecial(s *string, sp string) *string {
 	if s == nil {
 		return s

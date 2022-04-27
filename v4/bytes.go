@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// GetByteArrayAndBufferFromRequestBody REQUIRE THEM TO DOCUMENT THIS FUNCTION
+// GetByteArrayAndBufferFromRequestBody
 func GetByteArrayAndBufferFromRequestBody(body io.ReadCloser) ([]byte, *bytes.Buffer, error) {
 	defer body.Close()
 	byteArray, err := ioutil.ReadAll(body)

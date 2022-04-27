@@ -6,7 +6,7 @@ import (
 	"net/http/httputil"
 )
 
-// GetStringBodyHTTPRequest REQUIRE THEM TO DOCUMENT THIS FUNCTION
+// GetStringBodyHTTPRequest
 func GetStringBodyHTTPRequest(r *http.Request) *string {
 	if r == nil {
 		return nil
@@ -27,7 +27,7 @@ func GetStringBodyHTTPRequest(r *http.Request) *string {
 	return &s
 }
 
-// GetStringBodyHTTPRequestJSON REQUIRE THEM TO DOCUMENT THIS FUNCTION
+// GetStringBodyHTTPRequestJSON
 func GetStringBodyHTTPRequestJSON(r *http.Request) *string {
 	if r == nil {
 		return nil
@@ -55,7 +55,7 @@ func GetStringBodyHTTPRequestJSON(r *http.Request) *string {
 	return nil
 }
 
-// GetStringBodyHTTPResponse REQUIRE THEM TO DOCUMENT THIS FUNCTION
+// GetStringBodyHTTPResponse
 func GetStringBodyHTTPResponse(r *http.Response) *string {
 	if r == nil {
 		return nil
@@ -76,7 +76,7 @@ func GetStringBodyHTTPResponse(r *http.Response) *string {
 	return &s
 }
 
-// GetStringBodyHTTPResponseJSON REQUIRE THEM TO DOCUMENT THIS FUNCTION
+// GetStringBodyHTTPResponseJSON
 func GetStringBodyHTTPResponseJSON(r *http.Response) *string {
 	if r == nil {
 		return nil
