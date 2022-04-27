@@ -1,8 +1,13 @@
 package v4
 
 import (
+	"regexp"
 	"strconv"
 	"strings"
+)
+
+var (
+	regexpCommaAlphaNum *regexp.Regexp = regexp.MustCompile(`[^A-Za-z0-9,]`)
 )
 
 func ToStringSlice(intslice []int) (stringSlice []string) {

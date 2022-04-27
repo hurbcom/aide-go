@@ -3,15 +3,9 @@ package v4
 import (
 	"math"
 	"math/rand"
-	"regexp"
 	"time"
 
 	"github.com/fatih/structs"
-)
-
-var (
-	regexpCommaAlphaNum *regexp.Regexp = regexp.MustCompile(
-		`[^A-Za-z0-9,]`)
 )
 
 func Round(value float64, precision int) float64 {
