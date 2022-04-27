@@ -2,6 +2,8 @@ module github.com/hurbcom/aide-go/v4
 
 go 1.16
 
+retract v4.1.0 // Published accidentally.
+
 require (
 	github.com/fatih/structs v1.1.0
 	github.com/pkg/errors v0.9.1
