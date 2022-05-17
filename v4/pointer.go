@@ -1,4 +1,4 @@
-package v4
+package aidego
 
 func CheckStringJSONData(s string) *string {
 	if len(s) > 0 {
