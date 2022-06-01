@@ -41,26 +41,26 @@ const (
 )
 
 var (
-	sRFC3339NanoWithoutTAndTimezone string = strings.ReplaceAll(
+	sRFC3339NanoWithoutTAndTimezone = strings.ReplaceAll(
 		strings.ReplaceAll(time.RFC3339Nano, `T`, ` `),
 		`Z07:00`, ``)
 
-	regexpDatePatternYYYYMMDD *regexp.Regexp = regexp.MustCompile(`^\d{4}\-\d{2}\-\d{2}$`)
+	regexpDatePatternYYYYMMDD = regexp.MustCompile(`^\d{4}\-\d{2}\-\d{2}$`)
 
-	regexpDatePatternYYYYMMDDHHMMSS *regexp.Regexp = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`)
+	regexpDatePatternYYYYMMDDHHMMSS = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`)
 
-	regexpDatePatternYYYYMMDDTHHMMSS *regexp.Regexp = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
+	regexpDatePatternYYYYMMDDTHHMMSS = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
 
-	sTimezone string = `(([Zz])|([\+|\-]([01]\d|2[0-3]):[0-5]\d))`
+	sTimezone = `(([Zz])|([\+|\-]([01]\d|2[0-3]):[0-5]\d))`
 
-	sRegexpRFC3339 string = `^(\d+)-(0[1-9]|1[012])-(0[1-9]|[12]\d|3[01])` +
+	sRegexpRFC3339 = `^(\d+)-(0[1-9]|1[012])-(0[1-9]|[12]\d|3[01])` +
 		`[Tt]([01]\d|2[0-3]):([0-5]\d):([0-5]\d|60)(\.\d+)?`
 
-	regexpRFC3339 *regexp.Regexp = regexp.MustCompile(sRegexpRFC3339 + sTimezone + `$`)
+	regexpRFC3339 = regexp.MustCompile(sRegexpRFC3339 + sTimezone + `$`)
 
 	sRegexpRFC3339NanoWithoutTAndTimezone = strings.ReplaceAll(sRegexpRFC3339, `[Tt]`, `\s`) + `\.\d{1,9}` + sTimezone + `?$`
 
-	regexpRFC3339NanoWithoutTAndTimezone *regexp.Regexp = regexp.MustCompile(sRegexpRFC3339NanoWithoutTAndTimezone)
+	regexpRFC3339NanoWithoutTAndTimezone = regexp.MustCompile(sRegexpRFC3339NanoWithoutTAndTimezone)
 )
 
 // ParseDateYearMonthDay
@@ -85,16 +85,43 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	}
 
 	matchers := map[string]*regexp.Regexp{
-		DatePatternYYYYMMDD:                     regexpDatePatternYYYYMMDD,
-		DatePatternYYYYMMDDHHMMSS:               regexpDatePatternYYYYMMDDHHMMSS,
-		DatePatternYYYYMMDDTHHMMSS:              regexpDatePatternYYYYMMDDTHHMMSS,
-		string(time.RFC3339):                    regexpRFC3339,
-		string(sRFC3339NanoWithoutTAndTimezone): regexpRFC3339NanoWithoutTAndTimezone,
+		DatePatternYYYYMMDD:             regexpDatePatternYYYYMMDD,
+		DatePatternYYYYMMDDHHMMSS:       regexpDatePatternYYYYMMDDHHMMSS,
+		DatePatternYYYYMMDDTHHMMSS:      regexpDatePatternYYYYMMDDTHHMMSS,
+		DatePatternYYYYMMDDTHHMMSSZ:     regexpRFC3339,
+		sRFC3339NanoWithoutTAndTimezone: regexpRFC3339NanoWithoutTAndTimezone,
 	}
 
 	for k, v := range matchers {
 		if v.MatchString(dateString) {
 			result, err := time.Parse(k, dateString)
+			if err != nil {
+				return nil, errors.Errorf("using pattern %s result error: %v", k, err)
+			}
+			return &result, nil
+		}
+	}
+
+	return nil, errors.Errorf("invalid date format - %+v", dateString)
+}
+
+// ParseDateStringToTimeIn parses a date string into time type in a specific location
+func ParseDateStringToTimeIn(dateString string, loc *time.Location) (*time.Time, error) {
+	if len(dateString) == 0 {
+		return nil, errors.New("empty date format")
+	}
+
+	matchers := map[string]*regexp.Regexp{
+		DatePatternYYYYMMDD:             regexpDatePatternYYYYMMDD,
+		DatePatternYYYYMMDDHHMMSS:       regexpDatePatternYYYYMMDDHHMMSS,
+		DatePatternYYYYMMDDTHHMMSS:      regexpDatePatternYYYYMMDDTHHMMSS,
+		DatePatternYYYYMMDDTHHMMSSZ:     regexpRFC3339,
+		sRFC3339NanoWithoutTAndTimezone: regexpRFC3339NanoWithoutTAndTimezone,
+	}
+
+	for k, v := range matchers {
+		if v.MatchString(dateString) {
+			result, err := time.ParseInLocation(k, dateString, loc)
 			if err != nil {
 				return nil, errors.Errorf("using pattern %s result error: %v", k, err)
 			}

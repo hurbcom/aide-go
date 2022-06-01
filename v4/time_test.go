@@ -204,6 +204,49 @@ func TestParseDateStringToTime(t *testing.T) {
 	}
 }
 
+func TestParseDateStringToTimeIn(t *testing.T) {
+	p := func(t time.Time) *time.Time {
+		return &t
+	}
+
+	loc, err := time.LoadLocation("America/Sao_Paulo")
+	type args struct {
+		dateString string
+		loc        *time.Location
+	}
+	if err != nil {
+		t.Error("failed to load location")
+	}
+
+	tests := []struct {
+		name    string
+		args    args
+		want    *time.Time
+		wantErr bool
+	}{
+		{
+			name:    "case1",
+			args:    args{dateString: "2016-01-01", loc: loc},
+			want:    p(time.Date(2016, 1, 1, 0, 0, 0, 0, loc)),
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := ParseDateStringToTimeIn(tt.args.dateString, tt.args.loc)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ParseDateStringToTime() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if tt.want == nil && got != nil {
+				t.Errorf("ParseDateStringToTime() = %v, want nil", err)
+			}
+			if tt.want != nil && got != nil && !(*tt.want).Equal(*got) {
+				t.Errorf("ParseDateStringToTime() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestBeginningOfToday(t *testing.T) {
 	today := BeginningOfToday()
 	assert.Equal(t, today.Year(), time.Now().Year())
