@@ -23,7 +23,7 @@ func TestWithRetries(t *testing.T) {
 		{
 			name: "should return nil if the retry parameter function does not return an error",
 			args: args{
-				ctx: context.Background(),
+				ctx: context.TODO(),
 				retryFn: func() error {
 					return nil
 				},
@@ -40,7 +40,7 @@ func TestWithRetries(t *testing.T) {
 		{
 			name: "should return an error if the maximum retries is exceeded",
 			args: args{
-				ctx: context.Background(),
+				ctx: context.TODO(),
 				retryFn: func() error {
 					return errors.New("error")
 				},
