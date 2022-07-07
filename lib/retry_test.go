@@ -9,7 +9,7 @@ import (
 func TestWithRetries(t *testing.T) {
 	type args struct {
 		ctx     context.Context
-		retryFn func() error
+		retryFn func(context.Context) error
 		options RetryOptions
 	}
 	tests := []struct {
@@ -21,7 +21,7 @@ func TestWithRetries(t *testing.T) {
 			name: "should return nil if the retry parameter function does not return an error",
 			args: args{
 				ctx: context.TODO(),
-				retryFn: func() error {
+				retryFn: func(ctx context.Context) error {
 					return nil
 				},
 				options: RetryOptions{
@@ -35,7 +35,7 @@ func TestWithRetries(t *testing.T) {
 			name: "should return an error if the maximum retries is exceeded",
 			args: args{
 				ctx: context.TODO(),
-				retryFn: func() error {
+				retryFn: func(ctx context.Context) error {
 					return errors.New("error")
 				},
 				options: RetryOptions{
