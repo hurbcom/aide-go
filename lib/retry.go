@@ -16,6 +16,9 @@ func WithRetries(ctx context.Context, retryFn func(ctx context.Context) error, o
 		if err := retryFn(ctx); err == nil {
 			return nil
 		}
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		time.Sleep(options.retriesInterval)
 	}
 	return errors.New("maximum number of retries exceeded")
