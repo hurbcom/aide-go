@@ -10,10 +10,7 @@ func TestWithRetries(t *testing.T) {
 	type args struct {
 		ctx     context.Context
 		retryFn func() error
-		options struct {
-			retriesCount    int
-			retriesInterval int
-		}
+		options RetryOptions
 	}
 	tests := []struct {
 		name    string
@@ -27,10 +24,7 @@ func TestWithRetries(t *testing.T) {
 				retryFn: func() error {
 					return nil
 				},
-				options: struct {
-					retriesCount    int
-					retriesInterval int
-				}{
+				options: RetryOptions{
 					retriesCount:    3,
 					retriesInterval: 2,
 				},
@@ -44,10 +38,7 @@ func TestWithRetries(t *testing.T) {
 				retryFn: func() error {
 					return errors.New("error")
 				},
-				options: struct {
-					retriesCount    int
-					retriesInterval int
-				}{
+				options: RetryOptions{
 					retriesCount:    3,
 					retriesInterval: 2,
 				},
