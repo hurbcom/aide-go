@@ -21,7 +21,7 @@ func TestWithRetries(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "success",
+			name: "should return nil if the retry parameter function does not return an error",
 			args: args{
 				ctx: context.Background(),
 				retryFn: func() error {
@@ -38,11 +38,11 @@ func TestWithRetries(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "failure",
+			name: "should return an error if the maximum retries is exceeded",
 			args: args{
 				ctx: context.Background(),
 				retryFn: func() error {
-					return errors.New("maximum number of retries exceeded")
+					return errors.New("error")
 				},
 				options: struct {
 					retriesCount    int
