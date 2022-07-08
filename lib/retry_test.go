@@ -28,8 +28,8 @@ func TestWithRetries(t *testing.T) {
 					return nil
 				},
 				options: RetryOptions{
-					retriesCount:    3,
-					retriesInterval: 2,
+					RetriesCount:    3,
+					RetriesInterval: 2,
 				},
 			},
 			wantErr: false,
@@ -42,8 +42,8 @@ func TestWithRetries(t *testing.T) {
 					return errors.New("error")
 				},
 				options: RetryOptions{
-					retriesCount:    3,
-					retriesInterval: 2,
+					RetriesCount:    3,
+					RetriesInterval: 2,
 				},
 			},
 			wantErr: true,
@@ -56,8 +56,8 @@ func TestWithRetries(t *testing.T) {
 					return nil
 				},
 				options: RetryOptions{
-					retriesCount:    3,
-					retriesInterval: 2,
+					RetriesCount:    3,
+					RetriesInterval: 2,
 				},
 			},
 			wantErr: true,
