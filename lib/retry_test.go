@@ -7,6 +7,9 @@ import (
 )
 
 func TestWithRetries(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
 	type args struct {
 		ctx     context.Context
 		retryFn func(context.Context) error
@@ -37,6 +40,20 @@ func TestWithRetries(t *testing.T) {
 				ctx: context.TODO(),
 				retryFn: func(ctx context.Context) error {
 					return errors.New("error")
+				},
+				options: RetryOptions{
+					retriesCount:    3,
+					retriesInterval: 2,
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "should return an error if the context is cancelled",
+			args: args{
+				ctx: ctx,
+				retryFn: func(ctx context.Context) error {
+					return nil
 				},
 				options: RetryOptions{
 					retriesCount:    3,
