@@ -12,7 +12,7 @@ func TestWithRetries(t *testing.T) {
 
 	type args struct {
 		ctx     context.Context
-		retryFn func(context.Context) error
+		retryFn func() error
 		options RetryOptions
 	}
 	tests := []struct {
@@ -24,7 +24,7 @@ func TestWithRetries(t *testing.T) {
 			name: "should return nil if the retry parameter function does not return an error",
 			args: args{
 				ctx: context.TODO(),
-				retryFn: func(ctx context.Context) error {
+				retryFn: func() error {
 					return nil
 				},
 				options: RetryOptions{
@@ -38,7 +38,7 @@ func TestWithRetries(t *testing.T) {
 			name: "should return an error if the maximum retries is exceeded",
 			args: args{
 				ctx: context.TODO(),
-				retryFn: func(ctx context.Context) error {
+				retryFn: func() error {
 					return errors.New("error")
 				},
 				options: RetryOptions{
@@ -52,7 +52,7 @@ func TestWithRetries(t *testing.T) {
 			name: "should return an error if the context is cancelled",
 			args: args{
 				ctx: ctx,
-				retryFn: func(ctx context.Context) error {
+				retryFn: func() error {
 					return nil
 				},
 				options: RetryOptions{

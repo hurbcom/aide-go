@@ -11,12 +11,12 @@ type RetryOptions struct {
 	RetriesInterval time.Duration
 }
 
-func WithRetries(ctx context.Context, retryFn func(ctx context.Context) error, options RetryOptions) error {
+func WithRetries(ctx context.Context, retryFn func() error, options RetryOptions) error {
 	for i := 0; i < options.RetriesCount; i++ {
 		if err := ctx.Err(); err != nil {
 			return err
 		}
-		if err := retryFn(ctx); err == nil {
+		if err := retryFn(); err == nil {
 			return nil
 		}
 		time.Sleep(options.RetriesInterval)
