@@ -3,7 +3,7 @@
 
 This library employs the same notation for tags as [jinzshu/copier](https://github.com/jinzhu/copier). However, this 
 solution should be more efficient because it analyzes the destination struct at initialization time, which is executed 
-at first struct copy.
+at first struct copy. If no tags was provided, the library will use the field name to perform the copy.
 
 ## Usage
 
