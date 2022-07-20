@@ -38,7 +38,9 @@ func (copier *Copier) Copy(source, destination interface{}) error {
 			copier.sourceKinds[v] == reflect.Interface:
 			tmpDestination.Field(k).Set(sourceValue.Field(v))
 		case copier.sourceKinds[v] == reflect.Ptr:
-			tmpDestination.Field(k).Set(sourceValue.Field(v).Elem())
+			if !sourceValue.Field(v).IsZero() {
+				tmpDestination.Field(k).Set(sourceValue.Field(v).Elem())
+			}
 		case copier.destinationKinds[k] == reflect.Ptr:
 			tmpDestination.Field(k).Set(sourceValue.Field(v).Addr())
 		default:
