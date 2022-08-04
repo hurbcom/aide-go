@@ -16,47 +16,28 @@ import (
 	"time"
 
 	"github.com/fatih/structs"
+	"github.com/hurbcom/aide-go/constraints"
 	"github.com/spf13/cast"
 )
 
 // ToStringSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func ToStringSlice(intslice []int) (stringSlice []string) {
-	for _, i := range intslice {
-		stringSlice = append(stringSlice, strconv.FormatInt(int64(i), 10))
-	}
-	return stringSlice
-}
-
-// ToStringSlice64 REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func ToStringSlice64(int64Slice []int64) (stringSlice []string) {
-	for _, i := range int64Slice {
-		stringSlice = append(stringSlice, strconv.FormatInt(i, 10))
+func IntSliceToStringSlice[T constraints.SignedInteger](intSlice []T) (stringSlice []string) {
+	for _, v := range intSlice {
+		stringSlice = append(stringSlice, strconv.FormatInt(int64(v), 10))
 	}
 	return stringSlice
 }
 
 // ToIntSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func ToIntSlice(stringSlice []string) (intSlice []int) {
+func StringSliceToIntSlice[T constraints.SignedInteger](stringSlice []string) (intSlice []T) {
 	for _, i := range stringSlice {
-		intI, err := ParseStringToInt(i)
+		v, err := ParseStringToInt[T](i)
 		if err != nil {
 			continue
 		}
-		intSlice = append(intSlice, intI)
+		intSlice = append(intSlice, v)
 	}
 	return intSlice
-}
-
-// ToInt64Slice REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func ToInt64Slice(stringSlice []string) (int64Slice []int64) {
-	for _, i := range stringSlice {
-		intI, err := ParseStringToInt64(i)
-		if err != nil {
-			continue
-		}
-		int64Slice = append(int64Slice, intI)
-	}
-	return int64Slice
 }
 
 // StringToStringSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
@@ -86,39 +67,34 @@ func StringToStringSlice(s string) []string {
 }
 
 // StringToIntSlice REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func StringToIntSlice(s string) []int {
+func StringToIntSlice[T constraints.SignedInteger](s string) []T {
 	if len(s) == 0 {
-		return []int{}
+		return []T{}
 	}
 
 	sl := StringToStringSlice(s)
 	if len(sl) == 0 {
-		return []int{}
+		return []T{}
 	}
 
-	return ToIntSlice(sl)
-}
-
-// ParseStringToInt REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func ParseStringToInt(s string) (int, error) {
-	if s == "" {
-		return 0, nil
-	}
-
-	return strconv.Atoi(s)
+	return StringSliceToIntSlice[T](sl)
 }
 
 // ParseStringToInt64 REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func ParseStringToInt64(s string) (int64, error) {
+func ParseStringToInt[T constraints.SignedInteger](s string) (T, error) {
 	if s == "" {
 		return 0, nil
 	}
 
-	return strconv.ParseInt(s, 10, 0)
+	v, err := strconv.ParseInt(s, 10, 0)
+	if err != nil {
+		return 0, err
+	}
+	return T(v), nil 
 }
 
 // ParseIntToBool REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func ParseIntToBool(i int) bool {
+func ParseIntToBool[T constraints.SignedInteger](i T) bool {
 	if i == 1 {
 		return true
 	}
@@ -295,12 +271,12 @@ func GetStringBodyHTTPResponseJSON(r *http.Response) *string {
 }
 
 // ParseIntOrReturnZero REQUIRE THEM TO DOCUMENT THIS FUNCTION
-func ParseIntOrReturnZero(s string) int {
+func ParseIntOrReturnZero[T constraints.SignedInteger](s string) T {
 	integer, err := strconv.ParseInt(s, 10, 0)
 	if err != nil {
 		return 0
 	}
-	return int(integer)
+	return T(integer)
 }
 
 // Stringer REQUIRE THEM TO DOCUMENT THIS TYPE
