@@ -56,6 +56,7 @@ type TestStruct3 struct {
 	T *string  `copier:"-"`
 	S *bool    `copier:"BoolPointer"`
 }
+
 type SliceTestStructSource struct {
 	IntSlice    []int
 	StringSlice []string
