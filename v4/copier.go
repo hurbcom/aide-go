@@ -36,13 +36,16 @@ func (copier *Copier) Copy(source, destination interface{}) error {
 		switch {
 		case copier.destinationKinds[k] == copier.sourceKinds[v] || copier.destinationKinds[k] == reflect.Interface ||
 			copier.sourceKinds[v] == reflect.Interface:
-			tmpDestination.Field(k).Set(sourceValue.Field(v))
+			destinationType := tmpDestination.Field(k).Type()
+			tmpDestination.Field(k).Set(sourceValue.Field(v).Convert(destinationType))
 		case copier.sourceKinds[v] == reflect.Ptr:
 			if !sourceValue.Field(v).IsZero() {
-				tmpDestination.Field(k).Set(sourceValue.Field(v).Elem())
+				destinationType := tmpDestination.Field(k).Type()
+				tmpDestination.Field(k).Set(sourceValue.Field(v).Elem().Convert(destinationType))
 			}
 		case copier.destinationKinds[k] == reflect.Ptr:
-			tmpDestination.Field(k).Set(sourceValue.Field(v).Addr())
+			destinationType := tmpDestination.Field(k).Type()
+			tmpDestination.Field(k).Set(sourceValue.Field(v).Addr().Convert(destinationType))
 		default:
 			return fmt.Errorf("unsupported kind combination: %s x %s", copier.sourceKinds[v].String(),
 				copier.destinationKinds[k].String())
