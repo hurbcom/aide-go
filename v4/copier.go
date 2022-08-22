@@ -34,6 +34,18 @@ func (copier *Copier) Copy(source, destination interface{}) error {
 
 	for k, v := range copier.sourceDestinationMapping {
 		switch {
+		case copier.sourceKinds[v] == reflect.Slice || copier.sourceKinds[v] == reflect.Array:
+			sourceSlice := sourceValue.Field(v)
+			sliceLength := sourceSlice.Len()
+			destinationSlice := reflect.MakeSlice(destinationValue.Field(k).Type(), sliceLength, sliceLength)
+			sliceElemType := reflect.TypeOf(destinationSlice.Interface()).Elem()
+
+			for l := 0; l < sliceLength; l++ {
+				destinationSlice.Index(l).Set(sourceSlice.Index(l).Convert(sliceElemType))
+			}
+
+			tmpDestination.Field(k).Set(destinationSlice)
+
 		case copier.destinationKinds[k] == copier.sourceKinds[v] || copier.destinationKinds[k] == reflect.Interface ||
 			copier.sourceKinds[v] == reflect.Interface:
 			destinationType := tmpDestination.Field(k).Type()

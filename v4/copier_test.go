@@ -56,6 +56,57 @@ type TestStruct3 struct {
 	T *string  `copier:"-"`
 	S *bool    `copier:"BoolPointer"`
 }
+type SliceTestStructSource struct {
+	IntSlice    []int
+	StringSlice []string
+	FloatSlice  []float64
+	BoolSlice   []bool
+	StructSlice []TestStruct2
+
+	IntSlicePointer    *[]int
+	StringSlicePointer *[]string
+	FloatSlicePointer  *[]float64
+	BoolSlicePointer   *[]bool
+	StructSlicePointer *[]TestStruct3
+
+	IntPointerSlice    []*int
+	StringPointerSlice []*string
+	FloatPointerSlice  []*float64
+	BoolPointerSlice   []*bool
+	StructPointerSlice []*TestStruct2
+
+	IntSlicePointerPointer    *[]*int
+	StringPointerSlicePointer *[]*string
+	FloatPointerSlicePointer  *[]*float64
+	BoolPointerSlicePointer   *[]*bool
+	StructPointerSlicePointer *[]*TestStruct3
+}
+
+type SliceTestStructDestination struct {
+	A []int         `copier:"IntSlice"`
+	B []string      `copier:"StringSlice"`
+	C []float64     `copier:"FloatSlice"`
+	D []bool        `copier:"BoolSlice"`
+	E []TestStruct2 `copier:"StructSlice"`
+
+	F *[]int         `copier:"IntSlicePointer"`
+	G *[]string      `copier:"StringSlicePointer"`
+	H *[]float64     `copier:"FloatSlicePointer"`
+	I *[]bool        `copier:"BoolSlicePointer"`
+	J *[]TestStruct3 `copier:"StructSlicePointer"`
+
+	K []*int         `copier:"IntPointerSlice"`
+	L []*string      `copier:"StringPointerSlice"`
+	M []*float64     `copier:"FloatPointerSlice"`
+	N []*bool        `copier:"BoolPointerSlice"`
+	O []*TestStruct2 `copier:"StructPointerSlice"`
+
+	P *[]*int         `copier:"IntSlicePointerPointer"`
+	Q *[]*string      `copier:"StringPointerSlicePointer"`
+	R *[]*float64     `copier:"FloatPointerSlicePointer"`
+	S *[]*bool        `copier:"BoolPointerSlicePointer"`
+	T *[]*TestStruct3 `copier:"StructPointerSlicePointer"`
+}
 
 var (
 	intPointer1    = intValue1
@@ -102,11 +153,37 @@ var (
 		T: &stringPointer1,
 		S: &boolPointer1,
 	}
+
+	testSliceSource = SliceTestStructSource{
+		IntSlice:    []int{intValue1, intValue2, intValue3},
+		StringSlice: []string{stringValue1, stringValue2, stringValue3},
+		FloatSlice:  []float64{floatValue1, floatValue2, floatValue3},
+		BoolSlice:   []bool{boolValue1, boolValue2},
+		StructSlice: []TestStruct2{testStruct2},
+
+		IntSlicePointer:    &[]int{intValue1, intValue2, intValue3},
+		StringSlicePointer: &[]string{stringValue1, stringValue2, stringValue3},
+		FloatSlicePointer:  &[]float64{floatValue1, floatValue2, floatValue3},
+		BoolSlicePointer:   &[]bool{boolValue1, boolValue2},
+		StructSlicePointer: &[]TestStruct3{testStruct3},
+
+		IntPointerSlice:    []*int{&intPointer1, &intPointer2},
+		StringPointerSlice: []*string{&stringPointer1, &stringPointer2},
+		FloatPointerSlice:  []*float64{&floatPointer1, &floatPointer2},
+		BoolPointerSlice:   []*bool{&boolPointer1, &boolPointer2},
+		StructPointerSlice: []*TestStruct2{&testStruct2},
+
+		IntSlicePointerPointer:    &[]*int{&intPointer1, &intPointer2},
+		StringPointerSlicePointer: &[]*string{&stringPointer1, &stringPointer2},
+		FloatPointerSlicePointer:  &[]*float64{&floatPointer1, &floatPointer2},
+		BoolPointerSlicePointer:   &[]*bool{&boolPointer1, &boolPointer2},
+		StructPointerSlicePointer: &[]*TestStruct3{&testStruct3},
+	}
 )
 
 func TestCopier_Copy(t *testing.T) {
 
-	t.Run("copier.Copy: Success cases",
+	t.Run("copier.Copy: success cases",
 		func(t *testing.T) {
 
 			var destination1 TestStruct1
@@ -152,6 +229,35 @@ func TestCopier_Copy(t *testing.T) {
 			assert.Equal(t, testStruct1.FloatPointer, destination3.U)
 			assert.Empty(t, destination3.T)
 			assert.Equal(t, testStruct1.BoolPointer, destination3.S)
+		},
+	)
+
+	t.Run("copier.Copy: arrays and slices success cases",
+		func(t *testing.T) {
+
+			var destination1 SliceTestStructDestination
+			testCopier(t, false, &testSliceSource, &destination1)
+
+			assert.Equal(t, testSliceSource.IntSlice, destination1.A)
+			assert.Equal(t, testSliceSource.StringSlice, destination1.B)
+			assert.Equal(t, testSliceSource.FloatSlice, destination1.C)
+			assert.Equal(t, testSliceSource.BoolSlice, destination1.D)
+			assert.Equal(t, testSliceSource.StructSlice, destination1.E)
+			assert.Equal(t, testSliceSource.IntSlicePointer, destination1.F)
+			assert.Equal(t, testSliceSource.StringSlicePointer, destination1.G)
+			assert.Equal(t, testSliceSource.FloatSlicePointer, destination1.H)
+			assert.Equal(t, testSliceSource.BoolSlicePointer, destination1.I)
+			assert.Equal(t, testSliceSource.StructSlicePointer, destination1.J)
+			assert.Equal(t, testSliceSource.IntPointerSlice, destination1.K)
+			assert.Equal(t, testSliceSource.StringPointerSlice, destination1.L)
+			assert.Equal(t, testSliceSource.FloatPointerSlice, destination1.M)
+			assert.Equal(t, testSliceSource.BoolPointerSlice, destination1.N)
+			assert.Equal(t, testSliceSource.StructPointerSlice, destination1.O)
+			assert.Equal(t, testSliceSource.IntSlicePointerPointer, destination1.P)
+			assert.Equal(t, testSliceSource.StringPointerSlicePointer, destination1.Q)
+			assert.Equal(t, testSliceSource.FloatPointerSlicePointer, destination1.R)
+			assert.Equal(t, testSliceSource.BoolPointerSlicePointer, destination1.S)
+			assert.Equal(t, testSliceSource.StructPointerSlicePointer, destination1.T)
 		},
 	)
 
