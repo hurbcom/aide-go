@@ -37,6 +37,18 @@ const (
 	//   05 = Seconds with two digits
 	DatePatternYYYYMMDDTHHMMSS = "2006-01-02T15:04:05"
 
+	// DatePatternYYYYMMDDTHHMMSS
+	// ISO 8601 format with timezone offset
+	// 2006 = Year with four digits
+	//   01 = Month with two digits
+	//   02 = Day with two digits
+	//   15 = Hour with two digits (24h)
+	//   04 = Minute with two digits
+	//   05 = Seconds with two digits
+	//   07 = Timezone offset hours with two digits
+	//   00 = Timezone offset minutes with two digits
+	DatePatternYYYYMMDDTHHMMSSOffset = "2006-01-02T15:04:05-07:00"
+
 	DatePatternYYYYMMDDTHHMMSSZ = time.RFC3339 // NOTE: backward compatibility
 )
 
@@ -50,6 +62,8 @@ var (
 	regexpDatePatternYYYYMMDDHHMMSS = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`)
 
 	regexpDatePatternYYYYMMDDTHHMMSS = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`)
+
+	regexpDatePatternYYYYMMDDTHHMMSSOffset *regexp.Regexp = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$([\+|\-]([01]\d|2[0-3]):[0-5]\d)`)
 
 	sTimezone = `(([Zz])|([\+|\-]([01]\d|2[0-3]):[0-5]\d))`
 
@@ -85,11 +99,12 @@ func ParseDateStringToTime(dateString string) (*time.Time, error) {
 	}
 
 	matchers := map[string]*regexp.Regexp{
-		DatePatternYYYYMMDD:             regexpDatePatternYYYYMMDD,
-		DatePatternYYYYMMDDHHMMSS:       regexpDatePatternYYYYMMDDHHMMSS,
-		DatePatternYYYYMMDDTHHMMSS:      regexpDatePatternYYYYMMDDTHHMMSS,
-		DatePatternYYYYMMDDTHHMMSSZ:     regexpRFC3339,
-		sRFC3339NanoWithoutTAndTimezone: regexpRFC3339NanoWithoutTAndTimezone,
+		DatePatternYYYYMMDD:              regexpDatePatternYYYYMMDD,
+		DatePatternYYYYMMDDHHMMSS:        regexpDatePatternYYYYMMDDHHMMSS,
+		DatePatternYYYYMMDDTHHMMSS:       regexpDatePatternYYYYMMDDTHHMMSS,
+		DatePatternYYYYMMDDTHHMMSSZ:      regexpRFC3339,
+		DatePatternYYYYMMDDTHHMMSSOffset: regexpDatePatternYYYYMMDDTHHMMSSOffset,
+		sRFC3339NanoWithoutTAndTimezone:  regexpRFC3339NanoWithoutTAndTimezone,
 	}
 
 	for k, v := range matchers {
@@ -112,11 +127,12 @@ func ParseDateStringToTimeIn(dateString string, loc *time.Location) (*time.Time,
 	}
 
 	matchers := map[string]*regexp.Regexp{
-		DatePatternYYYYMMDD:             regexpDatePatternYYYYMMDD,
-		DatePatternYYYYMMDDHHMMSS:       regexpDatePatternYYYYMMDDHHMMSS,
-		DatePatternYYYYMMDDTHHMMSS:      regexpDatePatternYYYYMMDDTHHMMSS,
-		DatePatternYYYYMMDDTHHMMSSZ:     regexpRFC3339,
-		sRFC3339NanoWithoutTAndTimezone: regexpRFC3339NanoWithoutTAndTimezone,
+		DatePatternYYYYMMDD:              regexpDatePatternYYYYMMDD,
+		DatePatternYYYYMMDDHHMMSS:        regexpDatePatternYYYYMMDDHHMMSS,
+		DatePatternYYYYMMDDTHHMMSS:       regexpDatePatternYYYYMMDDTHHMMSS,
+		DatePatternYYYYMMDDTHHMMSSZ:      regexpRFC3339,
+		DatePatternYYYYMMDDTHHMMSSOffset: regexpDatePatternYYYYMMDDTHHMMSSOffset,
+		sRFC3339NanoWithoutTAndTimezone:  regexpRFC3339NanoWithoutTAndTimezone,
 	}
 
 	for k, v := range matchers {
